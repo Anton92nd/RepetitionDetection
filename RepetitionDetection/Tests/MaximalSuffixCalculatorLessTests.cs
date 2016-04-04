@@ -17,6 +17,10 @@ namespace RepetitionDetection.Tests
         [TestCase("ba", 0)]
         [TestCase("abacaba", 3)]
         [TestCase("cabcabcaba", 0)]
+        [TestCase("aaaaa", 0)]
+        [TestCase("aaabaaaa", 3)]
+        [TestCase("zzzzxzzzz", 0)]
+        [TestCase("zzzzxzzzzz", 5)]
         public void TestCase(string input, int expectedMaximalSuffix)
         {
             foreach(var c in input)
