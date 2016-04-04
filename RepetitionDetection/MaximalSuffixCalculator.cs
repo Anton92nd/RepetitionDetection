@@ -21,9 +21,9 @@ namespace RepetitionDetection
             if(currentSuffixPosition + equalSymbolsCount >= str.Length)
                 return;
 
-            var first = str[maximaxSuffixPosition + equalSymbolsCount];
-            var next = str[currentSuffixPosition + equalSymbolsCount];
-            var comparisonResult = charComparer.Compare(first, next);
+            var fromMaximalSuffix = str[maximaxSuffixPosition + equalSymbolsCount];
+            var fromCurrentSuffix = str[currentSuffixPosition + equalSymbolsCount];
+            var comparisonResult = charComparer.Compare(fromMaximalSuffix, fromCurrentSuffix);
 
             if(comparisonResult > 0)
             {
@@ -52,6 +52,11 @@ namespace RepetitionDetection
         public int GetPosition()
         {
             return maximaxSuffixPosition + 1;
+        }
+
+        public int GetMaximalSuffixPeriod()
+        {
+            return period;
         }
 
         private readonly StringBuilder str;
