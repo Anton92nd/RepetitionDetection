@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using NUnit.Framework;
+using RepetitionDetection.MSCalculator;
 
 namespace RepetitionDetection.Tests
 {
@@ -31,11 +32,9 @@ namespace RepetitionDetection.Tests
         [TestCase("zzzzxzzz", 4)]
         public void TestCase(string input, int expectedMaximalSuffix)
         {
-            foreach (var c in input)
-            {
-                maximalSuffixCalculator.Append(c);
-            }
-            Assert.That(maximalSuffixCalculator.GetPosition(), Is.EqualTo(expectedMaximalSuffix));
+            var data = MSCalculatorData.Default.WithStringLength(input.Length);
+            maximalSuffixCalculator.Calculate(input, data);
+            Assert.That(data.MSPosition, Is.EqualTo(expectedMaximalSuffix));
         }
     }
 }

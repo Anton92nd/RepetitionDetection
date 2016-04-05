@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using RepetitionDetection.MSCalculator;
 
 namespace RepetitionDetection.Tests
 {
@@ -11,14 +12,17 @@ namespace RepetitionDetection.Tests
         [Test]
         public void TestEmpty()
         {
-            Assert.That(maximalSuffixCalculator.GetPosition(), Is.EqualTo(0));
+            var data = MSCalculatorData.Default;
+            maximalSuffixCalculator.Calculate(string.Empty, data);
+            Assert.That(data.MSPosition, Is.EqualTo(0));
         }
 
         [Test]
         public void TestOneLetter()
         {
-            maximalSuffixCalculator.Append('a');
-            Assert.That(maximalSuffixCalculator.GetPosition(), Is.EqualTo(0));
+            var data = MSCalculatorData.Default;
+            maximalSuffixCalculator.Calculate("a", data);
+            Assert.That(data.MSPosition, Is.EqualTo(0));
         }
 
         protected MaximalSuffixCalculator maximalSuffixCalculator;
