@@ -10,37 +10,42 @@ namespace RepetitionDetection.MSCalculator
             this.charComparer = charComparer;
         }
 
-        public void Calculate(string str, MSCalculatorData data)
+        public MSCalculatorData Calculate(StringBuilder str, MSCalculatorData data)
         {
-            while (data.CSPosition + data.CommonSymbolsCount <= data.StringLength)
+            var CSPosition = data.CSPosition;
+            var MSPosition = data.MSPosition;
+            var Period = data.Period;
+            var CommonSymbolsCount = data.CommonSymbolsCount;
+            while (CSPosition + CommonSymbolsCount <= data.StringLength)
             {
-                var fromMaximalSuffix = str[data.MSPosition + data.CommonSymbolsCount - 1];
-                var fromCurrentSuffix = str[data.CSPosition + data.CommonSymbolsCount - 1];
+                var fromMaximalSuffix = str[MSPosition + CommonSymbolsCount - 1];
+                var fromCurrentSuffix = str[CSPosition + CommonSymbolsCount - 1];
                 var comparisonResult = charComparer.Compare(fromMaximalSuffix, fromCurrentSuffix);
 
                 if (comparisonResult > 0)
                 {
-                    data.CSPosition = data.CSPosition + data.CommonSymbolsCount;
-                    data.CommonSymbolsCount = 1;
-                    data.Period = data.CSPosition - data.MSPosition;
+                    CSPosition = CSPosition + CommonSymbolsCount;
+                    CommonSymbolsCount = 1;
+                    Period = CSPosition - MSPosition;
                 }
                 else if (comparisonResult == 0)
                 {
-                    if (data.CommonSymbolsCount == data.Period)
+                    if (CommonSymbolsCount == Period)
                     {
-                        data.CSPosition = data.CSPosition + data.Period;
-                        data.CommonSymbolsCount = 1;
+                        CSPosition = CSPosition + Period;
+                        CommonSymbolsCount = 1;
                     }
                     else
-                        data.CommonSymbolsCount++;
+                        CommonSymbolsCount++;
                 }
                 else
                 {
-                    data.MSPosition = data.CSPosition;
-                    data.CSPosition = data.MSPosition + 1;
-                    data.CommonSymbolsCount = data.Period = 1;
+                    MSPosition = CSPosition;
+                    CSPosition = MSPosition + 1;
+                    CommonSymbolsCount = Period = 1;
                 }
             }
+            return new MSCalculatorData(MSPosition, CSPosition, Period, CommonSymbolsCount, data.StringLength);
         }
 
         private readonly IComparer<char> charComparer; 

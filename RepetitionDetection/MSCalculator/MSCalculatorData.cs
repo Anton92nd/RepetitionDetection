@@ -2,24 +2,31 @@
 {
     public class MSCalculatorData
     {
-        public int MSPosition { get; set; }
-        public int CSPosition { get; set; }
-        public int Period { get; set; }
-        public int CommonSymbolsCount { get; set; }
-        public int StringLength { get; set; }
+        public MSCalculatorData(int mSPosition, int cSPosition, int period, int commonSymbolsCount, int stringLength)
+        {
+            MSPosition = mSPosition;
+            CSPosition = cSPosition;
+            Period = period;
+            CommonSymbolsCount = commonSymbolsCount;
+            StringLength = stringLength;
+        }
+
+        public MSCalculatorData WithStringLength(int stringLength)
+        {
+            return new MSCalculatorData(MSPosition, CSPosition, Period, CommonSymbolsCount, stringLength);
+        }
+
+        public int MSPosition { get; private set; }
+        public int CSPosition { get; private set; }
+        public int Period { get; private set; }
+        public int CommonSymbolsCount { get; private set; }
+        public int StringLength { get; private set; }
 
         public static MSCalculatorData Default
         {
             get
             {
-                return new MSCalculatorData
-                {
-                    CommonSymbolsCount = 1,
-                    CSPosition = 1,
-                    MSPosition = 0,
-                    Period = 1,
-                    StringLength = 0
-                };
+                return new MSCalculatorData(0, 1, 1, 1, 0);
             }
         }
     }

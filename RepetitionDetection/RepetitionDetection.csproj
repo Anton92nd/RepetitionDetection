@@ -46,7 +46,6 @@
   <ItemGroup>
     <Compile Include="MSCalculator\MaximalSuffixCalculator.cs" />
     <Compile Include="MSCalculator\MSCalculatorData.cs" />
-    <Compile Include="MSCalculator\MSCalculatorExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\MaximalSuffixCalculatorGreaterTests.cs" />
