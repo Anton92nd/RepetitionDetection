@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MaximalSuffixCalculator\MaximalSuffixCalculator.cs" />
+    <Compile Include="MaximalSuffixes\MaximalSuffixCalculator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\MaximalSuffixCalculatorGreaterTests.cs" />
