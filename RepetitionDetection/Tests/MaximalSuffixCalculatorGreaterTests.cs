@@ -13,6 +13,10 @@ namespace RepetitionDetection.Tests
         [TestCase("aaabaa", new []{0, 0, 0, 0, 0, 0})]
         [TestCase("aaabaaaa", new []{0, 0, 0, 0, 0, 0, 0, 4})]
         [TestCase("zzzzxzzz", new []{0, 0, 0, 0, 4, 4, 4, 4 })]
+        [TestCase("cbcbcd", new []{0, 1, 1, 1, 1, 1})]
+        [TestCase("cbcbcbd", new []{0, 1, 1, 1, 1, 1, 1})]
+        [TestCase("cbcbca", new []{0, 1, 1, 1, 1, 5})]
+        [TestCase("cbcbcba", new []{0, 1, 1, 1, 1, 1, 6})]
         public void TestCase(string input, int[] expectedMaximalSuffixes)
         {
             var maximalSuffixCalculator = new MaximalSuffixCalculator(input, new CharGreaterComparer());
