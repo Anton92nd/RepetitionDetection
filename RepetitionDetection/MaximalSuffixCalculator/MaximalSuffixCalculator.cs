@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RepetitionDetection.MSCalculator
+namespace RepetitionDetection.MaximalSuffixCalculator
 {
     public class MaximalSuffixCalculator
     {
