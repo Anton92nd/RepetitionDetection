@@ -45,12 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MSCalculator\MaximalSuffixCalculator.cs" />
-    <Compile Include="MSCalculator\MSCalculatorData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\MaximalSuffixCalculatorGreaterTests.cs" />
     <Compile Include="Tests\MaximalSuffixCalculatorLessTests.cs" />
-    <Compile Include="Tests\MaximalSuffixCalculatorTestBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

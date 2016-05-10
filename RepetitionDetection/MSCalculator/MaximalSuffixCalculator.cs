@@ -1,53 +1,57 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 
 namespace RepetitionDetection.MSCalculator
 {
     public class MaximalSuffixCalculator
     {
-        public MaximalSuffixCalculator(IComparer<char> charComparer)
+        public MaximalSuffixCalculator(string str, IComparer<char> charComparer)
         {
             this.charComparer = charComparer;
+            currentSuffixPosition = 1;
+            commonSymbolsCount = 1;
+            MaximalSuffixPosition = 0;
+            period = 1;
+            this.str = str;
         }
 
-        public MSCalculatorData Calculate(StringBuilder str, MSCalculatorData data)
+        public void Calculate(int stringLength)
         {
-            var CSPosition = data.CSPosition;
-            var MSPosition = data.MSPosition;
-            var Period = data.Period;
-            var CommonSymbolsCount = data.CommonSymbolsCount;
-            while (CSPosition + CommonSymbolsCount <= data.StringLength)
+            while (currentSuffixPosition + commonSymbolsCount <= stringLength)
             {
-                var fromMaximalSuffix = str[MSPosition + CommonSymbolsCount - 1];
-                var fromCurrentSuffix = str[CSPosition + CommonSymbolsCount - 1];
+                var fromMaximalSuffix = str[MaximalSuffixPosition + commonSymbolsCount - 1];
+                var fromCurrentSuffix = str[currentSuffixPosition + commonSymbolsCount - 1];
                 var comparisonResult = charComparer.Compare(fromMaximalSuffix, fromCurrentSuffix);
 
                 if (comparisonResult > 0)
                 {
-                    CSPosition = CSPosition + CommonSymbolsCount;
-                    CommonSymbolsCount = 1;
-                    Period = CSPosition - MSPosition;
+                    currentSuffixPosition = currentSuffixPosition + commonSymbolsCount;
+                    commonSymbolsCount = 1;
+                    period = currentSuffixPosition - MaximalSuffixPosition;
                 }
                 else if (comparisonResult == 0)
                 {
-                    if (CommonSymbolsCount == Period)
+                    if (commonSymbolsCount == period)
                     {
-                        CSPosition = CSPosition + Period;
-                        CommonSymbolsCount = 1;
+                        currentSuffixPosition = currentSuffixPosition + period;
+                        commonSymbolsCount = 1;
                     }
                     else
-                        CommonSymbolsCount++;
+                        commonSymbolsCount++;
                 }
                 else
                 {
-                    MSPosition = CSPosition;
-                    CSPosition = MSPosition + 1;
-                    CommonSymbolsCount = Period = 1;
+                    MaximalSuffixPosition = currentSuffixPosition;
+                    currentSuffixPosition = MaximalSuffixPosition + 1;
+                    commonSymbolsCount = period = 1;
                 }
             }
-            return new MSCalculatorData(MSPosition, CSPosition, Period, CommonSymbolsCount, data.StringLength);
         }
 
-        private readonly IComparer<char> charComparer; 
+        private readonly IComparer<char> charComparer;
+        private readonly string str;
+        public int MaximalSuffixPosition { get; private set; }
+        private int currentSuffixPosition;
+        private int commonSymbolsCount;
+        private int period;
     }
 }
