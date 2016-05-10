@@ -1,33 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using RepetitionDetection.Commons;
 using RepetitionDetection.MaximalSuffixes;
 
 namespace RepetitionDetection.Tests
 {
     public class MaximalSuffixCalculatorGreaterTests
     {
-        private class CharGreaterComparer : IComparer<Char>
-        {
-            public int Compare(char x, char y)
-            {
-                return Comparer<Char>.Default.Compare(y, x);
-            }
-        }
-
-        [TestCase("ab", 0)]
-        [TestCase("ba", 1)]
-        [TestCase("abacaba", 0)]
-        [TestCase("cababaca", 1)]
-        [TestCase("aaaaa", 0)]
-        [TestCase("aaaaabaaaa", 0)]
-        [TestCase("aaabaaaa", 4)]
-        [TestCase("zzzzxzzz", 4)]
-        public void TestCase(string input, int expectedMaximalSuffix)
+        [TestCase("ab", new []{ 0, 0 })]
+        [TestCase("ba", new []{ 0, 1 })]
+        [TestCase("abacaba", new []{0, 0, 0, 0, 0, 0, 0})]
+        [TestCase("cababaca", new []{0, 1, 1, 1, 1, 1, 1, 1})]
+        [TestCase("aaabaa", new []{0, 0, 0, 0, 0, 0})]
+        [TestCase("aaabaaaa", new []{0, 0, 0, 0, 0, 0, 0, 4})]
+        [TestCase("zzzzxzzz", new []{0, 0, 0, 0, 4, 4, 4, 4 })]
+        public void TestCase(string input, int[] expectedMaximalSuffixes)
         {
             var maximalSuffixCalculator = new MaximalSuffixCalculator(input, new CharGreaterComparer());
-            maximalSuffixCalculator.Calculate(input.Length);
-            Assert.That(maximalSuffixCalculator.MaximalSuffixPosition, Is.EqualTo(expectedMaximalSuffix));
+            var maximalSuffixes = new int[input.Length];
+            for (var i = 0; i < input.Length; i++)
+            {
+                maximalSuffixCalculator.Calculate(i + 1);
+                maximalSuffixes[i] = maximalSuffixCalculator.MaximalSuffixPosition;
+            }
+            Assert.That(maximalSuffixes, Is.EquivalentTo(expectedMaximalSuffixes));
         }
     }
 }
