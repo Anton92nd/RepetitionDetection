@@ -1,4 +1,5 @@
-﻿using RepetitionDetection.Commons;
+﻿using System;
+using RepetitionDetection.Commons;
 using RepetitionDetection.MaximalSuffixes;
 
 namespace RepetitionDetection.CriticalFactorization
@@ -13,7 +14,10 @@ namespace RepetitionDetection.CriticalFactorization
 
         public int GetCriticalFactorizationPosition(int prefixLength)
         {
-            return 0;
+            maximalSuffixCalculatorForLess.Calculate(prefixLength);
+            maximalSuffixCalculatorForGreater.Calculate(prefixLength);
+            return Math.Max(maximalSuffixCalculatorForLess.MaximalSuffixPosition,
+                maximalSuffixCalculatorForGreater.MaximalSuffixPosition);
         }
 
         private readonly MaximalSuffixCalculator maximalSuffixCalculatorForLess;

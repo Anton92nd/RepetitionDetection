@@ -10,7 +10,7 @@ namespace RepetitionDetection.MaximalSuffixes
             currentSuffixPosition = 1;
             commonSymbolsCount = 1;
             MaximalSuffixPosition = 0;
-            period = 1;
+            Period = 1;
             this.str = str;
         }
 
@@ -26,13 +26,13 @@ namespace RepetitionDetection.MaximalSuffixes
                 {
                     currentSuffixPosition = currentSuffixPosition + commonSymbolsCount;
                     commonSymbolsCount = 1;
-                    period = currentSuffixPosition - MaximalSuffixPosition;
+                    Period = currentSuffixPosition - MaximalSuffixPosition;
                 }
                 else if (comparisonResult == 0)
                 {
-                    if (commonSymbolsCount == period)
+                    if (commonSymbolsCount == Period)
                     {
-                        currentSuffixPosition = currentSuffixPosition + period;
+                        currentSuffixPosition = currentSuffixPosition + Period;
                         commonSymbolsCount = 1;
                     }
                     else
@@ -42,7 +42,7 @@ namespace RepetitionDetection.MaximalSuffixes
                 {
                     MaximalSuffixPosition = currentSuffixPosition;
                     currentSuffixPosition = MaximalSuffixPosition + 1;
-                    commonSymbolsCount = period = 1;
+                    commonSymbolsCount = Period = 1;
                 }
             }
         }
@@ -50,8 +50,8 @@ namespace RepetitionDetection.MaximalSuffixes
         private readonly IComparer<char> charComparer;
         private readonly string str;
         public int MaximalSuffixPosition { get; private set; }
+        public int Period { get; private set; }
         private int currentSuffixPosition;
         private int commonSymbolsCount;
-        private int period;
     }
 }

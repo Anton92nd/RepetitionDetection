@@ -1,4 +1,4 @@
-﻿namespace RepetitionDetection.PeriodCalculation
+﻿namespace RepetitionDetection.Periods
 {
     public class SmallPeriodCalculator
     {
