@@ -1,23 +1,26 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using RepetitionDetection.StringMatching;
 
 namespace RepetitionDetection.Catching
 {
     public class Catcher
     {
         public bool Removed { get; set; }
-        private readonly string str;
-        private readonly StringBuilder stringBuilder;
+        private readonly string pattern;
+        private readonly StringBuilder text;
         private readonly Stack<CatcherState> stateStack;
+        private readonly IStringMatchingAlgorithm stringMatchingAlgorithm;
 
-        public Catcher(StringBuilder stringBuilder, int i, int j)
+        public Catcher(StringBuilder text, int i, int j)
         {
             stateStack = new Stack<CatcherState>();
-            this.stringBuilder = stringBuilder;
-            var hLow = (i - j + 1)/2;
-            var hHigh = hLow + (i - j + 1)%2;
-            str = stringBuilder.ToString(i, hHigh);
+            this.text = text;
+            var hFloor = (i - j + 1)/2;
+            var hCeil = hFloor + (i - j + 1)%2;
+            pattern = text.ToString(i, hCeil);
             Removed = false;
+            stringMatchingAlgorithm = new StringMatchingAlgorithm(text, pattern);
             stateStack.Push(InitialState());
         }
         
