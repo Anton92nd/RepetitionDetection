@@ -6,6 +6,7 @@ namespace RepetitionDetection.Tests
 {
     public class MaximalSuffixCalculatorLessTests
     {
+        [TestCase("aaa", new []{0, 0, 0})]
         [TestCase("ab", new []{0, 1})]
         [TestCase("ba", new []{0, 0})]
         [TestCase("abacaba", new []{0, 1, 1, 3, 3, 3, 3})]
