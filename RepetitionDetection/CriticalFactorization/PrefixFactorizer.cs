@@ -14,10 +14,12 @@ namespace RepetitionDetection.CriticalFactorization
 
         public int GetCriticalFactorizationPosition(int prefixLength)
         {
+            if (prefixLength <= 1)
+                throw new InvalidUsageException("Prefix length must be greater than 1");
             maximalSuffixCalculatorForLess.Calculate(prefixLength);
             maximalSuffixCalculatorForGreater.Calculate(prefixLength);
-            return Math.Max(maximalSuffixCalculatorForLess.MaximalSuffixPosition,
-                maximalSuffixCalculatorForGreater.MaximalSuffixPosition);
+            return Math.Max(1, Math.Max(maximalSuffixCalculatorForLess.MaximalSuffixPosition,
+                maximalSuffixCalculatorForGreater.MaximalSuffixPosition));
         }
 
         private readonly MaximalSuffixCalculator maximalSuffixCalculatorForLess;

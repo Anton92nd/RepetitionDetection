@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using RepetitionDetection.Commons;
 using RepetitionDetection.CriticalFactorization;
 
 namespace RepetitionDetection.StringMatching
@@ -10,7 +11,7 @@ namespace RepetitionDetection.StringMatching
         {
             criticalFactorizationPosition = Factorizer.GetFactorization(pattern).PatternCriticalPosition;
             if (criticalFactorizationPosition > pattern.Length / 2)
-                throw new Exception(string.Format("Invalid usage of Complete string Matching algo:\nTemplate: {0}\nCritical factorization position: {1}", pattern, criticalFactorizationPosition));
+                throw new InvalidUsageException(string.Format("Invalid usage of Complete string Matching algo:\nTemplate: {0}\nCritical factorization position: {1}", pattern, criticalFactorizationPosition));
             this.text = text;
             this.pattern = pattern;
             this.templatePeriod = templatePeriod;
