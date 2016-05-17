@@ -59,6 +59,7 @@
     <Compile Include="StringMatching\CompleteStringMatchingAlgorithm.cs" />
     <Compile Include="StringMatching\IStringMatchingAlgorithm.cs" />
     <Compile Include="StringMatching\StringMatchingAlgorithm.cs" />
+    <Compile Include="Tests\CriticalFactorizationTests.cs" />
     <Compile Include="Tests\MaximalSuffixCalculatorGreaterTests.cs" />
     <Compile Include="Tests\MaximalSuffixCalculatorLessTests.cs" />
   </ItemGroup>
