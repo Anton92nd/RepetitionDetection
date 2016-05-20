@@ -9,13 +9,15 @@ namespace RepetitionDetection.StringMatching
     {
         public CompleteStringMatchingAlgorithm(StringBuilder text, string pattern, int startPosition, PrefixFactorization patternFactorization)
         { 
-            criticalFactorizationPosition = patternFactorization.CriticalPosition;
-            if (criticalFactorizationPosition > pattern.Length / 2)
-                throw new InvalidUsageException(string.Format("Invalid usage of Complete string Matching algo:\nTemplate: {0}\nCritical factorization position: {1}", pattern, criticalFactorizationPosition));
+            factorization = patternFactorization;
+            if (factorization.CriticalPosition > pattern.Length / 2)
+                throw new InvalidUsageException(string.Format("Invalid usage of Complete string Matching algo:\nTemplate: {0}\nCritical factorization position: {1}", pattern, factorization.CriticalPosition));
             this.text = text;
+
             this.pattern = pattern;
-            this.patternPeriod = SmallPeriodCalculator.GetPeriod(pattern, patternFactorization);
-            this.position = startPosition;
+
+            patternPeriod = PeriodCalculator.GetPeriod(pattern, patternFactorization.PrefixLength);
+            textPosition = startPosition;
             matchedSymbolsCount = 0;
         }
 
@@ -24,22 +26,22 @@ namespace RepetitionDetection.StringMatching
         public bool CheckMatch()
         {
             var result = false;
-            while (position + criticalFactorizationPosition + matchedSymbolsCount < text.Length)
+            while (textPosition + factorization.CriticalPosition + matchedSymbolsCount < text.Length)
             {
-                if (pattern[criticalFactorizationPosition + matchedSymbolsCount] == text[position + criticalFactorizationPosition + matchedSymbolsCount] &&
-                    pattern[matchedSymbolsCount] == text[position + matchedSymbolsCount])
+                if (pattern[factorization.CriticalPosition + matchedSymbolsCount] == text[textPosition + factorization.CriticalPosition + matchedSymbolsCount] &&
+                    pattern[matchedSymbolsCount] == text[textPosition + matchedSymbolsCount])
                 {
                     matchedSymbolsCount++;
-                    if (criticalFactorizationPosition + matchedSymbolsCount == pattern.Length)
+                    if (factorization.CriticalPosition + matchedSymbolsCount == factorization.PrefixLength)
                     {
                         result = true;
-                        matchedSymbolsCount = pattern.Length - (criticalFactorizationPosition + patternPeriod);
-                        position = position + patternPeriod;
+                        matchedSymbolsCount = pattern.Length - (factorization.CriticalPosition + patternPeriod);
+                        textPosition = textPosition + patternPeriod;
                     }
                 }
                 else
                 {
-                    position = position + matchedSymbolsCount + 1;
+                    textPosition = textPosition + matchedSymbolsCount + 1;
                     matchedSymbolsCount = 0;
                 }
             }
@@ -48,7 +50,7 @@ namespace RepetitionDetection.StringMatching
 
         public void SetState(AlgorithmState state)
         {
-            position = state.PositionInText;
+            textPosition = state.PositionInText;
             matchedSymbolsCount = state.MatchedSymbolsCount;
         }
 
@@ -56,14 +58,14 @@ namespace RepetitionDetection.StringMatching
         {
             get
             {
-                return new AlgorithmState(position, matchedSymbolsCount);
+                return new AlgorithmState(textPosition, matchedSymbolsCount);
             }
         }
 
         private readonly StringBuilder text;
         private readonly string pattern;
-        private readonly int criticalFactorizationPosition;
         private readonly int patternPeriod;
-        private int position;
+        private readonly PrefixFactorization factorization;
+        private int textPosition;
     }
 }
