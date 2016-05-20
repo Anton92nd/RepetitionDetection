@@ -51,6 +51,7 @@
     <Compile Include="Commons\InvalidUsageException.cs" />
     <Compile Include="CriticalFactorization\Factorization.cs" />
     <Compile Include="CriticalFactorization\Factorizer.cs" />
+    <Compile Include="CriticalFactorization\PrefixFactorization.cs" />
     <Compile Include="CriticalFactorization\PrefixFactorizer.cs" />
     <Compile Include="MaximalSuffixes\MaximalSuffixCalculator.cs" />
     <Compile Include="Periods\SmallPeriodCalculator.cs" />
@@ -60,9 +61,11 @@
     <Compile Include="StringMatching\CompleteStringMatchingAlgorithm.cs" />
     <Compile Include="StringMatching\IStringMatchingAlgorithm.cs" />
     <Compile Include="StringMatching\StringMatchingAlgorithm.cs" />
+    <Compile Include="Tests\CompleteStringMatchingAlgorithmTests.cs" />
     <Compile Include="Tests\CriticalFactorizationTests.cs" />
     <Compile Include="Tests\MaximalSuffixCalculatorGreaterTests.cs" />
     <Compile Include="Tests\MaximalSuffixCalculatorLessTests.cs" />
+    <Compile Include="Tests\SmallPeriodCalculatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

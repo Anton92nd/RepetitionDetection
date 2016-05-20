@@ -5,11 +5,10 @@ namespace RepetitionDetection.StringMatching
 {
     public class StringMatchingAlgorithm : IStringMatchingAlgorithm
     {
-        private readonly int patternPeriod, prefixPeriod;
-
         public StringMatchingAlgorithm(StringBuilder text, string pattern)
         {
-            
+            var factorizations = Factorizer.GetFactorizations(pattern);
+
         }
 
         public bool CheckMatch()

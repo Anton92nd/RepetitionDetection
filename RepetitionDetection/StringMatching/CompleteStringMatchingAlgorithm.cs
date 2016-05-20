@@ -1,21 +1,20 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using RepetitionDetection.Commons;
 using RepetitionDetection.CriticalFactorization;
+using RepetitionDetection.Periods;
 
 namespace RepetitionDetection.StringMatching
 {
     public class CompleteStringMatchingAlgorithm : IStringMatchingAlgorithm
     {
-        public CompleteStringMatchingAlgorithm(StringBuilder text, string pattern, int templatePeriod, int startPosition)
-        {
-            criticalFactorizationPosition = Factorizer.GetFactorization(pattern).PatternCriticalPosition;
+        public CompleteStringMatchingAlgorithm(StringBuilder text, string pattern, int startPosition, PrefixFactorization patternFactorization)
+        { 
+            criticalFactorizationPosition = patternFactorization.CriticalPosition;
             if (criticalFactorizationPosition > pattern.Length / 2)
                 throw new InvalidUsageException(string.Format("Invalid usage of Complete string Matching algo:\nTemplate: {0}\nCritical factorization position: {1}", pattern, criticalFactorizationPosition));
             this.text = text;
             this.pattern = pattern;
-            this.templatePeriod = templatePeriod;
-
+            this.patternPeriod = SmallPeriodCalculator.GetPeriod(pattern, patternFactorization);
             this.position = startPosition;
             matchedSymbolsCount = 0;
         }
@@ -34,8 +33,8 @@ namespace RepetitionDetection.StringMatching
                     if (criticalFactorizationPosition + matchedSymbolsCount == pattern.Length)
                     {
                         result = true;
-                        matchedSymbolsCount = pattern.Length - (criticalFactorizationPosition + templatePeriod);
-                        position = position + templatePeriod;
+                        matchedSymbolsCount = pattern.Length - (criticalFactorizationPosition + patternPeriod);
+                        position = position + patternPeriod;
                     }
                 }
                 else
@@ -64,7 +63,7 @@ namespace RepetitionDetection.StringMatching
         private readonly StringBuilder text;
         private readonly string pattern;
         private readonly int criticalFactorizationPosition;
-        private readonly int templatePeriod;
+        private readonly int patternPeriod;
         private int position;
     }
 }

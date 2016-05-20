@@ -12,15 +12,28 @@ namespace RepetitionDetection.CriticalFactorization
             maximalSuffixCalculatorForGreater = new MaximalSuffixCalculator(str, new CharGreaterComparer());
         }
 
-        public int GetCriticalFactorizationPosition(int prefixLength)
+        public PrefixFactorization GetCriticalFactorization(int prefixLength)
         {
             if (prefixLength <= 1)
                 throw new InvalidUsageException("Prefix length must be greater than 1");
             maximalSuffixCalculatorForLess.Calculate(prefixLength);
             maximalSuffixCalculatorForGreater.Calculate(prefixLength);
-            return Math.Max(1, Math.Max(maximalSuffixCalculatorForLess.MaximalSuffixPosition,
-                maximalSuffixCalculatorForGreater.MaximalSuffixPosition));
+
+            int criticalPosition, period;
+            if (maximalSuffixCalculatorForLess.MaximalSuffixPosition >=
+                maximalSuffixCalculatorForGreater.MaximalSuffixPosition)
+            {
+                criticalPosition = maximalSuffixCalculatorForLess.MaximalSuffixPosition;
+                period = maximalSuffixCalculatorForLess.Period;
+            }
+            else
+            {
+                criticalPosition = maximalSuffixCalculatorForGreater.MaximalSuffixPosition;
+                period = maximalSuffixCalculatorForGreater.Period;
+            }
+            return new PrefixFactorization(prefixLength, Math.Max(1, criticalPosition), period);
         }
+
 
         private readonly MaximalSuffixCalculator maximalSuffixCalculatorForLess;
         private readonly MaximalSuffixCalculator maximalSuffixCalculatorForGreater;
