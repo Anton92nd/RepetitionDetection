@@ -1,22 +1,22 @@
 ﻿using System.Text;
 using RepetitionDetection.Commons;
-using RepetitionDetection.CriticalFactorization;
 using RepetitionDetection.Periods;
 
 namespace RepetitionDetection.StringMatching
 {
     public class CompleteStringMatchingAlgorithm : IStringMatchingAlgorithm
     {
-        public CompleteStringMatchingAlgorithm(StringBuilder text, string pattern, int startPosition, PrefixFactorization patternFactorization)
+        public CompleteStringMatchingAlgorithm(StringBuilder text, int startPosition, string pattern, int prefixLength, int criticalPosition, int period)
         { 
-            factorization = patternFactorization;
-            if (factorization.CriticalPosition > pattern.Length / 2)
-                throw new InvalidUsageException(string.Format("Invalid usage of Complete string Matching algo:\nTemplate: {0}\nCritical factorization position: {1}", pattern, factorization.CriticalPosition));
+            if (criticalPosition > pattern.Length / 2)
+                throw new InvalidUsageException(string.Format("Invalid usage of Complete string Matching algo:\nTemplate: {0}\nCritical factorization position: {1}", pattern, criticalPosition));
             this.text = text;
 
             this.pattern = pattern;
+            this.prefixLength = prefixLength;
+            this.criticalPosition = criticalPosition;
+            this.period = period;
 
-            patternPeriod = PeriodCalculator.GetPeriod(pattern, patternFactorization.PrefixLength);
             textPosition = startPosition;
             matchedSymbolsCount = 0;
         }
@@ -26,17 +26,17 @@ namespace RepetitionDetection.StringMatching
         public bool CheckMatch()
         {
             var result = false;
-            while (textPosition + factorization.CriticalPosition + matchedSymbolsCount < text.Length)
+            while (textPosition + criticalPosition + matchedSymbolsCount < text.Length)
             {
-                if (pattern[factorization.CriticalPosition + matchedSymbolsCount] == text[textPosition + factorization.CriticalPosition + matchedSymbolsCount] &&
+                if (pattern[criticalPosition + matchedSymbolsCount] == text[textPosition + criticalPosition + matchedSymbolsCount] &&
                     pattern[matchedSymbolsCount] == text[textPosition + matchedSymbolsCount])
                 {
                     matchedSymbolsCount++;
-                    if (factorization.CriticalPosition + matchedSymbolsCount == factorization.PrefixLength)
+                    if (criticalPosition + matchedSymbolsCount == prefixLength)
                     {
                         result = true;
-                        matchedSymbolsCount = pattern.Length - (factorization.CriticalPosition + patternPeriod);
-                        textPosition = textPosition + patternPeriod;
+                        matchedSymbolsCount = pattern.Length - (criticalPosition + period);
+                        textPosition = textPosition + period;
                     }
                 }
                 else
@@ -64,8 +64,9 @@ namespace RepetitionDetection.StringMatching
 
         private readonly StringBuilder text;
         private readonly string pattern;
-        private readonly int patternPeriod;
-        private readonly PrefixFactorization factorization;
+        private readonly int prefixLength;
+        private readonly int criticalPosition;
+        private readonly int period;
         private int textPosition;
     }
 }

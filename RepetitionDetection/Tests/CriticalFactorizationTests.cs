@@ -15,7 +15,8 @@ namespace RepetitionDetection.Tests
         public void PrefixFactorizerTest(string template, int expectedPosition)
         {
             var factorizer = new PrefixFactorizer(template);
-            Assert.That(factorizer.GetCriticalFactorization(template.Length).CriticalPosition, Is.EqualTo(expectedPosition));
+            factorizer.Factorize(template.Length);
+            Assert.That(factorizer.CriticalPosition, Is.EqualTo(expectedPosition));
         }
 
         [TestCase("aaa", 0, 0, 3, 1)]       // (a, aa)
@@ -26,8 +27,8 @@ namespace RepetitionDetection.Tests
         [TestCase("abcabcdabc", 6, 2, 7, 6)]// (ab, cabc) (abcabc, dabc)
         public void FactorizerTest(string pattern, int prefixLength, int prefixCriticalPosition, int patternPrefixLength, int patternCriticalPosition)
         {
-            var factorization = Factorizer.GetFactorizations(pattern);
-            Assert.That(factorization, Is.EqualTo(new Factorization(pattern, new PrefixFactorization(prefixLength, prefixCriticalPosition), new PrefixFactorization(patternPrefixLength, patternCriticalPosition))));
+            var factorization = Factorizer.GetFactorization(pattern);
+            Assert.That(factorization, Is.EqualTo(new Factorization(pattern, prefixLength, prefixCriticalPosition, patternCriticalPosition)));
         }
     }
 }

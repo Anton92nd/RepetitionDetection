@@ -2,34 +2,33 @@
 {
     public static class Factorizer
     {
-        public static Factorization GetFactorizations(string pattern)
+        public static Factorization GetFactorization(string pattern)
         {
             var prefixFactorizer = new PrefixFactorizer(pattern);
-            var previousFactorization = new PrefixFactorization(0, 0);
-            var currentFactorization = new PrefixFactorization(0, 0);
+            var previousCriticalPosition = 0;
+            var previousPrefixLength = 0;
+            var currentCriticalPosition = 0;
+            var currentPrefixLength = 0;
 
             for (var position = 1; position < pattern.Length; ++position)
             {
-                var factorization = prefixFactorizer.GetCriticalFactorization(position + 1);
-                if (factorization.CriticalPosition >= currentFactorization.CriticalPosition)
+                prefixFactorizer.Factorize(position + 1);
+                if (prefixFactorizer.CriticalPosition >= currentCriticalPosition)
                 {
-                    if (factorization.CriticalPosition > currentFactorization.CriticalPosition)
-                        previousFactorization = currentFactorization;
-                    currentFactorization = factorization;
-                    if (currentFactorization.CriticalPosition >= (pattern.Length + 1)/2)
+                    if (prefixFactorizer.CriticalPosition > currentCriticalPosition)
+                    {
+                        previousCriticalPosition = currentCriticalPosition;
+                        previousPrefixLength = currentPrefixLength;
+                    }
+                    currentCriticalPosition = prefixFactorizer.CriticalPosition;
+                    currentPrefixLength = prefixFactorizer.PrefixLength;
+                    if (prefixFactorizer.CriticalPosition >= (pattern.Length + 1)/2)
                     {
                         break;
                     }
                 }
-                else
-                {
-                    if (factorization.CriticalPosition == previousFactorization.CriticalPosition)
-                    {
-                        previousFactorization = factorization;
-                    }
-                }
             }
-            return new Factorization(pattern, previousFactorization, currentFactorization);
+            return new Factorization(pattern, previousPrefixLength, previousCriticalPosition, currentCriticalPosition);
         }
     }
 }

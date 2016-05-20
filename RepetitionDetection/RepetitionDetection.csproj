@@ -51,7 +51,6 @@
     <Compile Include="Commons\InvalidUsageException.cs" />
     <Compile Include="CriticalFactorization\Factorization.cs" />
     <Compile Include="CriticalFactorization\Factorizer.cs" />
-    <Compile Include="CriticalFactorization\PrefixFactorization.cs" />
     <Compile Include="CriticalFactorization\PrefixFactorizer.cs" />
     <Compile Include="MaximalSuffixes\MaximalSuffixCalculator.cs" />
     <Compile Include="Periods\PeriodCalculator.cs" />

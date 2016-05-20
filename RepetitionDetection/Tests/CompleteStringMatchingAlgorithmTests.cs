@@ -3,6 +3,7 @@ using System.Text;
 using NUnit.Framework;
 using RepetitionDetection.Commons;
 using RepetitionDetection.CriticalFactorization;
+using RepetitionDetection.Periods;
 using RepetitionDetection.StringMatching;
 
 namespace RepetitionDetection.Tests
@@ -15,8 +16,11 @@ namespace RepetitionDetection.Tests
         [TestCase("ababababa", "aba", 2, 4, 6, 8)]
         public void TestFindOccurences(string text, string pattern, params int[] expectedOccurences)
         {
+            var criticalPosition = Factorizer.GetFactorization(pattern).PatternCriticalPosition;
+            var period = PeriodCalculator.GetPeriod(pattern, pattern.Length);
+
             var sb = new StringBuilder();
-            var algorithm = new CompleteStringMatchingAlgorithm(sb, pattern, 0, new PrefixFactorization(pattern.Length, Factorizer.GetFactorizations(pattern).PatternFactorization.CriticalPosition));
+            var algorithm = new CompleteStringMatchingAlgorithm(sb, 0, pattern, pattern.Length, criticalPosition, period);
 
             var occurences = new List<int>();
             for (var i = 0; i < text.Length; ++i)
@@ -34,12 +38,12 @@ namespace RepetitionDetection.Tests
         [Test]
         public void TestFailsOnBadFactorization()
         {
+            var pattern = "abcabcdabc";
+            var criticalPosition = Factorizer.GetFactorization(pattern).PatternCriticalPosition;
+            var period = PeriodCalculator.GetPeriod(pattern, pattern.Length);
             Assert.That(() =>
             {
-                var pattern = "abcabcdabc";
-                var algorithm = new CompleteStringMatchingAlgorithm(new StringBuilder(), pattern, 0,
-                    new PrefixFactorization(pattern.Length,
-                        Factorizer.GetFactorizations(pattern).PatternFactorization.CriticalPosition));
+                new CompleteStringMatchingAlgorithm(new StringBuilder(), 0, pattern, pattern.Length, criticalPosition, period);
             }, Throws.InstanceOf<InvalidUsageException>());
         }
     }

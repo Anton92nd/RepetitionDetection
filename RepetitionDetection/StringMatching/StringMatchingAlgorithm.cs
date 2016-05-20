@@ -7,7 +7,7 @@ namespace RepetitionDetection.StringMatching
     {
         public StringMatchingAlgorithm(StringBuilder text, string pattern)
         {
-            var factorizations = Factorizer.GetFactorizations(pattern);
+            var factorizations = Factorizer.GetFactorization(pattern);
 
         }
 
