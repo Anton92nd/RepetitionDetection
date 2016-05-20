@@ -19,19 +19,8 @@ namespace RepetitionDetection.CriticalFactorization
             maximalSuffixCalculatorForLess.Calculate(prefixLength);
             maximalSuffixCalculatorForGreater.Calculate(prefixLength);
 
-            int criticalPosition, period;
-            if (maximalSuffixCalculatorForLess.MaximalSuffixPosition >=
-                maximalSuffixCalculatorForGreater.MaximalSuffixPosition)
-            {
-                criticalPosition = maximalSuffixCalculatorForLess.MaximalSuffixPosition;
-                period = maximalSuffixCalculatorForLess.Period;
-            }
-            else
-            {
-                criticalPosition = maximalSuffixCalculatorForGreater.MaximalSuffixPosition;
-                period = maximalSuffixCalculatorForGreater.Period;
-            }
-            return new PrefixFactorization(prefixLength, Math.Max(1, criticalPosition), period);
+            return new PrefixFactorization(prefixLength, Math.Max(1, 
+                Math.Max(maximalSuffixCalculatorForLess.MaximalSuffixPosition, maximalSuffixCalculatorForGreater.MaximalSuffixPosition)));
         }
 
 
