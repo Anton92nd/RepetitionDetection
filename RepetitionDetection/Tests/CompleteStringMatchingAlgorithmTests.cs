@@ -11,7 +11,7 @@ namespace RepetitionDetection.Tests
     [TestFixture]
     public class CompleteStringMatchingAlgorithmTests
     {
-        [TestCase("abacabadabacaba", "aba", 2, 6, 10, 14)]
+        [TestCase("abacabadabacababba", "aba", 2, 6, 10, 14)]
         [TestCase("aaaaa", "aa", 1, 2, 3, 4)]
         [TestCase("ababababa", "aba", 2, 4, 6, 8)]
         public void TestFindOccurences(string text, string pattern, params int[] expectedOccurences)
