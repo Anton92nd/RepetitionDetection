@@ -10,11 +10,12 @@ namespace RepetitionDetection.Tests
     [TestFixture]
     public class CompleteStringMatchingAlgorithmTests
     {
-        [TestCase("abacabadabacababba", "aba", 2, 6, 10, 14)]
-        [TestCase("aaaaa", "aa", 1, 2, 3, 4)]
-        [TestCase("ababababa", "aba", 2, 4, 6, 8)]
-        [TestCase("babaaababaaabaaaababaaa", "aababaaa", 1, 2, 3)]
-        public void TestFindOccurences(string text, string pattern, params int[] expectedOccurences)
+        [TestCase("abacabadabacababba", "aba", new []{2, 6, 10, 14})]
+        [TestCase("aaaaa", "aa", new []{1, 2, 3, 4})]
+        [TestCase("ababababa", "aba", new []{2, 4, 6, 8})]
+        [TestCase("babaaababaaabaaaababaaa", "aababaaa", new []{11, 22}, Description = "Bad factorization, but works")]
+        [TestCase("baabaaaaa", "aababaaa", new []{8}, Description = "Not actual occurence")]
+        public void TestFindOccurences(string text, string pattern, int[] expectedOccurences)
         {
             var criticalPosition = Factorizer.GetFactorization(pattern).PatternCriticalPosition;
             var period = PeriodCalculator.GetPeriod(pattern, pattern.Length);

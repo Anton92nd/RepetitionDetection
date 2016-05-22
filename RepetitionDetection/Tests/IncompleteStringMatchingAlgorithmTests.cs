@@ -10,11 +10,11 @@ namespace RepetitionDetection.Tests
     [TestFixture]
     public class IncompleteStringMatchingAlgorithmTests
     {
-        [TestCase("abacabadabacababbba", "aba", 2, 6, 10, 14, 18)]
-        [TestCase("aaaaa", "aa", 1, 2, 3, 4)]
-        [TestCase("abababababbba", "aba", 2, 4, 6, 8, 12)]
-        [TestCase("aaababaababababaaaaabaabaaaaaabab", "aaabab", 5, 12, 32)]
-        public void TestFindOccurences(string text, string pattern, params int[] expectedOccurences)
+        [TestCase("abacabadabacababbba", "aba", new []{2, 6, 10, 14, 18})]
+        [TestCase("aaaaa", "aa", new []{1, 2, 3, 4})]
+        [TestCase("abababababbba", "aba", new []{2, 4, 6, 8, 12})]
+        [TestCase("aaababaababababaaaaabaabaaaaaabab", "aaabab", new []{5, 12, 32}, Description = "Not actual second occurence")]
+        public void TestFindOccurences(string text, string pattern, int[] expectedOccurences)
         {
             var criticalPosition = Factorizer.GetFactorization(pattern).PatternCriticalPosition;
             var period = PeriodCalculator.GetPeriod(pattern, pattern.Length);

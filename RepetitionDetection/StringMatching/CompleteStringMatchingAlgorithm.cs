@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace RepetitionDetection.StringMatching
 {
@@ -31,7 +32,7 @@ namespace RepetitionDetection.StringMatching
                     if (criticalPosition + matchedSymbolsCount == prefixLength)
                     {
                         result = true;
-                        matchedSymbolsCount = pattern.Length - (criticalPosition + period);
+                        matchedSymbolsCount = Math.Max(0, pattern.Length - (criticalPosition + period));
                         textPosition = textPosition + period;
                     }
                 }
