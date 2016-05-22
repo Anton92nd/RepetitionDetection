@@ -6,6 +6,8 @@ namespace RepetitionDetection.Periods
     {
         public static int GetPeriod(string pattern, int prefixLength)
         {
+            if (pattern.Length == 1)
+                return 1;
             var prefixFunction = new int[prefixLength];
             prefixFunction[0] = 0;
             var result = 0;
