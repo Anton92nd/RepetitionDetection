@@ -1,6 +1,4 @@
 ﻿using System.Text;
-using RepetitionDetection.Commons;
-using RepetitionDetection.Periods;
 
 namespace RepetitionDetection.StringMatching
 {
@@ -8,8 +6,6 @@ namespace RepetitionDetection.StringMatching
     {
         public CompleteStringMatchingAlgorithm(StringBuilder text, int startPosition, string pattern, int prefixLength, int criticalPosition, int period)
         { 
-            if (criticalPosition > pattern.Length / 2)
-                throw new InvalidUsageException(string.Format("Invalid usage of Complete string Matching algo:\nTemplate: {0}\nCritical factorization position: {1}", pattern, criticalPosition));
             this.text = text;
 
             this.pattern = pattern;
@@ -23,10 +19,10 @@ namespace RepetitionDetection.StringMatching
 
         private int matchedSymbolsCount;
 
-        public bool CheckMatch()
+        public bool CheckMatch(int textLength)
         {
             var result = false;
-            while (textPosition + criticalPosition + matchedSymbolsCount < text.Length)
+            while (textPosition + criticalPosition + matchedSymbolsCount < textLength)
             {
                 if (pattern[criticalPosition + matchedSymbolsCount] == text[textPosition + criticalPosition + matchedSymbolsCount] &&
                     pattern[matchedSymbolsCount] == text[textPosition + matchedSymbolsCount])

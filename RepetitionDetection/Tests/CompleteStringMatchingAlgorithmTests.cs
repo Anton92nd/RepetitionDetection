@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
-using RepetitionDetection.Commons;
 using RepetitionDetection.CriticalFactorization;
 using RepetitionDetection.Periods;
 using RepetitionDetection.StringMatching;
@@ -26,7 +25,7 @@ namespace RepetitionDetection.Tests
             for (var i = 0; i < text.Length; ++i)
             {
                 sb.Append(text[i]);
-                if (algorithm.CheckMatch())
+                if (algorithm.CheckMatch(sb.Length))
                 {
                     occurences.Add(i);
                 }

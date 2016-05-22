@@ -16,10 +16,10 @@ namespace RepetitionDetection.StringMatching
             this.period = period;
         }
 
-        public bool CheckMatch()
+        public bool CheckMatch(int textLength)
         {
             var result = false;
-            while (textPosition + criticalPosition + matchedSymbolsCount < text.Length)
+            while (textPosition + criticalPosition + matchedSymbolsCount < textLength)
             {
                 if (pattern[criticalPosition + matchedSymbolsCount] == text[textPosition + criticalPosition + matchedSymbolsCount])
                 {

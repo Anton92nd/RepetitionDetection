@@ -2,7 +2,7 @@
 {
     public interface IStringMatchingAlgorithm
     {
-        bool CheckMatch();
+        bool CheckMatch(int textLength);
 
         void SetState(AlgorithmState state);
 
