@@ -20,7 +20,7 @@ namespace RepetitionDetection.Catching
             var hCeil = hFloor + (i - j + 1)%2;
             pattern = text.ToString(i, hCeil);
             Removed = false;
-            stringMatchingAlgorithm = new StringMatchingAlgorithm(text, pattern);
+            stringMatchingAlgorithm = new StringMatchingAlgorithm(text, pattern, i + 1);
             stateStack.Push(InitialState());
         }
         

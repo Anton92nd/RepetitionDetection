@@ -61,12 +61,14 @@
     <Compile Include="StringMatching\IncompleteStringMatchingAlgorithm.cs" />
     <Compile Include="StringMatching\IStringMatchingAlgorithm.cs" />
     <Compile Include="StringMatching\StringMatchingAlgorithm.cs" />
+    <Compile Include="StringMatching\StringMatchingState.cs" />
     <Compile Include="Tests\CompleteStringMatchingAlgorithmTests.cs" />
     <Compile Include="Tests\CriticalFactorizationTests.cs" />
     <Compile Include="Tests\IncompleteStringMatchingAlgorithmTests.cs" />
     <Compile Include="Tests\MaximalSuffixCalculatorGreaterTests.cs" />
     <Compile Include="Tests\MaximalSuffixCalculatorLessTests.cs" />
     <Compile Include="Tests\PeriodCalculatorTests.cs" />
+    <Compile Include="Tests\StringMatchingTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
