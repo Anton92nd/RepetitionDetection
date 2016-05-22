@@ -13,6 +13,7 @@ namespace RepetitionDetection.Tests
         [TestCase("abacabadabacababba", "aba", 2, 6, 10, 14)]
         [TestCase("aaaaa", "aa", 1, 2, 3, 4)]
         [TestCase("ababababa", "aba", 2, 4, 6, 8)]
+        [TestCase("babaaababaaabaaaababaaa", "aababaaa", 1, 2, 3)]
         public void TestFindOccurences(string text, string pattern, params int[] expectedOccurences)
         {
             var criticalPosition = Factorizer.GetFactorization(pattern).PatternCriticalPosition;
@@ -32,18 +33,6 @@ namespace RepetitionDetection.Tests
             }
 
             Assert.That(occurences, Is.EquivalentTo(expectedOccurences));
-        }
-
-        [Test]
-        public void TestFailsOnBadFactorization()
-        {
-            var pattern = "abcabcdabc";
-            var criticalPosition = Factorizer.GetFactorization(pattern).PatternCriticalPosition;
-            var period = PeriodCalculator.GetPeriod(pattern, pattern.Length);
-            Assert.That(() =>
-            {
-                new CompleteStringMatchingAlgorithm(new StringBuilder(), 0, pattern, pattern.Length, criticalPosition, period);
-            }, Throws.InstanceOf<InvalidUsageException>());
         }
     }
 }

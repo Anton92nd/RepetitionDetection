@@ -10,7 +10,7 @@ namespace RepetitionDetection.Catching
         private readonly string pattern;
         private readonly StringBuilder text;
         private readonly Stack<CatcherState> stateStack;
-        private readonly IStringMatchingAlgorithm stringMatchingAlgorithm;
+        private readonly StringMatchingAlgorithm stringMatchingAlgorithm;
 
         public Catcher(StringBuilder text, int i, int j)
         {
