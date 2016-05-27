@@ -1,4 +1,6 @@
-﻿namespace RepetitionDetection.CriticalFactorization
+﻿using System;
+
+namespace RepetitionDetection.CriticalFactorization
 {
     public static class Factorizer
     {
@@ -13,22 +15,19 @@
             for (var position = 1; position < pattern.Length; ++position)
             {
                 prefixFactorizer.Factorize(position + 1);
-                if (prefixFactorizer.CriticalPosition >= currentCriticalPosition)
+                if (prefixFactorizer.CriticalPosition > currentCriticalPosition)
                 {
-                    if (prefixFactorizer.CriticalPosition > currentCriticalPosition)
-                    {
-                        previousCriticalPosition = currentCriticalPosition;
-                        previousPrefixLength = currentPrefixLength;
-                    }
-                    currentCriticalPosition = prefixFactorizer.CriticalPosition;
-                    currentPrefixLength = prefixFactorizer.PrefixLength;
-                    if (prefixFactorizer.CriticalPosition >= (pattern.Length + 1)/2)
-                    {
-                        break;
-                    }
+                    previousCriticalPosition = currentCriticalPosition;
+                    previousPrefixLength = currentPrefixLength;
                 }
+                currentCriticalPosition = prefixFactorizer.CriticalPosition;
+                currentPrefixLength = prefixFactorizer.PrefixLength;
+                if (prefixFactorizer.CriticalPosition >= (pattern.Length + 1)/2)
+                {
+                    break;
+                }         
             }
-            return new Factorization(pattern, previousPrefixLength, previousCriticalPosition, currentCriticalPosition);
+            return new Factorization(pattern, Math.Max(previousPrefixLength, previousCriticalPosition * 2), previousCriticalPosition, currentCriticalPosition);
         }
     }
 }
