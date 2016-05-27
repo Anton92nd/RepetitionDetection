@@ -25,7 +25,8 @@ namespace RepetitionDetection.Tests
         [TestCase("aaaba", 3, 1, 3)]     // (a, aa) (aaa, ba)
         [TestCase("abcdefgh", 4, 3, 4)]  // (abc, d) (abcd, efgh)
         [TestCase("abcabcdabc", 6, 2, 6)]// (ab, cabc) (abcabc, dabc)
-        [TestCase("aaaaab", 5, 1, 5)]
+        [TestCase("aaaaab", 5, 1, 5)]    // (a, aaaa) (aaaaa, b)
+        [TestCase("aaaaabc", 5, 1, 5)]   // (a, aaaa) (aaaaa, bc)
         public void FactorizerTest(string pattern, int prefixLength, int prefixCriticalPosition, int patternCriticalPosition)
         {
             var factorization = Factorizer.GetFactorization(pattern);
