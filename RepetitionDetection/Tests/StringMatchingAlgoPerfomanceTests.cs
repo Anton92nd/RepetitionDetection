@@ -17,7 +17,7 @@ namespace RepetitionDetection.Tests
         [Test]
         public void Tests()
         {
-            for (var i = 14; i <= testsCount; ++i)
+            for (var i = 1; i <= testsCount; ++i)
             {
                 var testNumber = string.Empty + (char) ('0' + i/10) + (char) ('0' + i%10);
                 var inputFile = Path.Combine(TestContext.CurrentContext.TestDirectory, "Tests", "Files", testNumber + ".tst");
