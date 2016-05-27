@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using RepetitionDetection.StringMatching;
@@ -8,11 +9,12 @@ namespace RepetitionDetection.Tests
     [TestFixture]
     public class StringMatchingTests
     {
-        [TestCase("abacabadabacaba", "aba", 2, 6, 10, 14)]
-        [TestCase("aaaaa", "a", 0, 1, 2, 3, 4)]
-        [TestCase("ababababa", "aba", 2, 4, 6, 8)]
-        [TestCase("babaaababaaabaaaababaaa", "aababaaa", 11, 22)]
-        public void Test(string text, string pattern, params int[] expectedOccurences)
+        [TestCase("abacabadabacaba", "aba", new []{2, 6, 10, 14})]
+        [TestCase("aaaaa", "a", new []{ 0, 1, 2, 3, 4})]
+        [TestCase("ababababa", "aba", new []{2, 4, 6, 8})]
+        [TestCase("babaaababaaabaaaababaaa", "aababaaa", new []{11, 22})]
+        [TestCase("aaaaabcbcb", "aaaabc", new []{6})]
+        public void Test(string text, string pattern, int[] expectedOccurences)
         {
             var sb = new StringBuilder();
             var algorithm = new StringMatchingAlgorithm(sb, pattern, 0);
