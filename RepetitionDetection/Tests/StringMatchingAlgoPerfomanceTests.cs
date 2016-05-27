@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using RepetitionDetection.StringMatching;
@@ -48,6 +47,9 @@ namespace RepetitionDetection.Tests
         [TestCase(3, "abc")]
         [TestCase(3, "aaaabc")]
         [TestCase(2, "aaaaab")]
+        [TestCase(3, "aaaabcaaaabc")]
+        [TestCase(3, "aaaabcaaaabcaaaabccaaabc")]
+        [TestCase(26, "abcdefghijklmnopqrstuvwxyz")]
         public void RandomTest(int alphabet, string pattern)
         {
             var occurences = new List<int>();
@@ -78,6 +80,6 @@ namespace RepetitionDetection.Tests
             }
         }
 
-        private static readonly int[] TextLengths = { 1000, 10000, 100000, 1000000, 10000000 };
+        private static readonly int[] TextLengths = { 1000, 10000, 100000, 1000000, 10000000, 100000000 };
     }
 }
