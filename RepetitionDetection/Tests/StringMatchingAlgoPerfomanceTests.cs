@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using RepetitionDetection.StringMatching;
@@ -11,21 +12,29 @@ namespace RepetitionDetection.Tests
     [TestFixture]
     public class StringMatchingAlgoPerfomanceTests
     {
-        private const int testsCount = 15;
+        private const int testsCount = 21;
 
         [Test]
         public void Tests()
         {
-            for (var i = 1; i <= testsCount; ++i)
+            for (var i = 14; i <= testsCount; ++i)
             {
                 var testNumber = string.Empty + (char) ('0' + i/10) + (char) ('0' + i%10);
-                var inputFile = Path.Combine("Tests", "Files", testNumber + ".tst");
-                DoTest(inputFile);
+                var inputFile = Path.Combine(TestContext.CurrentContext.TestDirectory, "Tests", "Files", testNumber + ".tst");
+                var outputFile = Path.Combine(TestContext.CurrentContext.TestDirectory, "Tests", "Files", testNumber + ".ans");
+                DoTest(inputFile, outputFile);
             }
         }
 
-        private void DoTest(string inputFile)
+        private void DoTest(string inputFile, string outputFile)
         {
+            var outputData = File.ReadAllLines(outputFile);
+            var result = outputData[0] == "0"
+                ? new int[] {}
+                : outputData[1]
+                    .Split(null as char[], StringSplitOptions.RemoveEmptyEntries)
+                    .Select(int.Parse)
+                    .ToArray();
             Console.WriteLine("Testing file: {0}", inputFile);
             var inputData = File.ReadAllLines(inputFile);
             var sb = new StringBuilder();
@@ -41,6 +50,7 @@ namespace RepetitionDetection.Tests
                 }
             }
             sw.Stop();
+            Assert.That(occurences, Is.EquivalentTo(result));
             Console.WriteLine("\tText length: {0}\n\tPattern length: {1}\n\tOccurences found: {2}\n\tElapsed milliseconds: {3}\n", inputData[0].Length, inputData[1].Length, occurences.Count, sw.ElapsedMilliseconds);
         }
 
