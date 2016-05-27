@@ -32,7 +32,7 @@ namespace RepetitionDetection.StringMatching
                     if (criticalPosition + matchedSymbolsCount == prefixLength)
                     {
                         result = true;
-                        matchedSymbolsCount = Math.Max(0, pattern.Length - (criticalPosition + period));
+                        matchedSymbolsCount = Math.Max(0, prefixLength - (criticalPosition + period));
                         textPosition = textPosition + period;
                     }
                 }
