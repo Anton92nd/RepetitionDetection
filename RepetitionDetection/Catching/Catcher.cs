@@ -32,8 +32,9 @@ namespace RepetitionDetection.Catching
             stateStack.Push(new CatcherState(ImmutableArray<Repetition>.Empty, stringMatchingAlgorithm.State));
         }
 
-        public bool TryCatch()
+        public bool TryCatch(out Repetition foundRepetition)
         {
+            foundRepetition = new Repetition(0, 0);
             var result = false;
             var newRepetitions = new List<Repetition>();
             if (stringMatchingAlgorithm.CheckForMatch())
@@ -46,7 +47,10 @@ namespace RepetitionDetection.Catching
                     continue;
                 var newRepetition = Update(repetition);
                 if (text.Length - (newRepetition.LeftPosition + 1) >= (e*newRepetition.Period).Ceil())
+                {
                     result = true;
+                    foundRepetition = newRepetition;
+                }
                 newRepetitions.Add(newRepetition);
             }
             stateStack.Push(new CatcherState(newRepetitions.ToImmutableArray(), stringMatchingAlgorithm.State));

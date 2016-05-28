@@ -18,16 +18,20 @@ namespace RepetitionDetection.Tests
             sb.Append(text.Substring(0, 8));
 
             var catcher = new Catcher(sb, 5, 6, e);
-            var detections = new List<int>();
+            var repetitions = new List<Repetition>();
             for (var i = 8; i < text.Length; ++i)
             {
                 sb.Append(text[i]);
-                if (catcher.TryCatch())
+                Repetition rep;
+                if (catcher.TryCatch(out rep))
                 {
-                    detections.Add(i);
+                    repetitions.Add(rep);
                 }
             }
-            Assert.That(detections, Is.EquivalentTo(new []{15}));
+            Assert.That(repetitions, Is.EquivalentTo(new []
+            {
+                new Repetition(3, 8), 
+            }));
         }
 
         [Test]
@@ -39,16 +43,20 @@ namespace RepetitionDetection.Tests
             sb.Append(text.Substring(0, 8));
 
             var catcher = new Catcher(sb, 5, 6, e);
-            var detections = new List<int>();
+            var repetitions = new List<Repetition>();
             for (var i = 8; i < text.Length; ++i)
             {
                 sb.Append(text[i]);
-                if (catcher.TryCatch())
+                Repetition rep;
+                if (catcher.TryCatch(out rep))
                 {
-                    detections.Add(i);
+                    repetitions.Add(rep);
                 }
             }
-            Assert.That(detections, Is.EquivalentTo(new[] { 14 }));
+            Assert.That(repetitions, Is.EquivalentTo(new[]
+            {
+                new Repetition(2, 8)
+            }));
         }
 
         [Test]
@@ -60,23 +68,21 @@ namespace RepetitionDetection.Tests
             sb.Append(text.Substring(0, 8));
 
             var catcher = new Catcher(sb, 5, 6, e);
-            var detections = new List<int>();
+            Repetition rep;
             for (var i = 8; i < text.Length; ++i)
             {
                 sb.Append(text[i]);
-                if (catcher.TryCatch())
-                {
-                    detections.Add(i);
-                }
+                catcher.TryCatch(out rep);
             }           
             catcher.Backtrack();
             sb.Remove(sb.Length - 1, 1);
             sb.Append('c');
-            Assert.That(catcher.TryCatch(), Is.False);
+            Assert.That(catcher.TryCatch(out rep), Is.False);
             sb.Remove(sb.Length - 1, 1);
             sb.Append('o');
             catcher.Backtrack();
-            Assert.That(catcher.TryCatch(), Is.True);
+            Assert.That(catcher.TryCatch(out rep), Is.True);
+            Assert.That(rep, Is.EqualTo(new Repetition(3, 8)));
         }
     }
 }
