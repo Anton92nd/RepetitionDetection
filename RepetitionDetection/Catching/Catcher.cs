@@ -42,6 +42,8 @@ namespace RepetitionDetection.Catching
             }
             foreach (var repetition in stateStack.Peek().Repetitions)
             {
+                if (text[text.Length - 1] != text[text.Length - 1 - repetition.Period])
+                    continue;
                 var newRepetition = Update(repetition);
                 if (text.Length - newRepetition.LeftPosition >= (e*newRepetition.Period).Ceil())
                     result = true;
