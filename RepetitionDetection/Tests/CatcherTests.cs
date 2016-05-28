@@ -10,7 +10,7 @@ namespace RepetitionDetection.Tests
     public class CatcherTests
     {
         [Test]
-        public void Test()
+        public void Test1()
         {
             var text = "xxxxaceorsuvaceo";
             var e = new RationalNumber(3, 2);
@@ -28,6 +28,27 @@ namespace RepetitionDetection.Tests
                 }
             }
             Assert.That(detections, Is.EquivalentTo(new []{15}));
+        }
+
+        [Test]
+        public void Test2()
+        {
+            var text = "xxxvaceorsuvace";
+            var e = new RationalNumber(3, 2);
+            var sb = new StringBuilder();
+            sb.Append(text.Substring(0, 8));
+
+            var catcher = new Catcher(sb, 5, 6, e);
+            var detections = new List<int>();
+            for (var i = 8; i < text.Length; ++i)
+            {
+                sb.Append(text[i]);
+                if (catcher.TryCatch())
+                {
+                    detections.Add(i);
+                }
+            }
+            Assert.That(detections, Is.EquivalentTo(new[] { 14 }));
         }
 
         [Test]
