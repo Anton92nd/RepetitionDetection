@@ -25,7 +25,7 @@ namespace RepetitionDetection.Catching
             stateStack = new Stack<CatcherState>();
             this.text = text;
             this.e = e;
-            h = new RationalNumber(i - j + 1, 2);
+            h = new RationalNumber(j - i + 1, 2);
             pattern = text.ToString(i, h.Ceil());
             Removed = false;
             stringMatchingAlgorithm = new StringMatchingAlgorithm(text, pattern, i + 1);
@@ -38,14 +38,14 @@ namespace RepetitionDetection.Catching
             var newRepetitions = new List<Repetition>();
             if (stringMatchingAlgorithm.CheckForMatch())
             {
-                newRepetitions.Add(Update(new Repetition(I - 1, text.Length - h.Ceil() + 1 - I)));
+                newRepetitions.Add(Update(new Repetition(I - 1, text.Length - h.Ceil() - I)));
             }
             foreach (var repetition in stateStack.Peek().Repetitions)
             {
                 if (text[text.Length - 1] != text[text.Length - 1 - repetition.Period])
                     continue;
                 var newRepetition = Update(repetition);
-                if (text.Length - newRepetition.LeftPosition >= (e*newRepetition.Period).Ceil())
+                if (text.Length - (newRepetition.LeftPosition + 1) >= (e*newRepetition.Period).Ceil())
                     result = true;
                 newRepetitions.Add(newRepetition);
             }

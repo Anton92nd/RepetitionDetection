@@ -69,6 +69,7 @@
     <Compile Include="StringMatching\IStringMatchingAlgorithm.cs" />
     <Compile Include="StringMatching\StringMatchingAlgorithm.cs" />
     <Compile Include="StringMatching\StringMatchingState.cs" />
+    <Compile Include="Tests\CatcherTests.cs" />
     <Compile Include="Tests\CompleteStringMatchingAlgorithmTests.cs" />
     <Compile Include="Tests\CriticalFactorizationTests.cs" />
     <Compile Include="Tests\IncompleteStringMatchingAlgorithmTests.cs" />
