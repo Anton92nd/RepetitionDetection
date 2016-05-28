@@ -52,6 +52,8 @@
     <Compile Include="Commons\CharGreaterComparer.cs" />
     <Compile Include="Commons\CharLessComparer.cs" />
     <Compile Include="Commons\InvalidUsageException.cs" />
+    <Compile Include="Commons\RationalNumber.cs" />
+    <Compile Include="Commons\Repetition.cs" />
     <Compile Include="CriticalFactorization\Factorization.cs" />
     <Compile Include="CriticalFactorization\Factorizer.cs" />
     <Compile Include="CriticalFactorization\PrefixFactorizer.cs" />
