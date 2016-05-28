@@ -10,14 +10,14 @@ namespace RepetitionDetection.Tests
     public class CatcherTests
     {
         [Test]
-        public void Test1()
+        public void TestEqual1()
         {
             var text = "xxxxaceorsuvaceo";
             var e = new RationalNumber(3, 2);
             var sb = new StringBuilder();
             sb.Append(text.Substring(0, 8));
 
-            var catcher = new Catcher(sb, 5, 6, e);
+            var catcher = new Catcher(sb, 5, 6, e, true);
             var repetitions = new List<Repetition>();
             for (var i = 8; i < text.Length; ++i)
             {
@@ -35,14 +35,14 @@ namespace RepetitionDetection.Tests
         }
 
         [Test]
-        public void Test2()
+        public void TestEqual2()
         {
             var text = "xxxvaceorsuvace";
             var e = new RationalNumber(3, 2);
             var sb = new StringBuilder();
             sb.Append(text.Substring(0, 8));
 
-            var catcher = new Catcher(sb, 5, 6, e);
+            var catcher = new Catcher(sb, 5, 6, e, true);
             var repetitions = new List<Repetition>();
             for (var i = 8; i < text.Length; ++i)
             {
@@ -60,14 +60,64 @@ namespace RepetitionDetection.Tests
         }
 
         [Test]
-        public void TestWithBackTrack()
+        public void TestLarger1()
+        {
+            var text = "xxxxaceorsuvaceor";
+            var e = new RationalNumber(3, 2);
+            var sb = new StringBuilder();
+            sb.Append(text.Substring(0, 8));
+
+            var catcher = new Catcher(sb, 5, 6, e, false);
+            var repetitions = new List<Repetition>();
+            for (var i = 8; i < text.Length; ++i)
+            {
+                sb.Append(text[i]);
+                Repetition rep;
+                if (catcher.TryCatch(out rep))
+                {
+                    repetitions.Add(rep);
+                }
+            }
+            Assert.That(repetitions, Is.EquivalentTo(new[]
+            {
+                new Repetition(3, 8), 
+            }));
+        }
+
+        [Test]
+        public void TestLarger2()
+        {
+            var text = "xxxvaceorsuvaceo";
+            var e = new RationalNumber(3, 2);
+            var sb = new StringBuilder();
+            sb.Append(text.Substring(0, 8));
+
+            var catcher = new Catcher(sb, 5, 6, e, false);
+            var repetitions = new List<Repetition>();
+            for (var i = 8; i < text.Length; ++i)
+            {
+                sb.Append(text[i]);
+                Repetition rep;
+                if (catcher.TryCatch(out rep))
+                {
+                    repetitions.Add(rep);
+                }
+            }
+            Assert.That(repetitions, Is.EquivalentTo(new[]
+            {
+                new Repetition(2, 8)
+            }));
+        }
+
+        [Test]
+        public void TestEqualWithBackTrack()
         {
             var text = "xxxxaceorsuvaceo";
             var e = new RationalNumber(3, 2);
             var sb = new StringBuilder();
             sb.Append(text.Substring(0, 8));
 
-            var catcher = new Catcher(sb, 5, 6, e);
+            var catcher = new Catcher(sb, 5, 6, e, true);
             Repetition rep;
             for (var i = 8; i < text.Length; ++i)
             {

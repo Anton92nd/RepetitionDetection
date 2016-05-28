@@ -14,17 +14,19 @@ namespace RepetitionDetection.Catching
         private readonly string pattern;
         private readonly StringBuilder text;
         private readonly RationalNumber e;
+        private readonly bool detectEqual;
         private readonly Stack<CatcherState> stateStack;
         private readonly StringMatchingAlgorithm stringMatchingAlgorithm;
         private readonly RationalNumber h;
 
-        public Catcher(StringBuilder text, int i, int j, RationalNumber e)
+        public Catcher(StringBuilder text, int i, int j, RationalNumber e, bool detectEqual)
         {
             I = i;
             J = j;
             stateStack = new Stack<CatcherState>();
             this.text = text;
             this.e = e;
+            this.detectEqual = detectEqual;
             h = new RationalNumber(j - i + 1, 2);
             pattern = text.ToString(i, h.Ceil());
             Removed = false;
@@ -46,7 +48,7 @@ namespace RepetitionDetection.Catching
                 if (text[text.Length - 1] != text[text.Length - 1 - repetition.Period])
                     continue;
                 var newRepetition = Update(repetition);
-                if (text.Length - (newRepetition.LeftPosition + 1) >= (e*newRepetition.Period).Ceil())
+                if (text.Length - (newRepetition.LeftPosition + 1) - (detectEqual ? 0 : 1) >= (e*newRepetition.Period).Ceil())
                 {
                     result = true;
                     foundRepetition = newRepetition;
