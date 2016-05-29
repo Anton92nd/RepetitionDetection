@@ -63,6 +63,8 @@
     <Compile Include="CriticalFactorization\Factorization.cs" />
     <Compile Include="CriticalFactorization\Factorizer.cs" />
     <Compile Include="CriticalFactorization\PrefixFactorizer.cs" />
+    <Compile Include="Detection\IDetector.cs" />
+    <Compile Include="Detection\SmallRepetitionDetector.cs" />
     <Compile Include="MaximalSuffixes\MaximalSuffixCalculator.cs" />
     <Compile Include="Periods\PeriodCalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -79,6 +81,7 @@
     <Compile Include="Tests\MaximalSuffixCalculatorGreaterTests.cs" />
     <Compile Include="Tests\MaximalSuffixCalculatorLessTests.cs" />
     <Compile Include="Tests\PeriodCalculatorTests.cs" />
+    <Compile Include="Tests\SmallRepetitionDetectorTests.cs" />
     <Compile Include="Tests\StringMatchingAlgoPerfomanceTests.cs" />
     <Compile Include="Tests\StringMatchingTests.cs" />
   </ItemGroup>

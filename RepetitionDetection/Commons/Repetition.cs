@@ -17,5 +17,10 @@ namespace RepetitionDetection.Commons
         {
             return LeftPosition == other.LeftPosition && Period == other.Period;
         }
+
+        public override string ToString()
+        {
+            return string.Format("Left position: {0}, Period: {1}", LeftPosition, Period);
+        }
     }
 }
