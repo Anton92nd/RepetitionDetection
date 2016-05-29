@@ -17,7 +17,7 @@ namespace RepetitionDetection.Tests
             var sb = new StringBuilder();
             sb.Append(text.Substring(0, 8));
 
-            var catcher = new Catcher(sb, 5, 6, e, true);
+            var catcher = new Catcher(sb, 5, 6, e, true, 200);
             var repetitions = new List<Repetition>();
             for (var i = 8; i < text.Length; ++i)
             {
@@ -42,7 +42,7 @@ namespace RepetitionDetection.Tests
             var sb = new StringBuilder();
             sb.Append(text.Substring(0, 8));
 
-            var catcher = new Catcher(sb, 5, 6, e, true);
+            var catcher = new Catcher(sb, 5, 6, e, true, 200);
             var repetitions = new List<Repetition>();
             for (var i = 8; i < text.Length; ++i)
             {
@@ -67,7 +67,7 @@ namespace RepetitionDetection.Tests
             var sb = new StringBuilder();
             sb.Append(text.Substring(0, 8));
 
-            var catcher = new Catcher(sb, 5, 6, e, false);
+            var catcher = new Catcher(sb, 5, 6, e, false, 200);
             var repetitions = new List<Repetition>();
             for (var i = 8; i < text.Length; ++i)
             {
@@ -92,7 +92,7 @@ namespace RepetitionDetection.Tests
             var sb = new StringBuilder();
             sb.Append(text.Substring(0, 8));
 
-            var catcher = new Catcher(sb, 5, 6, e, false);
+            var catcher = new Catcher(sb, 5, 6, e, false, 200);
             var repetitions = new List<Repetition>();
             for (var i = 8; i < text.Length; ++i)
             {
@@ -117,7 +117,7 @@ namespace RepetitionDetection.Tests
             var sb = new StringBuilder();
             sb.Append(text.Substring(0, 8));
 
-            var catcher = new Catcher(sb, 5, 6, e, true);
+            var catcher = new Catcher(sb, 5, 6, e, true, 200);
             Repetition rep;
             for (var i = 8; i < text.Length; ++i)
             {

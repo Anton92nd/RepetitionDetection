@@ -9,7 +9,7 @@ namespace RepetitionDetection.Catching
 {
     public class Catcher
     {
-        public Catcher([NotNull] StringBuilder text, int i, int j, RationalNumber e, bool detectEqual)
+        public Catcher([NotNull] StringBuilder text, int i, int j, RationalNumber e, bool detectEqual, int timeToLive)
         {
             I = i;
             J = j;
@@ -17,9 +17,9 @@ namespace RepetitionDetection.Catching
             this.text = text;
             this.e = e;
             this.detectEqual = detectEqual;
+            TimeToLive = timeToLive;
             h = new RationalNumber(j - i + 1, 2);
             pattern = text.ToString(i, h.Ceil());
-            Removed = false;
             stringMatchingAlgorithm = new StringMatchingAlgorithm(text, pattern, i + 1);
             stateStack.Push(new CatcherState(ImmutableArray<Repetition>.Empty, stringMatchingAlgorithm.State));
         }
@@ -70,9 +70,20 @@ namespace RepetitionDetection.Catching
             }
         }
 
-        public int I { get; private set; }
-        public int J { get; private set; }
-        public bool Removed { get; set; }
+        public bool IsActive()
+        {
+            return CreationTime <= text.Length && (DeletionTime < 0 || text.Length < DeletionTime);
+        }
+
+        public bool ShouldBeDeleted()
+        {
+            return !IsActive() && ((DeletionTime >= 0 && text.Length - DeletionTime > TimeToLive) || CreationTime - text.Length > TimeToLive);
+        }
+
+        private readonly int I, J;
+
+        public int CreationTime { get; set; }
+        public int DeletionTime { get; set; }
 
         [NotNull]
         private readonly string pattern;
@@ -82,6 +93,7 @@ namespace RepetitionDetection.Catching
 
         private readonly RationalNumber e;
         private readonly bool detectEqual;
+        public readonly int TimeToLive;
 
         [NotNull]
         private readonly Stack<CatcherState> stateStack;

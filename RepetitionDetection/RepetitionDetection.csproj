@@ -54,15 +54,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Catching\Catcher.cs" />
+    <Compile Include="Catching\CatcherInterval.cs" />
     <Compile Include="Catching\CatcherState.cs" />
     <Compile Include="Commons\CharGreaterComparer.cs" />
     <Compile Include="Commons\CharLessComparer.cs" />
+    <Compile Include="Commons\InvalidProgramStateException.cs" />
     <Compile Include="Commons\InvalidUsageException.cs" />
     <Compile Include="Commons\RationalNumber.cs" />
     <Compile Include="Commons\Repetition.cs" />
     <Compile Include="CriticalFactorization\Factorization.cs" />
     <Compile Include="CriticalFactorization\Factorizer.cs" />
     <Compile Include="CriticalFactorization\PrefixFactorizer.cs" />
+    <Compile Include="Detection\LargeRepetitionsDetector.cs" />
     <Compile Include="Detection\IDetector.cs" />
     <Compile Include="Detection\SmallRepetitionDetector.cs" />
     <Compile Include="MaximalSuffixes\MaximalSuffixCalculator.cs" />
