@@ -35,6 +35,9 @@
     <Reference Include="dotMemory.Unit">
       <HintPath>packages\JetBrains.DotMemoryUnit.2.3.20160517.113140\Lib\dotMemory.Unit.dll</HintPath>
     </Reference>
+    <Reference Include="JetBrains.Annotations">
+      <HintPath>packages\JetBrains.Annotations.10.1.4\lib\net20\JetBrains.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>packages\NUnit.3.2.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>

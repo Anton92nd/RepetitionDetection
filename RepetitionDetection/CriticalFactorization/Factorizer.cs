@@ -1,10 +1,12 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace RepetitionDetection.CriticalFactorization
 {
     public static class Factorizer
     {
-        public static Factorization GetFactorization(string pattern)
+        [NotNull]
+        public static Factorization GetFactorization([NotNull] string pattern)
         {
             var prefixFactorizer = new PrefixFactorizer(pattern);
             var previousCriticalPosition = 0;

@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace RepetitionDetection.MaximalSuffixes
 {
     public class MaximalSuffixCalculator
     {
-        public MaximalSuffixCalculator(string str, IComparer<char> charComparer)
+        public MaximalSuffixCalculator([NotNull] string str, [NotNull] IComparer<char> charComparer)
         {
             this.charComparer = charComparer;
             currentSuffixPosition = 1;
@@ -47,8 +48,12 @@ namespace RepetitionDetection.MaximalSuffixes
             }
         }
 
+        [NotNull]
         private readonly IComparer<char> charComparer;
+
+        [NotNull]
         private readonly string str;
+
         public int MaximalSuffixPosition { get; private set; }
         public int Period { get; private set; }
         private int currentSuffixPosition;

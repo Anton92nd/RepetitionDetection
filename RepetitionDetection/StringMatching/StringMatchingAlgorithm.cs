@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using JetBrains.Annotations;
 using RepetitionDetection.CriticalFactorization;
 using RepetitionDetection.Periods;
 
@@ -6,7 +7,7 @@ namespace RepetitionDetection.StringMatching
 {
     public class StringMatchingAlgorithm
     {
-        public StringMatchingAlgorithm(StringBuilder text, string pattern, int startPosition)
+        public StringMatchingAlgorithm([NotNull] StringBuilder text, [NotNull] string pattern, int startPosition)
         {
             this.text = text;
             var factorizations = Factorizer.GetFactorization(pattern);
@@ -38,6 +39,7 @@ namespace RepetitionDetection.StringMatching
             return incompleteAlgoResult && completeAlgoResult;
         }
 
+        [NotNull]
         public StringMatchingState State
         {
             get
@@ -46,17 +48,22 @@ namespace RepetitionDetection.StringMatching
             }
         }
 
-        public void SetState(StringMatchingState state)
+        public void SetState([NotNull] StringMatchingState state)
         {
             if (incompleteAlgorithm != null)
                 incompleteAlgorithm.SetState(state.IncompleteAlgorithmState);
             completeAlgorithm.SetState(state.CompleteAlgorithmState);
         }
 
+        [NotNull]
         private readonly IStringMatchingAlgorithm completeAlgorithm;
+
+        [CanBeNull]
         private readonly IStringMatchingAlgorithm incompleteAlgorithm;
+
         private readonly int shift;
 
+        [NotNull]
         private readonly StringBuilder text;
     }
 }

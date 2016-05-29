@@ -1,10 +1,11 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace RepetitionDetection.Periods
 {
     public static class PeriodCalculator
     {
-        public static int GetPeriod(string pattern, int prefixLength)
+        public static int GetPeriod([NotNull] string pattern, int prefixLength)
         {
             if (pattern.Length == 1)
                 return 1;

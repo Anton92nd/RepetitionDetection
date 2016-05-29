@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace RepetitionDetection.StringMatching
 {
     public class CompleteStringMatchingAlgorithm : IStringMatchingAlgorithm
     {
-        public CompleteStringMatchingAlgorithm(StringBuilder text, int startPosition, string pattern, int prefixLength, int criticalPosition, int period)
+        public CompleteStringMatchingAlgorithm([NotNull] StringBuilder text, int startPosition, [NotNull] string pattern, int prefixLength, int criticalPosition, int period)
         { 
             this.text = text;
 
@@ -45,12 +46,13 @@ namespace RepetitionDetection.StringMatching
             return result;
         }
 
-        public void SetState(AlgorithmState state)
+        public void SetState([NotNull] AlgorithmState state)
         {
             textPosition = state.PositionInText;
             matchedSymbolsCount = state.MatchedSymbolsCount;
         }
 
+        [NotNull]
         public AlgorithmState State
         {
             get
@@ -59,8 +61,12 @@ namespace RepetitionDetection.StringMatching
             }
         }
 
+        [NotNull]
         private readonly StringBuilder text;
+
+        [NotNull]
         private readonly string pattern;
+
         private readonly int prefixLength;
         private readonly int criticalPosition;
         private readonly int period;

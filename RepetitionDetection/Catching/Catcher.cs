@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
+using JetBrains.Annotations;
 using RepetitionDetection.Commons;
 using RepetitionDetection.StringMatching;
 
@@ -8,18 +9,7 @@ namespace RepetitionDetection.Catching
 {
     public class Catcher
     {
-        public int I { get; private set; }
-        public int J { get; private set; }
-        public bool Removed { get; set; }
-        private readonly string pattern;
-        private readonly StringBuilder text;
-        private readonly RationalNumber e;
-        private readonly bool detectEqual;
-        private readonly Stack<CatcherState> stateStack;
-        private readonly StringMatchingAlgorithm stringMatchingAlgorithm;
-        private readonly RationalNumber h;
-
-        public Catcher(StringBuilder text, int i, int j, RationalNumber e, bool detectEqual)
+        public Catcher([NotNull] StringBuilder text, int i, int j, RationalNumber e, bool detectEqual)
         {
             I = i;
             J = j;
@@ -79,5 +69,26 @@ namespace RepetitionDetection.Catching
                 stringMatchingAlgorithm.SetState(stateStack.Peek().StringMatchingState);
             }
         }
+
+        public int I { get; private set; }
+        public int J { get; private set; }
+        public bool Removed { get; set; }
+
+        [NotNull]
+        private readonly string pattern;
+
+        [NotNull]
+        private readonly StringBuilder text;
+
+        private readonly RationalNumber e;
+        private readonly bool detectEqual;
+
+        [NotNull]
+        private readonly Stack<CatcherState> stateStack;
+
+        [NotNull]
+        private readonly StringMatchingAlgorithm stringMatchingAlgorithm;
+
+        private readonly RationalNumber h;
     }
 }

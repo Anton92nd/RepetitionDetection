@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 using RepetitionDetection.Commons;
 using RepetitionDetection.MaximalSuffixes;
 
@@ -6,7 +7,7 @@ namespace RepetitionDetection.CriticalFactorization
 {
     public class PrefixFactorizer
     {
-        public PrefixFactorizer(string str)
+        public PrefixFactorizer([NotNull] string str)
         {
             maximalSuffixCalculatorForLess = new MaximalSuffixCalculator(str, new CharLessComparer());
             maximalSuffixCalculatorForGreater = new MaximalSuffixCalculator(str, new CharGreaterComparer());
@@ -31,7 +32,10 @@ namespace RepetitionDetection.CriticalFactorization
 
         public int PrefixLength { get; private set; }
 
+        [NotNull]
         private readonly MaximalSuffixCalculator maximalSuffixCalculatorForLess;
+
+        [NotNull]
         private readonly MaximalSuffixCalculator maximalSuffixCalculatorForGreater;
     }
 }
