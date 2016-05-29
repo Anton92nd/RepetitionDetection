@@ -1,19 +1,15 @@
-﻿using JetBrains.Annotations;
-
-namespace RepetitionDetection.StringMatching
+﻿namespace RepetitionDetection.StringMatching
 {
-    public class StringMatchingState
+    public struct StringMatchingState
     {
-        public StringMatchingState([NotNull] AlgorithmState incompleteAlgorithmState, [NotNull] AlgorithmState completeAlgorithmState)
+        public StringMatchingState(AlgorithmState incompleteAlgorithmState, AlgorithmState completeAlgorithmState)
         {
             IncompleteAlgorithmState = incompleteAlgorithmState;
             CompleteAlgorithmState = completeAlgorithmState;
         }
 
-        [NotNull]
-        public AlgorithmState CompleteAlgorithmState { get; private set; }
+        public readonly AlgorithmState CompleteAlgorithmState;
 
-        [NotNull]
-        public AlgorithmState IncompleteAlgorithmState { get; private set; }
+        public readonly AlgorithmState IncompleteAlgorithmState;
     }
 }

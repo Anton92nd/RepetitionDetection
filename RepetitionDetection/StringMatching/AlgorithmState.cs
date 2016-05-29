@@ -1,9 +1,9 @@
 ﻿namespace RepetitionDetection.StringMatching
 {
-    public class AlgorithmState
+    public struct AlgorithmState
     {
-        public int PositionInText { get; private set; }
-        public int MatchedSymbolsCount { get; private set; }
+        public readonly int PositionInText;
+        public readonly int MatchedSymbolsCount;
 
         public AlgorithmState(int positionInText, int matchedSymbolsCount)
         {

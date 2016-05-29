@@ -39,7 +39,6 @@ namespace RepetitionDetection.StringMatching
             return incompleteAlgoResult && completeAlgoResult;
         }
 
-        [NotNull]
         public StringMatchingState State
         {
             get
@@ -48,7 +47,7 @@ namespace RepetitionDetection.StringMatching
             }
         }
 
-        public void SetState([NotNull] StringMatchingState state)
+        public void SetState(StringMatchingState state)
         {
             if (incompleteAlgorithm != null)
                 incompleteAlgorithm.SetState(state.IncompleteAlgorithmState);
