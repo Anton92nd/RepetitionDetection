@@ -42,13 +42,12 @@ namespace RepetitionDetection.StringMatching
             return result;
         }
 
-        public void SetState([NotNull] AlgorithmState state)
+        public void SetState(AlgorithmState state)
         {
             textPosition = state.PositionInText;
             matchedSymbolsCount = state.MatchedSymbolsCount;
         }
 
-        [NotNull]
         public AlgorithmState State
         {
             get

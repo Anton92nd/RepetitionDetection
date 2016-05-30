@@ -55,10 +55,10 @@ namespace RepetitionDetection.StringMatching
         }
 
         [NotNull]
-        private readonly IStringMatchingAlgorithm completeAlgorithm;
+        private readonly CompleteStringMatchingAlgorithm completeAlgorithm;
 
         [CanBeNull]
-        private readonly IStringMatchingAlgorithm incompleteAlgorithm;
+        private readonly IncompleteStringMatchingAlgorithm incompleteAlgorithm;
 
         private readonly int shift;
 

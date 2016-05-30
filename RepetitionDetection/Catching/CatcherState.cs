@@ -7,13 +7,12 @@ namespace RepetitionDetection.Catching
 {
     public class CatcherState
     {
-        public CatcherState(ImmutableArray<Repetition> repetitions, [NotNull] StringMatchingState stringMatchingState)
+        public CatcherState(ImmutableArray<Repetition> repetitions, StringMatchingState stringMatchingState)
         {
             Repetitions = repetitions;
             StringMatchingState = stringMatchingState;
         }
 
-        [NotNull]
         public StringMatchingState StringMatchingState { get; private set; }
 
         public ImmutableArray<Repetition> Repetitions { get; private set; }

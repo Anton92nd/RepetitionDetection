@@ -10,5 +10,10 @@
             PositionInText = positionInText;
             MatchedSymbolsCount = matchedSymbolsCount;
         }
+
+        public override string ToString()
+        {
+            return string.Format("Position: {0}, Matched: {1}", PositionInText, MatchedSymbolsCount);
+        }
     }
 }
