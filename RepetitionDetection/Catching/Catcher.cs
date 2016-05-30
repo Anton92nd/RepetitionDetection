@@ -32,14 +32,20 @@ namespace RepetitionDetection.Catching
             var newRepetitions = new List<Repetition>();
             if (stringMatchingAlgorithm.CheckForMatch())
             {
-                newRepetitions.Add(Update(new Repetition(I - 1, text.Length - h.Ceil() - I)));
+                var repetition = Update(new Repetition(I - 1, text.Length - h.Ceil() - I));
+                if (FoundRepetition(repetition))
+                {
+                    result = true;
+                    foundRepetition = repetition;
+                }
+                newRepetitions.Add(repetition);
             }
             foreach (var repetition in stateStack.Peek().Repetitions)
             {
                 if (text[text.Length - 1] != text[text.Length - 1 - repetition.Period])
                     continue;
                 var newRepetition = Update(repetition);
-                if (text.Length - (newRepetition.LeftPosition + 1) - (detectEqual ? 0 : 1) >= (e*newRepetition.Period).Ceil())
+                if (FoundRepetition(newRepetition))
                 {
                     result = true;
                     foundRepetition = newRepetition;
@@ -48,6 +54,11 @@ namespace RepetitionDetection.Catching
             }
             stateStack.Push(new CatcherState(newRepetitions.ToImmutableArray(), stringMatchingAlgorithm.State));
             return result;
+        }
+
+        private bool FoundRepetition(Repetition repetition)
+        {
+            return text.Length - (repetition.LeftPosition + 1) - (detectEqual ? 0 : 1) >= (e*repetition.Period).Ceil();
         }
 
         private Repetition Update(Repetition repetition)
@@ -80,6 +91,11 @@ namespace RepetitionDetection.Catching
         {
             return (DeletionTime >= 0 && text.Length - DeletionTime > TimeToLive) ||
                    CreationTime - text.Length > TimeToLive;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Catcher {{I={0},J={1}}}", I, J);
         }
 
         private readonly int I, J;

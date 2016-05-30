@@ -22,7 +22,7 @@ namespace RepetitionDetection.Catching
 
         public override string ToString()
         {
-            return string.Format("L: {0}, R: {1}", L, R);
+            return string.Format("Interval ({0}, {1}]", L, R);
         }
 
         public readonly int L, R;
