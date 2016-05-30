@@ -26,13 +26,34 @@ namespace RepetitionDetection.Detection
         public bool TryDetect(out Repetition repetition)
         {
             repetition = new Repetition(0, 0);
-            var n = text.Length;
-            if (n < s)
+            if (text.Length < s)
                 return false;
-            
-            for (var deg2 = 1; deg2*s <= n && n % deg2 == 0; deg2 *= 2)
+
+            var result = false;
+            foreach (var pair in catchers)
             {
-                CreateCatcher(deg2, n);
+                if (pair.Value.IsActive())
+                {
+                    Repetition rep;
+                    if (pair.Value.TryCatch(out rep))
+                    {
+                        result = true;
+                        repetition = rep;
+                    }
+                }
+            }
+
+            UpdateCatchers();
+            DeleteCatchers();
+            return result;
+        }
+
+        private void UpdateCatchers()
+        {
+            var n = text.Length;
+            for (var deg2 = 1; deg2*s <= n && n%deg2 == 0; deg2 *= 2)
+            {
+                CreateCatcher(deg2);
                 if (n%(deg2*2) == 0)
                 {
                     var l = n - 1 - deg2*2*s;
@@ -42,25 +63,11 @@ namespace RepetitionDetection.Detection
                     RemoveCatcher(new CatcherInterval(m, r));
                 }
             }
-
-            foreach (var pair in catchers)
-            {
-                if (pair.Value.IsActive())
-                {
-                    if (pair.Value.TryCatch(out repetition))
-                        return true;
-                }
-            }
-
-            UpdateCatchers();
-
-            return false;
         }
 
         public void BackTrack()
         {
-            var n = text.Length + 1;
-            if (n < s)
+            if (text.Length < s)
                 return;
 
             foreach (var catcher in catchers.Values)
@@ -69,14 +76,15 @@ namespace RepetitionDetection.Detection
                     catcher.Backtrack();
             }
 
-            UpdateCatchers();
+            DeleteCatchers();
         }
 
-        private void UpdateCatchers()
+        private void DeleteCatchers()
         {
             var catchersToDelete = catchers
                 .Where(pair => pair.Value.ShouldBeDeleted())
-                .Select(pair => pair.Key);
+                .Select(pair => pair.Key)
+                .ToArray();
 
             foreach (var catcher in catchersToDelete)
             {
@@ -86,14 +94,18 @@ namespace RepetitionDetection.Detection
 
         private void RemoveCatcher(CatcherInterval interval)
         {
+            if (interval.L < -1)
+                return;
             Catcher catcher;
             if (!catchers.TryGetValue(interval, out catcher))
                 throw new InvalidProgramStateException(string.Format("Can't find catcher for interval: {0}", interval));
-            catcher.DeletionTime = text.Length;
+            if (catcher.DeletionTime < 0)
+                catcher.DeletionTime = text.Length;
         }
 
-        private void CreateCatcher(int deg2, int n)
+        private void CreateCatcher(int deg2)
         {
+            var n = text.Length;
             var interval = new CatcherInterval(n - 1 - deg2 * s, n - 1 - deg2 * (s - 1));            
 
             if (!catchers.ContainsKey(interval))

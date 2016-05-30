@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
 using JetBrains.Annotations;
@@ -52,7 +53,7 @@ namespace RepetitionDetection.Catching
         private Repetition Update(Repetition repetition)
         {
             var lp = repetition.LeftPosition;
-            var r = ((e - 1) * repetition.Period / h.Floor()).Ceil();
+            var r = ((e - 1) * repetition.Period / Math.Max(h.Floor(), 1)).Ceil();
             while (lp > 0 && r > 0 && text[lp] == text[lp + repetition.Period])
             {
                 lp--;
@@ -72,12 +73,13 @@ namespace RepetitionDetection.Catching
 
         public bool IsActive()
         {
-            return CreationTime <= text.Length && (DeletionTime < 0 || text.Length < DeletionTime);
+            return CreationTime < text.Length && (DeletionTime < 0 || text.Length <= DeletionTime);
         }
 
         public bool ShouldBeDeleted()
         {
-            return !IsActive() && ((DeletionTime >= 0 && text.Length - DeletionTime > TimeToLive) || CreationTime - text.Length > TimeToLive);
+            return (DeletionTime >= 0 && text.Length - DeletionTime > TimeToLive) ||
+                   CreationTime - text.Length > TimeToLive;
         }
 
         private readonly int I, J;

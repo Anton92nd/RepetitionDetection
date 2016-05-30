@@ -81,6 +81,7 @@
     <Compile Include="Tests\CompleteStringMatchingAlgorithmTests.cs" />
     <Compile Include="Tests\CriticalFactorizationTests.cs" />
     <Compile Include="Tests\IncompleteStringMatchingAlgorithmTests.cs" />
+    <Compile Include="Tests\LargeRepetitionDetectorTests.cs" />
     <Compile Include="Tests\MaximalSuffixCalculatorGreaterTests.cs" />
     <Compile Include="Tests\MaximalSuffixCalculatorLessTests.cs" />
     <Compile Include="Tests\PeriodCalculatorTests.cs" />
