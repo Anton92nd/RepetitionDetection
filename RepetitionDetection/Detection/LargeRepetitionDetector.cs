@@ -8,13 +8,13 @@ using RepetitionDetection.Commons;
 
 namespace RepetitionDetection.Detection
 {
-    public class LargeRepetitionsDetector : IDetector
+    public class LargeRepetitionDetector : IDetector
     {
-        public LargeRepetitionsDetector([NotNull] StringBuilder text, RationalNumber e, bool detectEqual)
+        public LargeRepetitionDetector([NotNull] StringBuilder text, RationalNumber e, bool detectEqual)
         {
             if (text.Length > 0)
             {
-                throw new InvalidUsageException("Text must be empty when creating LargeRepetitionsDetector");
+                throw new InvalidUsageException("Text must be empty when creating LargeRepetitionDetector");
             }
             this.text = text;
             this.e = e;
