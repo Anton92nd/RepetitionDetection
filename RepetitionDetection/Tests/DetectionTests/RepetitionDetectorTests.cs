@@ -3,19 +3,19 @@ using NUnit.Framework;
 using RepetitionDetection.Commons;
 using RepetitionDetection.Detection;
 
-namespace RepetitionDetection.Tests
+namespace RepetitionDetection.Tests.DetectionTests
 {
     [TestFixture]
-    public class LargeRepetitionDetectorTests
+    public class RepetitionDetectorTests
     {
         [TestCase("wxyzaceorsuvaceo", 3, 2, 3, 8, true)]
-        [TestCase("xxxxaceorsuvaceo", 3, 2, 3, 8, true)]
+        [TestCase("xxxxaceorsuvaceo", 3, 2, -1, 1, true)]
         public void Test(string text, int num, int denom, int lp, int p, bool detectEqual)
         {
             var e = new RationalNumber(num, denom);
             var sb = new StringBuilder();
 
-            var detector = new LargeRepetitionDetector(sb, e, detectEqual);
+            var detector = new RepetitionDetector(sb, e, detectEqual);
             var repetition = new Repetition(0, 0);
 
             foreach (var c in text)
@@ -40,9 +40,9 @@ namespace RepetitionDetection.Tests
             var detector = new LargeRepetitionDetector(sb, e, true);
             var repetition = new Repetition(0, 0);
 
-            foreach (char c in text)
+            for (var i = 0; i < text.Length; ++i)
             {
-                sb.Append(c);
+                sb.Append(text[i]);
                 if (detector.TryDetect(out repetition))
                 {
                     break;

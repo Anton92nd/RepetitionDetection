@@ -7,7 +7,7 @@ using System.Text;
 using NUnit.Framework;
 using RepetitionDetection.StringMatching;
 
-namespace RepetitionDetection.Tests
+namespace RepetitionDetection.Tests.StringMatchingTests
 {
     [TestFixture]
     public class StringMatchingAlgoPerfomanceTests
@@ -95,6 +95,6 @@ namespace RepetitionDetection.Tests
             }
         }
 
-        private static readonly int[] TextLengths = { 1000, 10000, 100000, 1000000, 10000000, 100000000 };
+        private static readonly int[] TextLengths = { 1000, 10000, 100000, 1000000, 10000000 };
     }
 }
