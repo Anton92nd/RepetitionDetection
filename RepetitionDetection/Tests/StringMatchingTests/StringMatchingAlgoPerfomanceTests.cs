@@ -12,11 +12,6 @@ namespace RepetitionDetection.Tests.StringMatchingTests
     [TestFixture]
     public class StringMatchingAlgoPerfomanceTests
     {
-        public static void Main()
-        {
-            new StringMatchingAlgoPerfomanceTests().RandomTest(3, "aaaabc");
-        }
-
         private const int testsCount = 21;
 
         [Test]

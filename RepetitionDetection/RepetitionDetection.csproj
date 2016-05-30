@@ -90,6 +90,8 @@
     <Compile Include="Tests\StringMatchingTests\IncompleteStringMatchingAlgorithmTests.cs" />
     <Compile Include="Tests\StringMatchingTests\StringMatchingAlgoPerfomanceTests.cs" />
     <Compile Include="Tests\StringMatchingTests\StringMatchingTests.cs" />
+    <Compile Include="Tests\TextGenerationTests\AllWordsTests.cs" />
+    <Compile Include="TextGeneration\AllWordsGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
