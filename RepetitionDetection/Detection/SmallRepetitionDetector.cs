@@ -7,10 +7,11 @@ namespace RepetitionDetection.Detection
 {
     public class SmallRepetitionDetector : IDetector
     {
-        public SmallRepetitionDetector([NotNull] StringBuilder text, RationalNumber e, int lastSymbolsCount, bool detectEqual)
+        public SmallRepetitionDetector([NotNull] StringBuilder text, RationalNumber e, bool detectEqual)
         {
             this.text = text;
-            this.lastSymbolsCount = lastSymbolsCount;
+            var s = (e/(e - 1)).Ceil();
+            lastSymbolsCount = s - 1;
             this.detectEqual = detectEqual;
             this.e = e;
             suffixFunction = new int[lastSymbolsCount];
@@ -23,7 +24,7 @@ namespace RepetitionDetection.Detection
             var n = text.Length;
             suffixFunction[0] = 0;
             var period = 1;
-            for (var i = 1; i < lastSymbolsCount && !result; ++i)
+            for (var i = 1; i < Math.Min(lastSymbolsCount, text.Length) && !result; ++i)
             {
                 var j = suffixFunction[i - 1];
                 while (j > 0 && text[n - 1 - i] != text[n - 1 - j])

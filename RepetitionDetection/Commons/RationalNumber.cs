@@ -97,6 +97,11 @@ namespace RepetitionDetection.Commons
             return a/Gcd(a, b)*b;
         }
 
+        public override string ToString()
+        {
+            return String.Format("{0}/{1}", Num, Denom);
+        }
+
         public readonly int Num;
         public readonly int Denom;
     }
