@@ -16,7 +16,7 @@ namespace RepetitionDetection.Tests.TextGenerationTests
         public void Test1()
         {
             var result = AllWordsGenerator.Generate(3, new RationalNumber(7, 5), true);
-            Assert.That(result, Is.EquivalentTo(new string[]{}));
+            Assert.That(result, Is.EquivalentTo(new [] { "abca", "acba", "bacb", "bcab", "cabc", "cbac" }));
         }
     }
 }
