@@ -26,8 +26,9 @@ namespace RepetitionDetection.Detection
         public bool TryDetect(out Repetition repetition)
         {
             repetition = new Repetition(0, 0);
-            if (text.Length < s)
-                return false;
+
+            UpdateCatchers();
+            DeleteCatchers();
 
             var result = false;
             foreach (var pair in catchers)
@@ -42,9 +43,6 @@ namespace RepetitionDetection.Detection
                     }
                 }
             }
-
-            UpdateCatchers();
-            DeleteCatchers();
             return result;
         }
 
@@ -67,9 +65,6 @@ namespace RepetitionDetection.Detection
 
         public void BackTrack()
         {
-            if (text.Length < s)
-                return;
-
             foreach (var catcher in catchers.Values)
             {
                 if (catcher.IsActive())
@@ -106,12 +101,12 @@ namespace RepetitionDetection.Detection
         private void CreateCatcher(int deg2)
         {
             var n = text.Length;
-            var interval = new CatcherInterval(n - 1 - deg2 * s, n - 1 - deg2 * (s - 1));            
+            var interval = new CatcherInterval(n - 1 - deg2 * s, n - 1 - deg2 * (s - 1));
 
             if (!catchers.ContainsKey(interval))
             {
                 var i = interval.R;
-                var j = Math.Max(i, n - 1 - (new RationalNumber(s) / e * deg2).Ceil());
+                var j = Math.Max(i, n - 1 - (new RationalNumber(s)/e*deg2).Ceil());
                 var catcher = new Catcher(text, i, j, e, detectEqual, deg2);
                 catcher.CreationTime = n;
                 catcher.DeletionTime = -1;
