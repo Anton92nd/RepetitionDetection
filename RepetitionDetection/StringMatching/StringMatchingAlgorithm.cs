@@ -28,14 +28,14 @@ namespace RepetitionDetection.StringMatching
             }
         }
 
-        public bool CheckForMatch()
+        public bool CheckForMatch(int textLength)
         {
             if (incompleteAlgorithm == null)
             {
-                return completeAlgorithm.CheckMatch(text.Length);
+                return completeAlgorithm.CheckMatch(textLength);
             }
-            var incompleteAlgoResult = incompleteAlgorithm.CheckMatch(text.Length);
-            var completeAlgoResult = completeAlgorithm.CheckMatch(text.Length - shift);
+            var incompleteAlgoResult = incompleteAlgorithm.CheckMatch(textLength);
+            var completeAlgoResult = completeAlgorithm.CheckMatch(textLength - shift);
             return incompleteAlgoResult && completeAlgoResult;
         }
 

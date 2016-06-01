@@ -44,7 +44,7 @@ namespace RepetitionDetection.Tests.StringMatchingTests
             for (var i = 0; i < inputData[0].Length; ++i)
             {
                 sb.Append(inputData[0][i]);
-                if (algo.CheckForMatch())
+                if (algo.CheckForMatch(i + 1))
                 {
                     occurences.Add(i - inputData[1].Length + 2);
                 }
@@ -74,7 +74,7 @@ namespace RepetitionDetection.Tests.StringMatchingTests
                 for (var i = 0; i < textLength; ++i)
                 {
                     sb.Append((char) ('a' + rnd.Next()%alphabet));
-                    if (algo.CheckForMatch())
+                    if (algo.CheckForMatch(i + 1))
                     {
                         occ++;
                     }

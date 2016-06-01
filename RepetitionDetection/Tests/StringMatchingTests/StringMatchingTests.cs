@@ -22,7 +22,7 @@ namespace RepetitionDetection.Tests.StringMatchingTests
             for (var i = 0; i < text.Length; ++i)
             {
                 sb.Append(text[i]);
-                if (algorithm.CheckForMatch())
+                if (algorithm.CheckForMatch(i + 1))
                 {
                     occurences.Add(i);
                 }
@@ -36,20 +36,23 @@ namespace RepetitionDetection.Tests.StringMatchingTests
             var sb = new StringBuilder("abacab");
             const string pattern = "aba";
             var algo = new StringMatchingAlgorithm(sb, pattern, 0);
-            algo.CheckForMatch();
+            for (var i = 0; i < sb.Length; i++)
+            {
+                algo.CheckForMatch(i + 1);
+            }
             var abacabState = algo.State;
             sb.Append('a');
-            Assert.That(algo.CheckForMatch(), Is.True);
+            Assert.That(algo.CheckForMatch(sb.Length), Is.True);
             sb.Remove(sb.Length - 1, 1);
 
             algo.SetState(abacabState);
             sb.Append('a');
-            Assert.That(algo.CheckForMatch(), Is.True);
+            Assert.That(algo.CheckForMatch(sb.Length), Is.True);
             sb.Remove(sb.Length - 1, 1);
 
             algo.SetState(abacabState);
             sb.Append('c');
-            Assert.That(algo.CheckForMatch(), Is.False);
+            Assert.That(algo.CheckForMatch(sb.Length), Is.False);
         }
     }
 }

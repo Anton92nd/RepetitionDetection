@@ -9,7 +9,7 @@ namespace RepetitionDetection.Tests.DetectionTests
     public class LargeRepetitionDetectorTests
     {
         [TestCase("wxyzaceorsuvaceo", 3, 2, 3, 8, true)]
-        [TestCase("xxxxaceorsuvaceo", 3, 2, 3, 8, true)]
+        [TestCase("wxxxaceorsuvaceo", 3, 2, 3, 8, true)]
         public void Test(string text, int num, int denom, int lp, int p, bool detectEqual)
         {
             var e = new RationalNumber(num, denom);
