@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
 using RepetitionDetection.Commons;
@@ -22,43 +23,41 @@ namespace RepetitionDetection.Catching
             h = new RationalNumber(j - i + 1, 2);
             pattern = text.ToString(i, h.Ceil());
             stringMatchingAlgorithm = new StringMatchingAlgorithm(text, pattern, i + 1);
-            stateStack.Push(new CatcherState(ImmutableArray<Repetition>.Empty, stringMatchingAlgorithm.State));
+            var repetitions = new List<Repetition>();
+            for (var textLength = J + 2; textLength < text.Length; ++textLength)
+            {
+                repetitions = UpdateRepetitions(repetitions, textLength);
+                if (stringMatchingAlgorithm.CheckForMatch(textLength))
+                {
+                    repetitions.Add(Update(new Repetition(I - 1, text.Length - h.Ceil() - I)));
+                }
+            }
+            stateStack.Push(new CatcherState(repetitions.ToImmutableArray(), stringMatchingAlgorithm.State));
         }
 
         public bool TryCatch(out Repetition foundRepetition)
         {
-            foundRepetition = new Repetition(0, 0);
-            var result = false;
-            var newRepetitions = new List<Repetition>();
-            if (stringMatchingAlgorithm.CheckForMatch())
+            var newRepetitions = UpdateRepetitions(stateStack.Peek().Repetitions, text.Length);
+            if (stringMatchingAlgorithm.CheckForMatch(text.Length))
             {
-                var repetition = Update(new Repetition(I - 1, text.Length - h.Ceil() - I));
-                if (FoundRepetition(repetition))
-                {
-                    result = true;
-                    foundRepetition = repetition;
-                }
-                newRepetitions.Add(repetition);
+                newRepetitions.Add(Update(new Repetition(I - 1, text.Length - h.Ceil() - I)));
             }
-            foreach (var repetition in stateStack.Peek().Repetitions)
-            {
-                if (text[text.Length - 1] != text[text.Length - 1 - repetition.Period])
-                    continue;
-                var newRepetition = Update(repetition);
-                if (FoundRepetition(newRepetition))
-                {
-                    result = true;
-                    foundRepetition = newRepetition;
-                }
-                newRepetitions.Add(newRepetition);
-            }
+            foundRepetition = newRepetitions.FirstOrDefault(FoundRepetition);
             stateStack.Push(new CatcherState(newRepetitions.ToImmutableArray(), stringMatchingAlgorithm.State));
-            return result;
+            return foundRepetition.Period > 0;
         }
 
         private bool FoundRepetition(Repetition repetition)
         {
             return text.Length - (repetition.LeftPosition + 1) - (detectEqual ? 0 : 1) >= (e*repetition.Period).Ceil();
+        }
+
+        private List<Repetition> UpdateRepetitions(IEnumerable<Repetition> repetitions, int textLength)
+        {
+            return repetitions
+                .Where(rep => rep.Period >= textLength || text[textLength - 1] == text[textLength - 1 - rep.Period])
+                .Select(Update)
+                .ToList();
         }
 
         private Repetition Update(Repetition repetition)
@@ -84,7 +83,7 @@ namespace RepetitionDetection.Catching
 
         public bool IsActive()
         {
-            return CreationTime < text.Length && (DeletionTime < 0 || text.Length <= DeletionTime);
+            return CreationTime <= text.Length && (DeletionTime < 0 || text.Length < DeletionTime);
         }
 
         public bool ShouldBeDeleted()
