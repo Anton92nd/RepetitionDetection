@@ -36,7 +36,7 @@ namespace RepetitionDetection.Catching
                 repetitions = UpdateRepetitions(repetitions, textLength);
                 if (stringMatchingAlgorithm.CheckForMatch(textLength))
                 {
-                    repetitions.Add(UpdateRepetition(new Repetition(I - 1, text.Length - h.Ceil() - I)));
+                    repetitions.Add(UpdateRepetition(new Repetition(I - 1, textLength - h.Ceil() - I)));
                 }
                 stateStack.Push(new CatcherState(repetitions.ToImmutableArray(), stringMatchingAlgorithm.State));
             }
@@ -71,7 +71,7 @@ namespace RepetitionDetection.Catching
         {
             var lp = repetition.LeftPosition;
             var r = ((e - 1) * repetition.Period / Math.Max(h.Floor(), 1)).Ceil();
-            while (lp > 0 && r > 0 && text[lp] == text[lp + repetition.Period])
+            while (lp >= 0 && r > 0 && text[lp] == text[lp + repetition.Period])
             {
                 lp--;
                 r--;
