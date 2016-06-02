@@ -10,7 +10,7 @@ namespace RepetitionDetection.Detection
         public SmallRepetitionDetector([NotNull] StringBuilder text, RationalNumber e, bool detectEqual)
         {
             this.text = text;
-            var s = (e/(e - 1)).Ceil();
+            var s = Math.Max(2, (e/(e - 1)).Ceil());
             lastSymbolsCount = s - 1;
             this.detectEqual = detectEqual;
             this.e = e;

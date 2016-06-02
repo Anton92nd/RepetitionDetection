@@ -19,7 +19,7 @@ namespace RepetitionDetection.Detection
             this.text = text;
             this.e = e;
             this.detectEqual = detectEqual;
-            s = (e/(e - 1)).Ceil();
+            s = Math.Max(2, (e/(e - 1)).Ceil());
             catchers = new Dictionary<CatcherInterval, Catcher>();
         }
 
