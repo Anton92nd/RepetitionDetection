@@ -27,7 +27,7 @@ namespace RepetitionDetection.Detection
         {
             repetition = new Repetition(0, 0);
 
-            UpdateCatchers();
+            UpdateCatchers(reverse:false);
             DeleteCatchers();
 
             var result = false;
@@ -46,20 +46,32 @@ namespace RepetitionDetection.Detection
             return result;
         }
 
-        private void UpdateCatchers()
+        private void UpdateCatchers(bool reverse)
         {
             var n = text.Length;
             for (var deg2 = 1; deg2*s <= n && n%deg2 == 0; deg2 *= 2)
             {
-                CreateCatcher(deg2);
-                if (n%(deg2*2) == 0 && n <= deg2 * 2 * s)
+                UpdateCatcher(new CatcherInterval(n - 1 - deg2 * s, n - 1 - deg2 * (s - 1)), reverse);
+                if (n%(deg2*2) == 0)
                 {
                     var l = n - 1 - deg2*2*s;
                     var m = n - 1 - deg2*2*s + deg2;
                     var r = n - 1 - deg2*2*(s - 1);
-                    RemoveCatcher(new CatcherInterval(l, m));
-                    RemoveCatcher(new CatcherInterval(m, r));
+                    UpdateCatcher(new CatcherInterval(l, m), !reverse);
+                    UpdateCatcher(new CatcherInterval(m, r), !reverse);
                 }
+            }
+        }
+
+        private void UpdateCatcher(CatcherInterval interval, bool reverse)
+        {
+            if (!reverse)
+            {
+                CreateCatcher(interval);
+            }
+            else
+            {
+                RemoveCatcher(interval);
             }
         }
 
@@ -71,6 +83,7 @@ namespace RepetitionDetection.Detection
                     catcher.Backtrack();
             }
 
+            UpdateCatchers(reverse:true);
             DeleteCatchers();
         }
 
@@ -94,25 +107,25 @@ namespace RepetitionDetection.Detection
             Catcher catcher;
             if (!catchers.TryGetValue(interval, out catcher))
                 throw new InvalidProgramStateException(string.Format("Can't find catcher for interval: {0}", interval));
-            if (catcher.DeletionTime < 0)
-                catcher.DeletionTime = text.Length;
+            if (catcher.RemoveTime < 0)
+                catcher.RemoveTime = text.Length;
         }
 
-        private void CreateCatcher(int deg2)
+        private void CreateCatcher(CatcherInterval interval)
         {
+            if (interval.L < -1)
+                return;
             var n = text.Length;
-            var interval = new CatcherInterval(n - 1 - deg2 * s, n - 1 - deg2 * (s - 1));
-
-            if (!catchers.ContainsKey(interval))
+            Catcher catcher;
+            if (!catchers.TryGetValue(interval, out catcher))
             {
                 var i = interval.R;
-                var j = Math.Max(i, n - 1 - (new RationalNumber(s)/e*deg2).Ceil());
-                var catcher = new Catcher(text, i, j, e, detectEqual, deg2);
-                catcher.WarmUp(j + 2, text.Length);
-                catcher.CreationTime = n;
-                catcher.DeletionTime = -1;
+                var j = Math.Max(i, n - 1 - (new RationalNumber(s)/e*interval.Length).Ceil());
+                catcher = new Catcher(text, i, j, e, detectEqual, interval.Length);
+                catcher.WarmUp(j + 2, n);
                 catchers[interval] = catcher;
             }
+            catcher.RemoveTime = -1;
         }
 
         private readonly Dictionary<CatcherInterval, Catcher> catchers;
