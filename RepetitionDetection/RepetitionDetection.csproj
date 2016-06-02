@@ -68,6 +68,7 @@
     <Compile Include="Detection\LargeRepetitionDetector.cs" />
     <Compile Include="Detection\IDetector.cs" />
     <Compile Include="Detection\RepetitionDetector.cs" />
+    <Compile Include="Detection\SillyDetector.cs" />
     <Compile Include="Detection\SmallRepetitionDetector.cs" />
     <Compile Include="MaximalSuffixes\MaximalSuffixCalculator.cs" />
     <Compile Include="Periods\PeriodCalculator.cs" />
