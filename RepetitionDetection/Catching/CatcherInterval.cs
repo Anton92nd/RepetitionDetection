@@ -15,6 +15,11 @@ namespace RepetitionDetection.Catching
             return L == other.L && R == other.R;
         }
 
+        public int Length
+        {
+            get { return R - L; }
+        }
+
         public override int GetHashCode()
         {
             return L.GetHashCode() ^ R.GetHashCode();

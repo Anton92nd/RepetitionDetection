@@ -22,22 +22,24 @@ namespace RepetitionDetection.Catching
             TimeToLive = timeToLive;
             h = new RationalNumber(j - i + 1, 2);
             pattern = text.ToString(i, h.Ceil());
+            RemoveTime = -1;
             stringMatchingAlgorithm = new StringMatchingAlgorithm(text, pattern, i + 1);
         }
 
         public void WarmUp(int fromLength, int toLength)
         {
             var repetitions = new List<Repetition>();
+            stateStack.Clear();
+            stateStack.Push(new CatcherState(repetitions.ToImmutableArray(), stringMatchingAlgorithm.State));
             for (var textLength = fromLength; textLength < toLength; ++textLength)
             {
                 repetitions = UpdateRepetitions(repetitions, textLength);
                 if (stringMatchingAlgorithm.CheckForMatch(textLength))
                 {
-                    repetitions.Add(Update(new Repetition(I - 1, text.Length - h.Ceil() - I)));
+                    repetitions.Add(UpdateRepetition(new Repetition(I - 1, text.Length - h.Ceil() - I)));
                 }
+                stateStack.Push(new CatcherState(repetitions.ToImmutableArray(), stringMatchingAlgorithm.State));
             }
-            stateStack.Clear();
-            stateStack.Push(new CatcherState(repetitions.ToImmutableArray(), stringMatchingAlgorithm.State));
         }
 
         public bool TryCatch(out Repetition foundRepetition)
@@ -45,7 +47,7 @@ namespace RepetitionDetection.Catching
             var newRepetitions = UpdateRepetitions(stateStack.Peek().Repetitions, text.Length);
             if (stringMatchingAlgorithm.CheckForMatch(text.Length))
             {
-                newRepetitions.Add(Update(new Repetition(I - 1, text.Length - h.Ceil() - I)));
+                newRepetitions.Add(UpdateRepetition(new Repetition(I - 1, text.Length - h.Ceil() - I)));
             }
             foundRepetition = newRepetitions.FirstOrDefault(FoundRepetition);
             stateStack.Push(new CatcherState(newRepetitions.ToImmutableArray(), stringMatchingAlgorithm.State));
@@ -61,11 +63,11 @@ namespace RepetitionDetection.Catching
         {
             return repetitions
                 .Where(rep => rep.Period >= textLength || text[textLength - 1] == text[textLength - 1 - rep.Period])
-                .Select(Update)
+                .Select(UpdateRepetition)
                 .ToList();
         }
 
-        private Repetition Update(Repetition repetition)
+        private Repetition UpdateRepetition(Repetition repetition)
         {
             var lp = repetition.LeftPosition;
             var r = ((e - 1) * repetition.Period / Math.Max(h.Floor(), 1)).Ceil();
@@ -88,13 +90,13 @@ namespace RepetitionDetection.Catching
 
         public bool IsActive()
         {
-            return CreationTime <= text.Length && (DeletionTime < 0 || text.Length < DeletionTime);
+            return RemoveTime < 0;
         }
 
         public bool ShouldBeDeleted()
         {
-            return (DeletionTime >= 0 && text.Length - DeletionTime > TimeToLive) ||
-                   CreationTime - text.Length > TimeToLive;
+            return !IsActive() && (RemoveTime > text.Length  && RemoveTime - text.Length > TimeToLive ||
+                   RemoveTime < text.Length && text.Length - RemoveTime > TimeToLive);
         }
 
         public override string ToString()
@@ -104,8 +106,7 @@ namespace RepetitionDetection.Catching
 
         private readonly int I, J;
 
-        public int CreationTime { get; set; }
-        public int DeletionTime { get; set; }
+        public int RemoveTime;
 
         [NotNull]
         private readonly string pattern;
