@@ -23,8 +23,12 @@ namespace RepetitionDetection.Catching
             h = new RationalNumber(j - i + 1, 2);
             pattern = text.ToString(i, h.Ceil());
             stringMatchingAlgorithm = new StringMatchingAlgorithm(text, pattern, i + 1);
+        }
+
+        public void WarmUp(int fromLength, int toLength)
+        {
             var repetitions = new List<Repetition>();
-            for (var textLength = J + 2; textLength < text.Length; ++textLength)
+            for (var textLength = fromLength; textLength < toLength; ++textLength)
             {
                 repetitions = UpdateRepetitions(repetitions, textLength);
                 if (stringMatchingAlgorithm.CheckForMatch(textLength))
@@ -32,6 +36,7 @@ namespace RepetitionDetection.Catching
                     repetitions.Add(Update(new Repetition(I - 1, text.Length - h.Ceil() - I)));
                 }
             }
+            stateStack.Clear();
             stateStack.Push(new CatcherState(repetitions.ToImmutableArray(), stringMatchingAlgorithm.State));
         }
 
@@ -77,8 +82,8 @@ namespace RepetitionDetection.Catching
             if (stateStack.Count > 1)
             {
                 stateStack.Pop();
-                stringMatchingAlgorithm.SetState(stateStack.Peek().StringMatchingState);
             }
+            stringMatchingAlgorithm.SetState(stateStack.Peek().StringMatchingState);
         }
 
         public bool IsActive()

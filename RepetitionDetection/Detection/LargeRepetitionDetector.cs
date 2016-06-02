@@ -52,7 +52,7 @@ namespace RepetitionDetection.Detection
             for (var deg2 = 1; deg2*s <= n && n%deg2 == 0; deg2 *= 2)
             {
                 CreateCatcher(deg2);
-                if (n%(deg2*2) == 0)
+                if (n%(deg2*2) == 0 && n <= deg2 * 2 * s)
                 {
                     var l = n - 1 - deg2*2*s;
                     var m = n - 1 - deg2*2*s + deg2;
@@ -108,6 +108,7 @@ namespace RepetitionDetection.Detection
                 var i = interval.R;
                 var j = Math.Max(i, n - 1 - (new RationalNumber(s)/e*deg2).Ceil());
                 var catcher = new Catcher(text, i, j, e, detectEqual, deg2);
+                catcher.WarmUp(j + 2, text.Length);
                 catcher.CreationTime = n;
                 catcher.DeletionTime = -1;
                 catchers[interval] = catcher;

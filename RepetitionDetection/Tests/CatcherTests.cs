@@ -18,6 +18,7 @@ namespace RepetitionDetection.Tests
             sb.Append(text.Substring(0, 8));
 
             var catcher = new Catcher(sb, 5, 6, e, true, 200);
+            catcher.WarmUp(8, 8);
             var repetitions = new List<Repetition>();
             for (var i = 8; i < text.Length; ++i)
             {
@@ -43,6 +44,7 @@ namespace RepetitionDetection.Tests
             sb.Append(text.Substring(0, 8));
 
             var catcher = new Catcher(sb, 5, 6, e, true, 200);
+            catcher.WarmUp(8, 8);
             var repetitions = new List<Repetition>();
             for (var i = 8; i < text.Length; ++i)
             {
@@ -68,6 +70,7 @@ namespace RepetitionDetection.Tests
             sb.Append(text.Substring(0, 8));
 
             var catcher = new Catcher(sb, 5, 6, e, false, 200);
+            catcher.WarmUp(8, 8);
             var repetitions = new List<Repetition>();
             for (var i = 8; i < text.Length; ++i)
             {
@@ -93,6 +96,7 @@ namespace RepetitionDetection.Tests
             sb.Append(text.Substring(0, 8));
 
             var catcher = new Catcher(sb, 5, 6, e, false, 200);
+            catcher.WarmUp(8, 8);
             var repetitions = new List<Repetition>();
             for (var i = 8; i < text.Length; ++i)
             {
@@ -118,6 +122,7 @@ namespace RepetitionDetection.Tests
             sb.Append(text.Substring(0, 8));
 
             var catcher = new Catcher(sb, 5, 6, e, true, 200);
+            catcher.WarmUp(8, 8);
             Repetition rep;
             for (var i = 8; i < text.Length; ++i)
             {
