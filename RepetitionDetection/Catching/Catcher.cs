@@ -30,7 +30,6 @@ namespace RepetitionDetection.Catching
         {
             var repetitions = new List<Repetition>();
             stateStack.Clear();
-            stateStack.Push(new CatcherState(repetitions.ToImmutableArray(), stringMatchingAlgorithm.State));
             for (var textLength = fromLength; textLength < toLength; ++textLength)
             {
                 repetitions = UpdateRepetitions(repetitions, textLength);
@@ -90,12 +89,12 @@ namespace RepetitionDetection.Catching
 
         public bool IsActive()
         {
-            return RemoveTime < 0;
+            return RemoveTime < 0 || text.Length < RemoveTime;
         }
 
         public bool ShouldBeDeleted()
         {
-            return !IsActive() && (RemoveTime > text.Length  && RemoveTime - text.Length > TimeToLive ||
+            return RemoveTime >= 0 && (RemoveTime > text.Length  && RemoveTime - text.Length > TimeToLive ||
                    RemoveTime < text.Length && text.Length - RemoveTime > TimeToLive);
         }
 
@@ -104,7 +103,7 @@ namespace RepetitionDetection.Catching
             return string.Format("Catcher {{I={0},J={1}}}", I, J);
         }
 
-        private readonly int I, J;
+        public readonly int I, J;
 
         public int RemoveTime;
 

@@ -106,23 +106,24 @@ namespace RepetitionDetection.Detection
                 return;
             Catcher catcher;
             if (!catchers.TryGetValue(interval, out catcher))
+            {
                 throw new InvalidProgramStateException(string.Format("Can't find catcher for interval: {0}", interval));
-            if (catcher.RemoveTime < 0)
-                catcher.RemoveTime = text.Length;
+            }
+            catcher.RemoveTime = text.Length;
         }
 
         private void CreateCatcher(CatcherInterval interval)
         {
             if (interval.L < -1)
                 return;
-            var n = text.Length;
+            var n = interval.L + 1 + s * interval.Length;
             Catcher catcher;
+            var i = interval.R;
+            var j = Math.Max(i, n - 1 - (new RationalNumber(s) / e * interval.Length).Ceil());
             if (!catchers.TryGetValue(interval, out catcher))
             {
-                var i = interval.R;
-                var j = Math.Max(i, n - 1 - (new RationalNumber(s)/e*interval.Length).Ceil());
                 catcher = new Catcher(text, i, j, e, detectEqual, interval.Length);
-                catcher.WarmUp(j + 2, n);
+                catcher.WarmUp(j + 2, text.Length);
                 catchers[interval] = catcher;
             }
             catcher.RemoveTime = -1;

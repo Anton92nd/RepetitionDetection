@@ -16,7 +16,7 @@ namespace RepetitionDetection.TextGeneration
             return result;
         }
 
-        private static void Generate(StringBuilder text, RepetitionDetector detector, List<string> result, int alphabetSize)
+        private static void Generate(StringBuilder text, IDetector detector, List<string> result, int alphabetSize)
         {
             Repetition repetition;
             var foundSymbol = false;
