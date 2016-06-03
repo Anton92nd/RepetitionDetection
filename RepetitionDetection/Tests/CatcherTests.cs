@@ -15,12 +15,12 @@ namespace RepetitionDetection.Tests
             var text = "xxxxaceorsuvaceo";
             var e = new RationalNumber(3, 2);
             var sb = new StringBuilder();
-            sb.Append(text.Substring(0, 8));
+            sb.Append(text.Substring(0, 9));
 
             var catcher = new Catcher(sb, 5, 6, e, true, 200);
-            catcher.WarmUp(8, 8);
+            catcher.WarmUp(8, 9);
             var repetitions = new List<Repetition>();
-            for (var i = 8; i < text.Length; ++i)
+            for (var i = 9; i < text.Length; ++i)
             {
                 sb.Append(text[i]);
                 Repetition rep;
@@ -41,12 +41,12 @@ namespace RepetitionDetection.Tests
             var text = "xxxvaceorsuvace";
             var e = new RationalNumber(3, 2);
             var sb = new StringBuilder();
-            sb.Append(text.Substring(0, 8));
+            sb.Append(text.Substring(0, 9));
 
             var catcher = new Catcher(sb, 5, 6, e, true, 200);
-            catcher.WarmUp(8, 8);
+            catcher.WarmUp(8, 9);
             var repetitions = new List<Repetition>();
-            for (var i = 8; i < text.Length; ++i)
+            for (var i = 9; i < text.Length; ++i)
             {
                 sb.Append(text[i]);
                 Repetition rep;
@@ -67,12 +67,12 @@ namespace RepetitionDetection.Tests
             var text = "xxxxaceorsuvaceor";
             var e = new RationalNumber(3, 2);
             var sb = new StringBuilder();
-            sb.Append(text.Substring(0, 8));
+            sb.Append(text.Substring(0, 9));
 
             var catcher = new Catcher(sb, 5, 6, e, false, 200);
-            catcher.WarmUp(8, 8);
+            catcher.WarmUp(8, 9);
             var repetitions = new List<Repetition>();
-            for (var i = 8; i < text.Length; ++i)
+            for (var i = 9; i < text.Length; ++i)
             {
                 sb.Append(text[i]);
                 Repetition rep;
@@ -93,12 +93,12 @@ namespace RepetitionDetection.Tests
             var text = "xxxvaceorsuvaceo";
             var e = new RationalNumber(3, 2);
             var sb = new StringBuilder();
-            sb.Append(text.Substring(0, 8));
+            sb.Append(text.Substring(0, 9));
 
             var catcher = new Catcher(sb, 5, 6, e, false, 200);
-            catcher.WarmUp(8, 8);
+            catcher.WarmUp(8, 9);
             var repetitions = new List<Repetition>();
-            for (var i = 8; i < text.Length; ++i)
+            for (var i = 9; i < text.Length; ++i)
             {
                 sb.Append(text[i]);
                 Repetition rep;
@@ -119,12 +119,12 @@ namespace RepetitionDetection.Tests
             var text = "xxxxaceorsuvaceo";
             var e = new RationalNumber(3, 2);
             var sb = new StringBuilder();
-            sb.Append(text.Substring(0, 8));
+            sb.Append(text.Substring(0, 9));
 
             var catcher = new Catcher(sb, 5, 6, e, true, 200);
-            catcher.WarmUp(8, 8);
+            catcher.WarmUp(8, 9);
             Repetition rep;
-            for (var i = 8; i < text.Length; ++i)
+            for (var i = 9; i < text.Length; ++i)
             {
                 sb.Append(text[i]);
                 catcher.TryCatch(out rep);
