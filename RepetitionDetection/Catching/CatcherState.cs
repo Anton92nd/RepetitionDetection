@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 using RepetitionDetection.Commons;
 using RepetitionDetection.StringMatching;
@@ -7,7 +7,7 @@ namespace RepetitionDetection.Catching
 {
     public class CatcherState
     {
-        public CatcherState(ImmutableArray<Repetition> repetitions, StringMatchingState stringMatchingState)
+        public CatcherState([NotNull] List<Repetition> repetitions, StringMatchingState stringMatchingState)
         {
             Repetitions = repetitions;
             StringMatchingState = stringMatchingState;
@@ -15,6 +15,6 @@ namespace RepetitionDetection.Catching
 
         public StringMatchingState StringMatchingState { get; private set; }
 
-        public ImmutableArray<Repetition> Repetitions { get; private set; }
+        public List<Repetition> Repetitions { get; private set; }
     }
 }

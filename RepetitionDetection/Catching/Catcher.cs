@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
@@ -37,7 +36,7 @@ namespace RepetitionDetection.Catching
                 {
                     repetitions.Add(UpdateRepetition(new Repetition(I - 1, textLength - h.Ceil() - I)));
                 }
-                stateStack.Push(new CatcherState(repetitions.ToImmutableArray(), stringMatchingAlgorithm.State));
+                stateStack.Push(new CatcherState(repetitions, stringMatchingAlgorithm.State));
             }
         }
 
@@ -49,7 +48,7 @@ namespace RepetitionDetection.Catching
                 newRepetitions.Add(UpdateRepetition(new Repetition(I - 1, text.Length - h.Ceil() - I)));
             }
             foundRepetition = newRepetitions.FirstOrDefault(FoundRepetition);
-            stateStack.Push(new CatcherState(newRepetitions.ToImmutableArray(), stringMatchingAlgorithm.State));
+            stateStack.Push(new CatcherState(newRepetitions, stringMatchingAlgorithm.State));
             return foundRepetition.Period > 0;
         }
 
@@ -58,7 +57,7 @@ namespace RepetitionDetection.Catching
             return text.Length - (repetition.LeftPosition + 1) - (detectEqual ? 0 : 1) >= (e*repetition.Period).Ceil();
         }
 
-        private List<Repetition> UpdateRepetitions(IEnumerable<Repetition> repetitions, int textLength)
+        private List<Repetition> UpdateRepetitions(List<Repetition> repetitions, int textLength)
         {
             return repetitions
                 .Where(rep => rep.Period >= textLength || text[textLength - 1] == text[textLength - 1 - rep.Period])
