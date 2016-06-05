@@ -7,16 +7,14 @@ namespace RepetitionDetection.TextGeneration
 {
     public static class AllWordsGenerator
     {
-        public static List<string> Generate(int alphabetSize, RationalNumber e, bool detectEqual)
+        public static List<string> Generate(Detector detector, int alphabetSize)
         {
             var result = new List<string>();
-            var sb = new StringBuilder();
-            var detector = new RepetitionDetector(sb, e, detectEqual);
-            Generate(sb, detector, result, alphabetSize);
+            Generate(detector.Text, detector, result, alphabetSize);
             return result;
         }
 
-        private static void Generate(StringBuilder text, IDetector detector, List<string> result, int alphabetSize)
+        private static void Generate(StringBuilder text, Detector detector, List<string> result, int alphabetSize)
         {
             Repetition repetition;
             var foundSymbol = false;
