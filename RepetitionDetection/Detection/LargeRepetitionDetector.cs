@@ -79,6 +79,12 @@ namespace RepetitionDetection.Detection
             DeleteCatchers();
         }
 
+        public override void Reset()
+        {
+            catchers.Clear();
+            Text.Clear();
+        }
+
         private void DeleteCatchers()
         {
             var catchersToDelete = catchers

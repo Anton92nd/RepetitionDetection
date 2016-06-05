@@ -69,6 +69,32 @@ namespace RepetitionDetection.Commons
             return a - new RationalNumber(b);
         }
 
+        public static bool operator <(RationalNumber a, RationalNumber b)
+        {
+            var lcm = Lcm(a.Denom, b.Denom);
+            var k1 = lcm/a.Denom;
+            var k2 = lcm/b.Denom;
+            return a.Num*k1 < b.Num*k2;
+        }
+
+        public static bool operator <=(RationalNumber a, RationalNumber b)
+        {
+            var lcm = Lcm(a.Denom, b.Denom);
+            var k1 = lcm / a.Denom;
+            var k2 = lcm / b.Denom;
+            return a.Num * k1 <= b.Num * k2;
+        }
+
+        public static bool operator >(RationalNumber a, RationalNumber b)
+        {
+            return b < a;
+        }
+
+        public static bool operator >=(RationalNumber a, RationalNumber b)
+        {
+            return b <= a;
+        }
+
         [Pure]
         public int Ceil()
         {

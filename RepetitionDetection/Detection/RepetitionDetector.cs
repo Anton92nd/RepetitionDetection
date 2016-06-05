@@ -35,5 +35,12 @@ namespace RepetitionDetection.Detection
             }
             skipBacktrack = false;
         }
+
+        public override void Reset()
+        {
+            smallRepetitionsDetector.Reset();
+            largeRepetitionsDetector.Reset();
+            skipBacktrack = false;
+        }
     }
 }

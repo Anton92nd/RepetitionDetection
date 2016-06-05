@@ -18,9 +18,8 @@ namespace RepetitionDetection.Detection
         {
             repetition = new Repetition(0, 0);
             var n = Text.Length;
-            while (suffixFunction.Count < Text.Length)
-                suffixFunction.Add(0);
-            suffixFunction[0] = 0;
+            suffixFunction.Clear();
+            suffixFunction.Add(0);
             var result = false;
             var period = 0;
             for (var i = 1; i < Text.Length && !result; ++i)
@@ -30,19 +29,31 @@ namespace RepetitionDetection.Detection
                     j = suffixFunction[j - 1];
                 if (Text[n - 1 - i] == Text[n - 1 - j])
                     j++;
-                suffixFunction[i] = j;
+                suffixFunction.Add(j);
                 period = Math.Max(period, i + 1 - suffixFunction[i]);
-                if (i + 1 - (DetectEqual ? 0 : 1) >= (E * period).Ceil())
+                var rep = new Repetition(n - i - 2, period);
+                if (FoundRepetition(rep))
                 {
-                    repetition = new Repetition(n - 2 - i, period);
+                    repetition = rep;
                     result = true;
                 }
             }
             return result;
         }
 
+        private bool FoundRepetition(Repetition repetition)
+        {
+            return DetectEqual ? new RationalNumber(Text.Length - (repetition.LeftPosition + 1), repetition.Period) >= E
+                : new RationalNumber(Text.Length - (repetition.LeftPosition + 1), repetition.Period) > E;
+        }
+
         public override void BackTrack()
         {
+        }
+
+        public override void Reset()
+        {
+            Text.Clear();
         }
     }
 }

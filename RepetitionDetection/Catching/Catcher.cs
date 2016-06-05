@@ -54,7 +54,8 @@ namespace RepetitionDetection.Catching
 
         private bool FoundRepetition(Repetition repetition)
         {
-            return text.Length - (repetition.LeftPosition + 1) - (detectEqual ? 0 : 1) >= (e*repetition.Period).Ceil();
+            return detectEqual ? new RationalNumber(text.Length - (repetition.LeftPosition + 1), repetition.Period) >= e
+                : new RationalNumber(text.Length - (repetition.LeftPosition + 1), repetition.Period) > e;
         }
 
         private List<Repetition> UpdateRepetitions(List<Repetition> repetitions, int textLength)
