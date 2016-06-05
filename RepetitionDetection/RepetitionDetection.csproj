@@ -66,7 +66,7 @@
     <Compile Include="CriticalFactorization\Factorizer.cs" />
     <Compile Include="CriticalFactorization\PrefixFactorizer.cs" />
     <Compile Include="Detection\LargeRepetitionDetector.cs" />
-    <Compile Include="Detection\IDetector.cs" />
+    <Compile Include="Detection\Detector.cs" />
     <Compile Include="Detection\RepetitionDetector.cs" />
     <Compile Include="Detection\SillyDetector.cs" />
     <Compile Include="Detection\SmallRepetitionDetector.cs" />

@@ -3,41 +3,37 @@ using RepetitionDetection.Commons;
 
 namespace RepetitionDetection.Detection
 {
-    public class RepetitionDetector : IDetector
+    public class RepetitionDetector : Detector
     {
-        private readonly IDetector smallRepetitionsDetector;
-        private readonly IDetector largeRepetitionsDetector;
-        private bool SkipBacktrack;
+        private readonly Detector smallRepetitionsDetector;
+        private readonly Detector largeRepetitionsDetector;
+        private bool skipBacktrack;
 
-        public RepetitionDetector(StringBuilder text, RationalNumber e, bool detectEqual)
-        {
-            if (text.Length > 0)
-            {
-                throw new InvalidUsageException("Text must be empty when creating LargeRepetitionDetector");
-            }
+        public RepetitionDetector(StringBuilder text, RationalNumber e, bool detectEqual) : base(text, e, detectEqual)
+        {    
             smallRepetitionsDetector = new SmallRepetitionDetector(text, e, detectEqual);
             largeRepetitionsDetector = new LargeRepetitionDetector(text, e, detectEqual);
-            SkipBacktrack = false;
+            skipBacktrack = false;
         }
 
-        public bool TryDetect(out Repetition repetition)
+        public override bool TryDetect(out Repetition repetition)
         {
             if (smallRepetitionsDetector.TryDetect(out repetition))
             {
-                SkipBacktrack = true;
+                skipBacktrack = true;
                 return true;
             }
             return largeRepetitionsDetector.TryDetect(out repetition);
         }
 
-        public void BackTrack()
+        public override void BackTrack()
         {
-            if (!SkipBacktrack)
+            if (!skipBacktrack)
             {
                 largeRepetitionsDetector.BackTrack();
                 smallRepetitionsDetector.BackTrack();
             }
-            SkipBacktrack = false;
+            skipBacktrack = false;
         }
     }
 }

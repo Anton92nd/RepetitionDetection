@@ -8,22 +8,14 @@ using RepetitionDetection.Commons;
 
 namespace RepetitionDetection.Detection
 {
-    public class LargeRepetitionDetector : IDetector
+    public class LargeRepetitionDetector : Detector
     {
-        public LargeRepetitionDetector([NotNull] StringBuilder text, RationalNumber e, bool detectEqual)
+        public LargeRepetitionDetector([NotNull] StringBuilder text, RationalNumber e, bool detectEqual) : base(text, e, detectEqual)
         {
-            if (text.Length > 0)
-            {
-                throw new InvalidUsageException("Text must be empty when creating LargeRepetitionDetector");
-            }
-            this.text = text;
-            this.e = e;
-            this.detectEqual = detectEqual;
-            s = (e/(e - 1)).Ceil();
             catchers = new Dictionary<CatcherInterval, Catcher>();
         }
 
-        public bool TryDetect(out Repetition repetition)
+        public override bool TryDetect(out Repetition repetition)
         {
             repetition = new Repetition(0, 0);
 
@@ -48,15 +40,15 @@ namespace RepetitionDetection.Detection
 
         private void UpdateCatchers(bool reverse)
         {
-            var n = text.Length;
-            for (var deg2 = 1; deg2*s <= n && n%deg2 == 0; deg2 *= 2)
+            var n = Text.Length;
+            for (var deg2 = 1; deg2*S <= n && n%deg2 == 0; deg2 *= 2)
             {
-                UpdateCatcher(new CatcherInterval(n - 1 - deg2 * s, n - 1 - deg2 * (s - 1)), reverse);
+                UpdateCatcher(new CatcherInterval(n - 1 - deg2 * S, n - 1 - deg2 * (S - 1)), reverse);
                 if (n%(deg2*2) == 0)
                 {
-                    var l = n - 1 - deg2*2*s;
-                    var m = n - 1 - deg2*2*s + deg2;
-                    var r = n - 1 - deg2*2*(s - 1);
+                    var l = n - 1 - deg2*2*S;
+                    var m = n - 1 - deg2*2*S + deg2;
+                    var r = n - 1 - deg2*2*(S - 1);
                     UpdateCatcher(new CatcherInterval(l, m), !reverse);
                     UpdateCatcher(new CatcherInterval(m, r), !reverse);
                 }
@@ -75,7 +67,7 @@ namespace RepetitionDetection.Detection
             }
         }
 
-        public void BackTrack()
+        public override void BackTrack()
         {
             foreach (var catcher in catchers.Values)
             {
@@ -109,32 +101,26 @@ namespace RepetitionDetection.Detection
             {
                 throw new InvalidProgramStateException(string.Format("Can't find catcher for interval: {0}", interval));
             }
-            catcher.RemoveTime = text.Length;
+            catcher.RemoveTime = Text.Length;
         }
 
         private void CreateCatcher(CatcherInterval interval)
         {
             if (interval.L < -1)
                 return;
-            var n = interval.L + 1 + s * interval.Length;
+            var n = interval.L + 1 + S * interval.Length;
             Catcher catcher;
             var i = interval.R;
-            var j = Math.Max(i, n - 1 - (new RationalNumber(s) / e * interval.Length).Ceil());
+            var j = Math.Max(i, n - 1 - (new RationalNumber(S) / E * interval.Length).Ceil());
             if (!catchers.TryGetValue(interval, out catcher))
             {
-                catcher = new Catcher(text, i, j, e, detectEqual, interval.Length);
-                catcher.WarmUp(j + 2, text.Length);
+                catcher = new Catcher(Text, i, j, E, DetectEqual, interval.Length);
+                catcher.WarmUp(j + 2, Text.Length);
                 catchers[interval] = catcher;
             }
             catcher.RemoveTime = -1;
         }
 
         private readonly Dictionary<CatcherInterval, Catcher> catchers;
-
-        [NotNull]
-        private readonly StringBuilder text;
-        private readonly RationalNumber e;
-        private readonly bool detectEqual;
-        private readonly int s;
     }
 }

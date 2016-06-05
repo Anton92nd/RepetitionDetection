@@ -5,35 +5,31 @@ using RepetitionDetection.Commons;
 
 namespace RepetitionDetection.Detection
 {
-    public class SmallRepetitionDetector : IDetector
+    public class SmallRepetitionDetector : Detector
     {
-        public SmallRepetitionDetector([NotNull] StringBuilder text, RationalNumber e, bool detectEqual)
+        public SmallRepetitionDetector([NotNull] StringBuilder text, RationalNumber e, bool detectEqual) : base(text, e, detectEqual)
         {
-            this.text = text;
-            var s = (e/(e - 1)).Ceil();
-            lastSymbolsCount = s - 1;
-            this.detectEqual = detectEqual;
-            this.e = e;
+            lastSymbolsCount = S - 1;
             suffixFunction = new int[lastSymbolsCount];
         }
 
-        public bool TryDetect(out Repetition repetition)
+        public override bool TryDetect(out Repetition repetition)
         {
             repetition = new Repetition(0, 0);
             var result = false;
-            var n = text.Length;
+            var n = Text.Length;
             suffixFunction[0] = 0;
             var period = 1;
-            for (var i = 1; i < Math.Min(lastSymbolsCount, text.Length) && !result; ++i)
+            for (var i = 1; i < Math.Min(lastSymbolsCount, Text.Length) && !result; ++i)
             {
                 var j = suffixFunction[i - 1];
-                while (j > 0 && text[n - 1 - i] != text[n - 1 - j])
+                while (j > 0 && Text[n - 1 - i] != Text[n - 1 - j])
                     j = suffixFunction[j - 1];
-                if (text[n - 1 - i] == text[n - 1 - j])
+                if (Text[n - 1 - i] == Text[n - 1 - j])
                     j++;
                 suffixFunction[i] = j;
                 period = Math.Max(period, i + 1 - suffixFunction[i]);
-                if (i + 1 - (detectEqual ? 0 : 1) >= (e*period).Ceil())
+                if (i + 1 - (DetectEqual ? 0 : 1) >= (E*period).Ceil())
                 {
                     repetition = new Repetition(n - 2 - i, period);
                     result = true;
@@ -42,16 +38,11 @@ namespace RepetitionDetection.Detection
             return result;
         }
 
-        public void BackTrack()
+        public override void BackTrack()
         {
         }
 
-        [NotNull]
-        private readonly StringBuilder text;
-
-        private readonly RationalNumber e;
         private readonly int lastSymbolsCount;
-        private readonly bool detectEqual;
         private readonly int[] suffixFunction;
     }
 }
