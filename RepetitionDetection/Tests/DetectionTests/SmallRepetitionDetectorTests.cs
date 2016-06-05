@@ -11,7 +11,7 @@ namespace RepetitionDetection.Tests.DetectionTests
         [TestCase(7, 6, "aba", -1, 2, true, true)]
         [TestCase(7, 6, "abc", 0, 0, true, false)]
         [TestCase(7, 4, "abacacc", 4, 1, true, true)]
-        [TestCase(7, 4, "abacacc", 0, 0, false, false)]
+        [TestCase(7, 4, "abacacb", 0, 0, false, false)]
         public void Test(int num,  int denom, string text, int expectedLeftPosition, int expectedPeriod, bool detectEqual, bool result)
         {
             var e = new RationalNumber(num, denom);
