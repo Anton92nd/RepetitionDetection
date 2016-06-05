@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 using RepetitionDetection.Commons;
 using RepetitionDetection.Detection;
 
@@ -10,30 +9,37 @@ namespace RepetitionDetection.TextGeneration
         public static List<string> Generate(Detector detector, int alphabetSize)
         {
             var result = new List<string>();
-            Generate(detector.Text, detector, result, alphabetSize);
-            return result;
-        }
-
-        private static void Generate(StringBuilder text, Detector detector, List<string> result, int alphabetSize)
-        {
-            Repetition repetition;
-            var foundSymbol = false;
-            for (var i = 0; i < alphabetSize; i++)
+            var text = detector.Text;
+            var found = new List<bool>{false};
+            text.Append('a');
+            while (text.Length > 0)
             {
-                var c = (char) ('a' + i);
-                text.Append(c);
-                if (!detector.TryDetect(out repetition))
+                if (text[text.Length - 1] - 'a' + 1 > alphabetSize)
                 {
-                    foundSymbol = true;
-                    Generate(text, detector, result, alphabetSize);
+                    if (text.Length == 1)
+                        break;
+                    text.Remove(text.Length - 1, 1);
+                    detector.BackTrack();
+                    if (!found[text.Length])
+                        result.Add(text.ToString());
+                    found.RemoveAt(found.Count - 1);
+                    text[text.Length - 1]++;
+                    continue;
                 }
-                detector.BackTrack();
-                text.Remove(text.Length - 1, 1);
+                Repetition repetition;
+                if (detector.TryDetect(out repetition))
+                {
+                    detector.BackTrack();
+                    text[text.Length - 1]++;
+                }
+                else
+                {
+                    found[text.Length - 1] = true;
+                    text.Append('a');
+                    found.Add(false);
+                }
             }
-            if (!foundSymbol)
-            {
-                result.Add(text.ToString());
-            }
+            return result;
         }
     }
 }
