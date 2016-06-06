@@ -25,7 +25,8 @@ namespace RepetitionDetection.TextGeneration
             text.EnsureCapacity(length);
             while (text.Length < length)
             {
-                //Console.Write("\rText length: {0}   ", text.Length);
+                //if (text.Length % 1000 == 0)
+                //    Console.Write("\rText length: {0}   ", text.Length);
                 text.Append(GetRandomChar(alphabetSize));
                 Repetition repetition;
                 if (detector.TryDetect(out repetition))
@@ -38,6 +39,7 @@ namespace RepetitionDetection.TextGeneration
                     }
                 }
             }
+            //Console.Write("\r");
             return text;
         }
     }

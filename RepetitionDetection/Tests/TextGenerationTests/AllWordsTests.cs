@@ -12,10 +12,6 @@ namespace RepetitionDetection.Tests.TextGenerationTests
     [TestFixture]
     public class AllWordsTests
     {
-        public static void Main()
-        {
-        }
-
         [TestCase(3, 7, 5, true, new [] { "abca", "acba", "bacb", "bcab", "cabc", "cbac" }, typeof(SillyDetector))]
         [TestCase(3, 7, 5, true ,new [] { "abca", "acba", "bacb", "bcab", "cabc", "cbac" }, typeof(RepetitionDetector))]
         [TestCase(4, 7, 6, true, new[]
@@ -63,6 +59,8 @@ namespace RepetitionDetection.Tests.TextGenerationTests
         [TestCase(3, 7, 4, true, "sygma3.txt", typeof(RepetitionDetector))]
         [TestCase(4, 7, 5, true, "sygma4.txt", typeof(SillyDetector))]
         [TestCase(4, 7, 5, true, "sygma4.txt", typeof(RepetitionDetector))]
+        [TestCase(4, 4, 3, false, "sygma4+.txt", typeof(SillyDetector))]
+        [TestCase(4, 4, 3, false, "sygma4+.txt", typeof(RepetitionDetector))]
         public void LargeTests(int alphabet, int numerator, int denominator, bool detectEqual, string fileName, Type detectorType)
         {
             var resultPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "Tests", "Files", fileName);
