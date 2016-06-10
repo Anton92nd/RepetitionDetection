@@ -56,6 +56,9 @@
     <Compile Include="Catching\Catcher.cs" />
     <Compile Include="Catching\CatcherInterval.cs" />
     <Compile Include="Catching\CatcherState.cs" />
+    <Compile Include="CharGenerators\ByTailCharGenerator.cs" />
+    <Compile Include="CharGenerators\ICharGenerator.cs" />
+    <Compile Include="CharGenerators\RandomCharGenerator.cs" />
     <Compile Include="Commons\CharGreaterComparer.cs" />
     <Compile Include="Commons\CharLessComparer.cs" />
     <Compile Include="Commons\InvalidProgramStateException.cs" />
