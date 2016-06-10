@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
+using RepetitionDetection.CharGenerators;
 using RepetitionDetection.Commons;
 using RepetitionDetection.Detection;
 using RepetitionDetection.TextGeneration;
@@ -22,12 +23,13 @@ namespace RepetitionDetection.Tests.TextGenerationTests
         [TestCase(4, 7, 4, false, typeof(SillyDetector))]
         public void TestDetector(int alphabet, int numerator, int denominator, bool detectEqual, Type detectorType)
         {
+            var generator = new RandomCharGenerator(alphabet);
             var detector = GetDetector(detectorType, detectEqual, new RationalNumber(numerator, denominator));
             foreach (var length in Lengths)
             {
                 detector.Reset();
                 var sw = Stopwatch.StartNew();
-                RandomWordGenerator.Generate(detector, alphabet, length, new RemoveBorderStrategy());
+                RandomWordGenerator.Generate(detector, length, new RemoveBorderStrategy(), generator);
                 sw.Stop();
                 Console.WriteLine("Length: {0}\n\tTime: {1} ms\n\tConversion coeff: {2:0.000000}", length, sw.ElapsedMilliseconds, RandomWordGenerator.CharsGenerated * 1.0 / length);
             }
@@ -36,10 +38,11 @@ namespace RepetitionDetection.Tests.TextGenerationTests
         [TestCase(3, 7, 4, true, typeof(RepetitionDetector), 10)]
         public void Test(int alphabet, int numerator, int denominator, bool detectEqual, Type detectorType, int length)
         {
+            var generator = new RandomCharGenerator(alphabet);
             var detector = GetDetector(detectorType, detectEqual, new RationalNumber(numerator, denominator));
             detector.Reset();
             var sw = Stopwatch.StartNew();
-            RandomWordGenerator.Generate(detector, alphabet, length, new RemoveBorderStrategy());
+            RandomWordGenerator.Generate(detector, length, new RemoveBorderStrategy(), generator);
             sw.Stop();
             Console.WriteLine("Length: {0}\n\tTime: {1} ms\n\tConversion coeff: {2:0.000000}", length, sw.ElapsedMilliseconds, RandomWordGenerator.CharsGenerated * 1.0 / length);
         }
@@ -57,13 +60,14 @@ namespace RepetitionDetection.Tests.TextGenerationTests
             var strategy = new RemoveBorderStrategy();
             var e = new RationalNumber(k, k - 1);
             var detector = new RepetitionDetector(new StringBuilder(), e, false);
+            var generator = new RandomCharGenerator(k);
             var charsGenerated = 0;
             var times = new List<long>();
             var coefs = new List<double>();
             var sw = Stopwatch.StartNew();
             foreach (var length in LengthsBoundary)
             {
-                RandomWordGenerator.Generate(detector, k, length, strategy);
+                RandomWordGenerator.Generate(detector, length, strategy, generator);
                 charsGenerated += RandomWordGenerator.CharsGenerated;
                 times.Add(sw.ElapsedMilliseconds);
                 coefs.Add(charsGenerated * 1.0 / length);

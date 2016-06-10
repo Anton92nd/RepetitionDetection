@@ -1,36 +1,36 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
+using JetBrains.Annotations;
+using RepetitionDetection.CharGenerators;
 using RepetitionDetection.Commons;
 using RepetitionDetection.Detection;
+using RepetitionDetection.Logging;
 using RepetitionDetection.TextGeneration.RemoveStrategies;
 
 namespace RepetitionDetection.TextGeneration
 {
     public static class RandomWordGenerator
     {
-        private static readonly Random Random = new Random(23);
-
         public static int CharsGenerated { get; private set; }
 
-        private static char GetRandomChar(int alphabetSize)
-        {
-            ++CharsGenerated;
-            return (char) Random.Next('a', 'a' + alphabetSize);
-        }
-
-        public static StringBuilder Generate(Detector detector, int alphabetSize, int length, IRemoveStrategy removeStrategy)
+        public static StringBuilder Generate([NotNull] Detector detector, int length, [NotNull] IRemoveStrategy removeStrategy,
+            [NotNull] ICharGenerator generator, [CanBeNull] IGeneratorLogger logger = null)
         {
             CharsGenerated = 0;
             var text = detector.Text;
             text.EnsureCapacity(length);
             while (text.Length < length)
             {
-                //if (text.Length % 1000 == 0)
-                //    Console.Write("\rText length: {0}   ", text.Length);
-                text.Append(GetRandomChar(alphabetSize));
+                if (logger != null)
+                    logger.LogBeforeGenerate(text);
+                text.Append(generator.Generate());
+                CharsGenerated++;
+                if (logger != null)
+                    logger.LogAfterGenerate(text);
                 Repetition repetition;
                 if (detector.TryDetect(out repetition))
                 {
+                    if (logger != null)
+                        logger.LogRepetition(text, repetition);
                     var charsToDelete = removeStrategy.GetCharsToDelete(text.Length, repetition);
                     for (var i = 0; i < charsToDelete; ++i)
                     {
@@ -39,7 +39,6 @@ namespace RepetitionDetection.TextGeneration
                     }
                 }
             }
-            //Console.Write("\r");
             return text;
         }
     }
