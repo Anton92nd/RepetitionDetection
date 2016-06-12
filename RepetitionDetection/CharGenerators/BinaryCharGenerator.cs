@@ -4,14 +4,14 @@ using RepetitionDetection.Commons;
 
 namespace RepetitionDetection.CharGenerators
 {
-    public class ByTailCharGenerator : ICharGenerator
+    public class BinaryCharGenerator : ICharGenerator
     {
         private readonly StringBuilder text;
         private readonly int k;
         private readonly Random random;
         private readonly bool[] used;
 
-        public ByTailCharGenerator(StringBuilder text, int alphabetSize)
+        public BinaryCharGenerator(StringBuilder text, int alphabetSize)
         {
             this.text = text;
             k = alphabetSize;
