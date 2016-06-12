@@ -59,6 +59,7 @@
     <Compile Include="CharGenerators\ByTailCharGenerator.cs" />
     <Compile Include="CharGenerators\ICharGenerator.cs" />
     <Compile Include="CharGenerators\RandomCharGenerator.cs" />
+    <Compile Include="CharGenerators\RandomNotLastCharGenerator.cs" />
     <Compile Include="Commons\CharGreaterComparer.cs" />
     <Compile Include="Commons\CharLessComparer.cs" />
     <Compile Include="Commons\InvalidProgramStateException.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Tests\DetectionTests\LargeRepetitionDetectorTests.cs" />
     <Compile Include="Tests\DetectionTests\RepetitionDetectorTests.cs" />
     <Compile Include="Tests\DetectionTests\SmallRepetitionDetectorTests.cs" />
+    <Compile Include="Tests\DetectionTests\SyncronizedTests.cs" />
     <Compile Include="Tests\MaximalSuffixTests\MaximalSuffixCalculatorGreaterTests.cs" />
     <Compile Include="Tests\MaximalSuffixTests\MaximalSuffixCalculatorLessTests.cs" />
     <Compile Include="Tests\PeriodCalculatorTests.cs" />
@@ -103,6 +105,7 @@
     <Compile Include="TextGeneration\RandomWordGenerator.cs" />
     <Compile Include="TextGeneration\RemoveStrategies\IRemoveStrategy.cs" />
     <Compile Include="TextGeneration\RemoveStrategies\RemoveBorderStrategy.cs" />
+    <Compile Include="TextGeneration\SyncronizedRandomWordGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

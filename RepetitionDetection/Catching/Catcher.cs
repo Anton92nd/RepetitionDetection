@@ -38,6 +38,8 @@ namespace RepetitionDetection.Catching
                 }
                 stateStack.Push(new CatcherState(repetitions, stringMatchingAlgorithm.State));
             }
+            if (stateStack.Count == 0)
+                stateStack.Push(new CatcherState(repetitions, stringMatchingAlgorithm.State));
         }
 
         public bool TryCatch(out Repetition foundRepetition)
@@ -94,7 +96,7 @@ namespace RepetitionDetection.Catching
 
         public bool ShouldBeDeleted()
         {
-            return RemoveTime >= 0 && (RemoveTime > text.Length  && RemoveTime - text.Length > TimeToLive ||
+            return text.Length <= J + 1 || RemoveTime >= 0 && (RemoveTime > text.Length  && RemoveTime - text.Length > TimeToLive ||
                    RemoveTime < text.Length && text.Length - RemoveTime > TimeToLive);
         }
 

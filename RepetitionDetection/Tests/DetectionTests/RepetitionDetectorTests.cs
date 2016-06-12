@@ -13,6 +13,8 @@ namespace RepetitionDetection.Tests.DetectionTests
         [TestCase("xxxxaceorsuvaceo", 3, 2, -1, 1, true)]
         [TestCase("acbacb", 7, 4, -1, 3, true)]
         [TestCase("abacbabcabacbcabcbacbca", 7, 4, 8, 8, true)]
+        [TestCase("dbacabaca", 2, 1, 0, 4, true)]
+        [TestCase("badab", 2, 1, 0, 0, true)]
         public void Test(string text, int num, int denom, int lp, int p, bool detectEqual)
         {
             var e = new RationalNumber(num, denom);

@@ -22,7 +22,7 @@ namespace RepetitionDetection.Detection
             suffixFunction.Add(0);
             var result = false;
             var period = 0;
-            for (var i = 1; i < Text.Length && !result; ++i)
+            for (var i = 1; i < n && !result; ++i)
             {
                 var j = suffixFunction[i - 1];
                 while (j > 0 && Text[n - 1 - i] != Text[n - 1 - j])
