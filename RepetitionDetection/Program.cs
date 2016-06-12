@@ -23,6 +23,7 @@ namespace RepetitionDetection
             //GenerateBoundaryUniform();
             //GenerateBoundaryBits();
             //GenerateSquare();
+            Generate3_7d4_plus();
         }
 
         private static void GenerateSquare()
@@ -47,9 +48,9 @@ namespace RepetitionDetection
             }
         }
 
-        private static void Generate5_7d5_plus()
+        private static void Generate4_7d5_plus()
         {
-            using (var outputStream = File.Open("D:\\statistics\\binary_5_7d5+.txt", FileMode.Create))
+            using (var outputStream = File.Open("D:\\statistics\\binary_4_7d5+.txt", FileMode.Create))
             using (var output = new StreamWriter(outputStream))
             {
                 var Runs = new[] {300, 300, 200, 200, 100, 100, 100, 50};
@@ -63,7 +64,7 @@ namespace RepetitionDetection
 
 
                     var e = new RationalNumber(7, 5);
-                    var generator = new BinaryCharGenerator(text, 5);
+                    var generator = new BinaryCharGenerator(text, 4);
                     var detector = new RepetitionDetector(text, e, false);
                     var removeStrategy = new RemoveBorderStrategy();
 
@@ -73,28 +74,27 @@ namespace RepetitionDetection
             }
         }
 
-        private static void Generate4_7d4_plus()
+        private static void Generate3_7d4_plus()
         {
-            using (var outputStream = File.Open("D:\\statistics\\binary_4_7d4+.txt", FileMode.Create))
+            using (var outputStream = File.Open("D:\\statistics\\binary_3_7d4+.txt", FileMode.Create))
             using (var output = new StreamWriter(outputStream))
             {
-                var Runs = new[] { 100, 100, 100, 50, 50 };
-                var lengths = new[] { 100, 200, 300, 400, 500 };
+                var Runs = new[] {   100, 100, 100, 100, 100 };
+                var lengths = new[] {100, 200, 300, 400, 500 };
 
                 for (var i = 0; i < Runs.Length; ++i)
                 {
                     var length = lengths[i];
                     Console.WriteLine("Calculating conversion for length = {0}", length);
                     var text = new StringBuilder();
-                    var logger = new ConsoleTextLengthLogger(1000);
 
 
                     var e = new RationalNumber(7, 4);
-                    var generator = new BinaryCharGenerator(text, 4);
+                    var generator = new BinaryCharGenerator(text, 3);
                     var detector = new RepetitionDetector(text, e, false);
                     var removeStrategy = new RemoveBorderStrategy();
 
-                    Calculate(Runs[i], detector, lengths[i], removeStrategy, generator, logger, output);
+                    Calculate(Runs[i], detector, lengths[i], removeStrategy, generator, null, output);
                 }
             }
         }
