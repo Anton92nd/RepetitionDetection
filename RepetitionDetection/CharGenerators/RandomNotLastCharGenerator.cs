@@ -13,7 +13,7 @@ namespace RepetitionDetection.CharGenerators
         {
             this.text = text;
             this.alphabetSize = alphabetSize;
-            random = new Random(43);
+            random = new Random();
         }
 
         public char Generate()
