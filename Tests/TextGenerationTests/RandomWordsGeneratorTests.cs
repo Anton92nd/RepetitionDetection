@@ -10,7 +10,7 @@ using RepetitionDetection.Detection;
 using RepetitionDetection.TextGeneration;
 using RepetitionDetection.TextGeneration.RemoveStrategies;
 
-namespace RepetitionDetection.Tests.TextGenerationTests
+namespace Tests.TextGenerationTests
 {
     [TestFixture]
     public class RandomWordsGeneratorTests
@@ -71,7 +71,7 @@ namespace RepetitionDetection.Tests.TextGenerationTests
                 coefs.Add(charsGenerated * 1.0 / length);
             }
             sw.Stop();
-            Console.WriteLine("Alphabet size = {0}, e = {1}+", k, e);
+            Console.WriteLine((string) "Alphabet size = {0}, e = {1}+", (object) k, (object) e);
             for (var i = 0; i < lengthsBoundary.Length; ++i)
             {
                 Console.WriteLine("\tLength: {0}, Time: {1} ms, Conversion coeff: {2}", lengthsBoundary[i], times[i], coefs[i]);

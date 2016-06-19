@@ -4,7 +4,7 @@ using NUnit.Framework;
 using RepetitionDetection.Catching;
 using RepetitionDetection.Commons;
 
-namespace RepetitionDetection.Tests
+namespace Tests
 {
     [TestFixture]
     public class CatcherTests

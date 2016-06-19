@@ -6,7 +6,7 @@ using RepetitionDetection.Detection;
 using RepetitionDetection.TextGeneration;
 using RepetitionDetection.TextGeneration.RemoveStrategies;
 
-namespace RepetitionDetection.Tests.DetectionTests
+namespace Tests.DetectionTests
 {
     [TestFixture]
     public class SyncronizedTests

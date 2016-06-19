@@ -3,7 +3,7 @@ using NUnit.Framework;
 using RepetitionDetection.Commons;
 using RepetitionDetection.Detection;
 
-namespace RepetitionDetection.Tests.DetectionTests
+namespace Tests.DetectionTests
 {
     [TestFixture]
     public class SmallRepetitionDetectorTests

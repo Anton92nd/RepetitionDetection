@@ -3,7 +3,7 @@ using System.Text;
 using NUnit.Framework;
 using RepetitionDetection.StringMatching;
 
-namespace RepetitionDetection.Tests.StringMatchingTests
+namespace Tests.StringMatchingTests
 {
     [TestFixture]
     public class StringMatchingTests

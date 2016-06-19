@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using RepetitionDetection.Periods;
 
-namespace RepetitionDetection.Tests
+namespace Tests
 {
     [TestFixture]
     public class PeriodCalculatorTests

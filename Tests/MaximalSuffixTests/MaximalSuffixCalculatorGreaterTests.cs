@@ -2,7 +2,7 @@
 using RepetitionDetection.Commons;
 using RepetitionDetection.MaximalSuffixes;
 
-namespace RepetitionDetection.Tests.MaximalSuffixTests
+namespace Tests.MaximalSuffixTests
 {
     public class MaximalSuffixCalculatorGreaterTests
     {

@@ -7,7 +7,7 @@ using System.Text;
 using NUnit.Framework;
 using RepetitionDetection.StringMatching;
 
-namespace RepetitionDetection.Tests.StringMatchingTests
+namespace Tests.StringMatchingTests
 {
     [TestFixture]
     public class StringMatchingAlgoPerfomanceTests
@@ -20,8 +20,8 @@ namespace RepetitionDetection.Tests.StringMatchingTests
             for (var i = 1; i <= testsCount; ++i)
             {
                 var testNumber = string.Empty + (char) ('0' + i/10) + (char) ('0' + i%10);
-                var inputFile = Path.Combine(TestContext.CurrentContext.TestDirectory, "Tests", "Files", testNumber + ".tst");
-                var outputFile = Path.Combine(TestContext.CurrentContext.TestDirectory, "Tests", "Files", testNumber + ".ans");
+                var inputFile = Path.Combine(TestContext.CurrentContext.TestDirectory,  "Files", testNumber + ".tst");
+                var outputFile = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", testNumber + ".ans");
                 DoTest(inputFile, outputFile);
             }
         }

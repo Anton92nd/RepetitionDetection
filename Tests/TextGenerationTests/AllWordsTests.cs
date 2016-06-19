@@ -7,7 +7,7 @@ using RepetitionDetection.Commons;
 using RepetitionDetection.Detection;
 using RepetitionDetection.TextGeneration;
 
-namespace RepetitionDetection.Tests.TextGenerationTests
+namespace Tests.TextGenerationTests
 {
     [TestFixture]
     public class AllWordsTests
@@ -63,7 +63,7 @@ namespace RepetitionDetection.Tests.TextGenerationTests
         [TestCase(4, 4, 3, false, "sygma4+.txt", typeof(RepetitionDetector))]
         public void LargeTests(int alphabet, int numerator, int denominator, bool detectEqual, string fileName, Type detectorType)
         {
-            var resultPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "Tests", "Files", fileName);
+            var resultPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", fileName);
             var expectedStrings = File.ReadAllLines(resultPath);
             var e = new RationalNumber(numerator, denominator);
             var detector = GetDetector(detectorType, detectEqual, e);
