@@ -29,6 +29,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">
       <HintPath>..\RepetitionDetection\packages\NUnit.3.2.1\lib\net45\nunit.framework.dll</HintPath>
@@ -51,6 +54,7 @@
     <Compile Include="MaximalSuffixTests\MaximalSuffixCalculatorGreaterTests.cs" />
     <Compile Include="MaximalSuffixTests\MaximalSuffixCalculatorLessTests.cs" />
     <Compile Include="PeriodCalculatorTests.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringMatchingTests\CompleteStringMatchingAlgorithmTests.cs" />
     <Compile Include="StringMatchingTests\IncompleteStringMatchingAlgorithmTests.cs" />
