@@ -98,6 +98,7 @@
     <Compile Include="Detection\SmallRepetitionDetector.cs" />
     <Compile Include="Logging\ConsoleTextLengthLogger.cs" />
     <Compile Include="Logging\IGeneratorLogger.cs" />
+    <Compile Include="Logging\TextLengthTracker.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
