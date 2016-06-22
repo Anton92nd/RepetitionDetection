@@ -9,6 +9,13 @@ namespace RepetitionDetection.CharGenerators
         private readonly int alphabetSize;
         private readonly Random random;
 
+        public int AlphabetSize { get { return alphabetSize; } }
+
+        public override string ToString()
+        {
+            return "RandomNotLastCharGenerator";
+        }
+
         public RandomNotLastCharGenerator(StringBuilder text, int alphabetSize)
         {
             this.text = text;

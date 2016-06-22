@@ -3,5 +3,6 @@
     public interface ICharGenerator
     {
         char Generate();
+        int AlphabetSize { get; }
     }
 }

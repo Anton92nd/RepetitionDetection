@@ -11,6 +11,13 @@ namespace RepetitionDetection.CharGenerators
         private readonly Random random;
         private readonly bool[] used;
 
+        public int AlphabetSize { get { return k; } }
+
+        public override string ToString()
+        {
+            return "BinaryCharGenerator";
+        }
+
         public BinaryCharGenerator(StringBuilder text, int alphabetSize)
         {
             this.text = text;
