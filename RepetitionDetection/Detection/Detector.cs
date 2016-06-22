@@ -6,8 +6,8 @@ namespace RepetitionDetection.Detection
     public abstract class Detector
     {
         public StringBuilder Text { get; private set; }
-        protected RationalNumber E { get; private set; }
-        protected bool DetectEqual { get; private set; }
+        public RationalNumber E { get; private set; }
+        public bool DetectEqual { get; private set; }
         protected int S { get; private set; }
 
         public Detector(StringBuilder text, RationalNumber e, bool detectEqual)
