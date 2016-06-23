@@ -10,8 +10,6 @@ namespace RepetitionDetection
         public static void Main()
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            var mainForm = new MainForm();
-            mainForm.ShowDialog();
         }
     }
 }

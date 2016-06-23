@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using System.Threading;
 using JetBrains.Annotations;
 using RepetitionDetection.CharGenerators;
 using RepetitionDetection.Commons;
@@ -14,15 +13,13 @@ namespace RepetitionDetection.TextGeneration
         public static int CharsGenerated { get; private set; }
 
         public static StringBuilder Generate([NotNull] Detector detector, int length, [NotNull] IRemoveStrategy removeStrategy,
-            [NotNull] ICharGenerator generator, [CanBeNull] IGeneratorLogger logger = null, [CanBeNull] CancellationToken? cancellationToken = null)
+            [NotNull] ICharGenerator generator, [CanBeNull] IGeneratorLogger logger = null)
         {
             CharsGenerated = 0;
             var text = detector.Text;
             text.EnsureCapacity(length);
             while (text.Length < length)
             {
-                if (cancellationToken != null)
-                    cancellationToken.Value.ThrowIfCancellationRequested();
                 if (logger != null)
                     logger.LogBeforeGenerate(text);
                 text.Append(generator.Generate());
