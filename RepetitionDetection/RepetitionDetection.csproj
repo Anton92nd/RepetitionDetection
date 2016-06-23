@@ -99,7 +99,6 @@
     <Compile Include="Logging\ConsoleTextLengthLogger.cs" />
     <Compile Include="Logging\IGeneratorLogger.cs" />
     <Compile Include="Logging\TextLengthTracker.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="MaximalSuffixes\MaximalSuffixCalculator.cs" />
     <Compile Include="Periods\PeriodCalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
