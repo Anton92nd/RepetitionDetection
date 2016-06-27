@@ -1,11 +1,18 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using RepetitionDetection.Commons;
 
 namespace RepetitionDetection.Logging
 {
-    public class TextLengthTracker : IGeneratorLogger
+    public class OutputLogger : IGeneratorLogger
     {
+        public OutputLogger(StreamWriter output)
+        {
+            Output = output;
+        }
+
         public volatile int TextLength;
+        public StreamWriter Output { get; private set; }
 
         public void LogBeforeGenerate(StringBuilder text)
         {
@@ -18,6 +25,11 @@ namespace RepetitionDetection.Logging
 
         public void LogRepetition(StringBuilder text, Repetition repetition)
         {
+            if (Output != null)
+            {
+                Output.Write(text.Length - 1 - repetition.LeftPosition);
+                Output.Write(repetition.Period);
+            }
         }
     }
 }

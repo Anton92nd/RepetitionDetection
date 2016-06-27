@@ -98,7 +98,7 @@
     <Compile Include="Detection\SmallRepetitionDetector.cs" />
     <Compile Include="Logging\ConsoleTextLengthLogger.cs" />
     <Compile Include="Logging\IGeneratorLogger.cs" />
-    <Compile Include="Logging\TextLengthTracker.cs" />
+    <Compile Include="Logging\OutputLogger.cs" />
     <Compile Include="MaximalSuffixes\MaximalSuffixCalculator.cs" />
     <Compile Include="Periods\PeriodCalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
