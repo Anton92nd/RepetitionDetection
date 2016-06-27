@@ -1,7 +1,5 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using System.Windows;
-using System.Windows.Media;
 using Microsoft.Win32;
 using RepetitionDetection.CharGenerators;
 using RepetitionDetection.Commons;
@@ -28,27 +26,32 @@ namespace GraphicalInterface
                 var detector = GetDetector();
                 var charGenerator = GetCharGenerator(detector.Text);
                 var removeStrategy = GetRemoveStrategy(detector.E);
-                LabelErrorMessage.Content = string.Empty;
-                bool saveCoefs, saveReps, saveTime;
-                saveTime = saveCoefs = saveReps = false;
-                var save = CheckBoxSave.IsChecked ?? false;
-                var outputPath = string.Empty;
-                if (save)
+                int length, runsCount;
+                if (!int.TryParse(TextBoxLength.Text, out length) || length <= 0)
+                    Raise("Length must be positive integer");
+                if (!int.TryParse(TextBoxRunsCount.Text, out runsCount) || runsCount <= 0)
+                    Raise("Runscount must be positive integer");
+                TextBlockErrorMessage.Text = string.Empty;
+                var saveData = new SaveData
                 {
-                    outputPath = TextBoxOutputPath.Text;
-                    saveCoefs = CheckBoxCoefs.IsChecked ?? false;
-                    saveReps = CheckBoxReps.IsChecked ?? false;
-                    saveTime = CheckBoxTime.IsChecked ?? false;
-                }
+                    Save = CheckBoxSave.IsChecked ?? false,
+                    SavePath = TextBoxOutputPath.Text,
+                    SaveCoef = CheckBoxCoefs.IsChecked ?? false,
+                    SaveReps = CheckBoxReps.IsChecked ?? false,
+                    SaveTime = CheckBoxTime.IsChecked ?? false,
+                };
+                TextBlockErrorMessage.Text = string.Empty;
+                var runWindow = new RunWindow(detector, removeStrategy, charGenerator, saveData, length, runsCount);
+                runWindow.ShowDialog();
             }
-            catch(Exception)
+            catch(InputDataException)
             {
             }
         }
 
         private IRemoveStrategy GetRemoveStrategy(RationalNumber e)
         {
-            var index = ComboBoxCharGenerator.SelectedIndex;
+            var index = ComboBoxRemoveStrategy.SelectedIndex;
             if (index < 0 || index > 2)
                 Raise("Select char generator");
             if (index == 0)
@@ -116,8 +119,8 @@ namespace GraphicalInterface
 
         private void Raise(string message)
         {
-            LabelErrorMessage.Content = message;
-            throw new Exception(message);
+            TextBlockErrorMessage.Text = message;
+            throw new InputDataException(message);
         }
 
         private void CharGenerator_OnLoaded(object sender, RoutedEventArgs e)

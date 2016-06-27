@@ -5,7 +5,7 @@
     <Grid Margin="0,0,0,0">
         <TextBlock HorizontalAlignment="Left" Margin="183,10,0,0" TextWrapping="Wrap" Text="Repetition-free word generator" FontSize="20" VerticalAlignment="Top"/>
         <GroupBox Header="Input" HorizontalAlignment="Left" Margin="10,42,0,0" VerticalAlignment="Top" Height="108" Width="196">
-            <Grid HorizontalAlignment="Left" Margin="0,0,-2,-3" Width="186">
+            <Grid>
                 <CheckBox Name="CheckBoxDetectEqual" Content="detect equal to exponent" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="161" IsChecked="True"/>
                 <TextBox Name="TextBoxNumerator" HorizontalAlignment="Left" Height="23" Margin="102,13,0,0" TextWrapping="Wrap" Text="3" VerticalAlignment="Top" Width="21" RenderTransformOrigin="0.215,0.655"/>
                 <TextBox Name="TextBoxDenominator" HorizontalAlignment="Left" Height="22" Margin="138,13,0,0" TextWrapping="Wrap" Text="1" VerticalAlignment="Top" Width="24"/>
@@ -17,10 +17,10 @@
         </GroupBox>
         <Button Content="Start" FontSize="18" HorizontalAlignment="Left" Margin="38,224,0,0" VerticalAlignment="Top" Width="130" Height="50" Click="Button_Click" RenderTransformOrigin="0.5,0.889"/>
         <GroupBox Header="Generator settings"  HorizontalAlignment="Left" Margin="211,42,0,0" VerticalAlignment="Top" Height="232" Width="192">
-            <Grid HorizontalAlignment="Left" Height="211" Margin="0,0,-2,-1" VerticalAlignment="Top" Width="182">
+            <Grid>
                 <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Length:" VerticalAlignment="Top"/>
-                <TextBox HorizontalAlignment="Left" Height="23" Margin="91,9,0,0" TextWrapping="Wrap" Text="10000" VerticalAlignment="Top" Width="75"/>
-                <TextBox HorizontalAlignment="Left" Height="23" Margin="91,37,0,0" TextWrapping="Wrap" Text="100" VerticalAlignment="Top" Width="75"/>
+                <TextBox Name="TextBoxLength" HorizontalAlignment="Left" Height="23" Margin="91,9,0,0" TextWrapping="Wrap" Text="10000" VerticalAlignment="Top" Width="75"/>
+                <TextBox Name="TextBoxRunsCount" HorizontalAlignment="Left" Height="23" Margin="91,37,0,0" TextWrapping="Wrap" Text="100" VerticalAlignment="Top" Width="75"/>
                 <TextBlock HorizontalAlignment="Left" Margin="10,37,0,0" TextWrapping="Wrap" Text="Runs count:" VerticalAlignment="Top" Width="73"/>
                 <TextBlock HorizontalAlignment="Left" Margin="10,70,0,0" TextWrapping="Wrap" Text="Char generator:" VerticalAlignment="Top"/>
                 <ComboBox Name="ComboBoxCharGenerator" HorizontalAlignment="Left" Margin="10,91,0,0" VerticalAlignment="Top" Width="120" Loaded="CharGenerator_OnLoaded" />
@@ -31,7 +31,7 @@
             </Grid>
         </GroupBox>
         <GroupBox Header="Output" HorizontalAlignment="Left" Margin="408,42,0,0" VerticalAlignment="Top" Height="232" Width="188">
-            <Grid HorizontalAlignment="Left" Height="198" Margin="0,0,-2,-3" VerticalAlignment="Top" Width="178">
+            <Grid>
                 <TextBox Name="TextBoxOutputPath" Visibility="Visible" HorizontalAlignment="Left" Height="23" Margin="10,30,0,0" TextWrapping="Wrap" Text="C:\output.txt" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
                 <Button Name="ButtonChangePath" Visibility="Visible" Content="Change" HorizontalAlignment="Left" Margin="10,58,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
                 <CheckBox Name="CheckBoxCoefs" Content="Conversion coefficients" IsChecked="True" HorizontalAlignment="Left" Margin="10,99,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.514,0.039"/>
@@ -40,6 +40,6 @@
                 <CheckBox Name="CheckBoxSave"  Content="Save results" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="True" Checked="CheckBox_Checked" Unchecked="CheckBoxSave_OnUnchecked"/>
             </Grid>
         </GroupBox>
-        <Label Name="LabelErrorMessage" Content="" Foreground="Red" HorizontalAlignment="Left" Margin="10,173,0,0" VerticalAlignment="Top" Width="196"/>
+        <TextBlock Name="TextBlockErrorMessage" Text="" Foreground="Red" HorizontalAlignment="Left" Margin="10,173,0,0" VerticalAlignment="Top" Width="196"/>
     </Grid>
 </Window>
