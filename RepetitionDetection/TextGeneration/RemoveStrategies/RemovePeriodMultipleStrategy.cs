@@ -18,7 +18,7 @@ namespace RepetitionDetection.TextGeneration.RemoveStrategies
 
         public override string ToString()
         {
-            return string.Format("Remove {0} periods strategy", periodsCount);
+            return string.Format("Remove {0} period(s) strategy", periodsCount);
         }
     }
 }
