@@ -16,11 +16,11 @@ namespace RepetitionDetection.Logging
 
         public void LogBeforeGenerate(StringBuilder text)
         {
-            TextLength = text.Length;
         }
 
         public void LogAfterGenerate(StringBuilder text)
         {
+            TextLength = text.Length;
         }
 
         public void LogRepetition(StringBuilder text, Repetition repetition)
