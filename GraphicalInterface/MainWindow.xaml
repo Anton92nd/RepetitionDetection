@@ -32,11 +32,11 @@
         </GroupBox>
         <GroupBox Visibility="Visible" Header="Output" HorizontalAlignment="Left" Margin="408,42,0,0" VerticalAlignment="Top" Height="232" Width="188">
             <Grid>
-                <TextBox Name="TextBoxOutputPath" Visibility="Visible" HorizontalAlignment="Left" Height="23" Margin="10,30,0,0" TextWrapping="Wrap" Text="C:\output.txt" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
-                <Button Name="ButtonChangePath" Visibility="Visible" Content="Change" HorizontalAlignment="Left" Margin="10,58,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
-                <CheckBox Name="CheckBoxReps" Content="Repetition statistics" IsChecked="True" HorizontalAlignment="Left" Margin="10,95,0,0" VerticalAlignment="Top"/>
-                <CheckBox Name="CheckBoxTime" Content="Time" IsChecked="True" HorizontalAlignment="Left" Margin="10,115,0,0" VerticalAlignment="Top"/>
-                <CheckBox Name="CheckBoxSave"  Content="Save results" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="True" Checked="CheckBox_Checked" Unchecked="CheckBoxSave_OnUnchecked"/>
+                <TextBox Name="TextBoxOutputPath" Visibility="Hidden" HorizontalAlignment="Left" Height="23" Margin="10,30,0,0" TextWrapping="Wrap" Text="C:\output.txt" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
+                <Button Name="ButtonChangePath" Visibility="Hidden" Content="Change" HorizontalAlignment="Left" Margin="10,58,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
+                <CheckBox Name="CheckBoxReps" Visibility="Hidden" Content="Repetition statistics" IsChecked="True" HorizontalAlignment="Left" Margin="10,95,0,0" VerticalAlignment="Top"/>
+                <CheckBox Name="CheckBoxTime" Visibility="Hidden" Content="Time" IsChecked="True" HorizontalAlignment="Left" Margin="10,115,0,0" VerticalAlignment="Top"/>
+                <CheckBox Name="CheckBoxSave"  Content="Save results" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="False" Checked="CheckBox_Checked" Unchecked="CheckBoxSave_OnUnchecked"/>
             </Grid>
         </GroupBox>
         <TextBlock Name="TextBlockErrorMessage" Text="" Foreground="Red" HorizontalAlignment="Left" Margin="10,173,0,0" VerticalAlignment="Top" Width="196"/>
