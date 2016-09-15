@@ -65,7 +65,7 @@ namespace GraphicalInterface
                 var sw = new Stopwatch();
                 totalCharsGenerated = 0;
                 ms = 0;
-                for (run = 1; run <= runsCount; ++run)
+                for (run = 0; run < runsCount; ++run)
                 {
                     if (cancellationToken.IsCancellationRequested)
                         break;
@@ -76,18 +76,17 @@ namespace GraphicalInterface
                     ms = sw.ElapsedMilliseconds;
                     totalCharsGenerated += RandomWordGenerator.CharsGenerated;
                 }
-                run--;
                 Thread.Sleep(100);
                 tokenSource.Cancel();
             }, cancellationToken);
-            UpdateStatus += () => Dispatcher.Invoke(() =>
+            UpdateStatus += ended => Dispatcher.Invoke(() =>
             {
                 TextBoxCurrentLength.Text = logger.TextLength.ToString();
-                TextBoxRunNumber.Text = run.ToString();
-                if (run > 1)
+                TextBoxRunNumber.Text = (run + 1 - (ended ? 1 : 0)).ToString();
+                if (run > 0)
                 {
-                    TextBoxAverageCoef.Text = string.Format("{0:0.000000}", totalCharsGenerated*1.0/length/(run - 1));
-                    TextBoxAverageTime.Text = string.Format("{0:0.000}", ms*1.0/(run - 1));
+                    TextBoxAverageCoef.Text = string.Format("{0:0.000000}", totalCharsGenerated*1.0/length/run);
+                    TextBoxAverageTime.Text = string.Format("{0:0.000}", ms*1.0/run);
                 }
             });
             var monitoringTask = Task.Run(() =>
@@ -95,13 +94,13 @@ namespace GraphicalInterface
                 while (true)
                 {
                     if (UpdateStatus != null)
-                        UpdateStatus();
+                        UpdateStatus(cancellationToken.IsCancellationRequested);
                     Thread.Sleep(50);
                 }
             }, cancellationToken);
         }
 
-        private delegate void UpdateStatusEvent();
+        private delegate void UpdateStatusEvent(bool ended);
 
         private event UpdateStatusEvent UpdateStatus;
 
