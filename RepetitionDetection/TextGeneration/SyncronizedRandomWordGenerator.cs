@@ -22,8 +22,6 @@ namespace RepetitionDetection.TextGeneration
             text.EnsureCapacity(length);
             while (text.Length < length)
             {
-                if (logger != null)
-                    logger.LogBeforeGenerate(text);
                 text.Append(generator.Generate());
                 CharsGenerated++;
                 if (logger != null)

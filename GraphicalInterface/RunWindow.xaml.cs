@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -57,7 +58,8 @@ namespace GraphicalInterface
 
         private void RunWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            logger = new OutputLogger(null);
+            var output = saveData.SaveTime || saveData.SaveReps ? new StreamWriter(File.Open(saveData.SavePath, FileMode.Create)) : null;
+            logger = new OutputLogger(output);
             tokenSource = new CancellationTokenSource();
             cancellationToken = tokenSource.Token;
             var generateTask = Task.Run(() =>
@@ -70,14 +72,25 @@ namespace GraphicalInterface
                     if (cancellationToken.IsCancellationRequested)
                         break;
                     detector.Reset();
+                    if (output != null)
+                        output.WriteLine("Run #{0}:", run + 1);
+                    sw.Reset();
                     sw.Start();
-                    RandomWordGenerator.Generate(detector, length, removeStrategy, charGenerator, logger, cancellationToken);
+                    RandomWordGenerator.Generate(detector, length, removeStrategy, charGenerator, logger, cancellationToken, saveData);
                     sw.Stop();
-                    ms = sw.ElapsedMilliseconds;
+                    ms += sw.ElapsedMilliseconds;
+                    if (saveData.SaveTime)
+                        output.WriteLine("Time: {0}", sw.ElapsedMilliseconds);
+                    if (output != null)
+                        output.WriteLine("-----");
                     totalCharsGenerated += RandomWordGenerator.CharsGenerated;
+                    if (output != null)
+                        output.Flush();
                 }
                 Thread.Sleep(100);
                 tokenSource.Cancel();
+                if (output != null)
+                    output.Close();
             }, cancellationToken);
             UpdateStatus += ended => Dispatcher.Invoke(() =>
             {

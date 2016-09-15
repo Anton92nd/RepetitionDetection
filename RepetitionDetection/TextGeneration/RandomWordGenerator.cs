@@ -14,8 +14,10 @@ namespace RepetitionDetection.TextGeneration
         public static int CharsGenerated { get; private set; }
 
         public static StringBuilder Generate([NotNull] Detector detector, int length, [NotNull] IRemoveStrategy removeStrategy,
-            [NotNull] ICharGenerator generator, [CanBeNull] IGeneratorLogger logger = null, [CanBeNull] CancellationToken? token = null)
+            [NotNull] ICharGenerator generator, [CanBeNull] IGeneratorLogger logger = null, [CanBeNull] CancellationToken? token = null, SaveData saveData = null)
         {
+            if (saveData == null)
+                saveData = new SaveData {SaveTime = false, SaveReps = false};
             CharsGenerated = 0;
             var text = detector.Text;
             text.EnsureCapacity(length);
@@ -23,8 +25,6 @@ namespace RepetitionDetection.TextGeneration
             {
                 if (token != null && token.Value.IsCancellationRequested)
                     break;
-                if (logger != null)
-                    logger.LogBeforeGenerate(text);
                 text.Append(generator.Generate());
                 CharsGenerated++;
                 if (logger != null)
@@ -32,7 +32,7 @@ namespace RepetitionDetection.TextGeneration
                 Repetition repetition;
                 if (detector.TryDetect(out repetition))
                 {
-                    if (logger != null)
+                    if (logger != null && saveData.SaveReps)
                         logger.LogRepetition(text, repetition);
                     var charsToDelete = removeStrategy.GetCharsToDelete(text.Length, repetition);
                     for (var i = 0; i < charsToDelete; ++i)

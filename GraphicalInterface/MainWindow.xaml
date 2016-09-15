@@ -30,13 +30,12 @@
                 <TextBox Name="TextBoxPeriodsCount" Visibility="Hidden" HorizontalAlignment="Left" Height="23" Margin="114,175,0,0" TextWrapping="Wrap" Text="1" VerticalAlignment="Top" Width="34"/>
             </Grid>
         </GroupBox>
-        <GroupBox Visibility="Hidden" Header="Output" HorizontalAlignment="Left" Margin="408,42,0,0" VerticalAlignment="Top" Height="232" Width="188">
+        <GroupBox Visibility="Visible" Header="Output" HorizontalAlignment="Left" Margin="408,42,0,0" VerticalAlignment="Top" Height="232" Width="188">
             <Grid>
                 <TextBox Name="TextBoxOutputPath" Visibility="Visible" HorizontalAlignment="Left" Height="23" Margin="10,30,0,0" TextWrapping="Wrap" Text="C:\output.txt" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
                 <Button Name="ButtonChangePath" Visibility="Visible" Content="Change" HorizontalAlignment="Left" Margin="10,58,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
-                <CheckBox Name="CheckBoxCoefs" Content="Conversion coefficients" IsChecked="True" HorizontalAlignment="Left" Margin="10,99,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.514,0.039"/>
-                <CheckBox Name="CheckBoxReps" Content="Repetition statistics" IsChecked="True" HorizontalAlignment="Left" Margin="10,119,0,0" VerticalAlignment="Top"/>
-                <CheckBox Name="CheckBoxTime" Content="Time" IsChecked="False" HorizontalAlignment="Left" Margin="10,139,0,0" VerticalAlignment="Top"/>
+                <CheckBox Name="CheckBoxReps" Content="Repetition statistics" IsChecked="True" HorizontalAlignment="Left" Margin="10,95,0,0" VerticalAlignment="Top"/>
+                <CheckBox Name="CheckBoxTime" Content="Time" IsChecked="True" HorizontalAlignment="Left" Margin="10,115,0,0" VerticalAlignment="Top"/>
                 <CheckBox Name="CheckBoxSave"  Content="Save results" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="True" Checked="CheckBox_Checked" Unchecked="CheckBoxSave_OnUnchecked"/>
             </Grid>
         </GroupBox>

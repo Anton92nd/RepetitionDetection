@@ -4,6 +4,7 @@ using Microsoft.Win32;
 using RepetitionDetection.CharGenerators;
 using RepetitionDetection.Commons;
 using RepetitionDetection.Detection;
+using RepetitionDetection.Logging;
 using RepetitionDetection.TextGeneration.RemoveStrategies;
 
 namespace GraphicalInterface
@@ -32,13 +33,12 @@ namespace GraphicalInterface
                 if (!int.TryParse(TextBoxRunsCount.Text, out runsCount) || runsCount <= 0)
                     Raise("Runscount must be positive integer");
                 TextBlockErrorMessage.Text = string.Empty;
+                var save = CheckBoxSave.IsChecked ?? false;
                 var saveData = new SaveData
                 {
-                    Save = CheckBoxSave.IsChecked ?? false,
                     SavePath = TextBoxOutputPath.Text,
-                    SaveCoef = CheckBoxCoefs.IsChecked ?? false,
-                    SaveReps = CheckBoxReps.IsChecked ?? false,
-                    SaveTime = CheckBoxTime.IsChecked ?? false,
+                    SaveReps = (CheckBoxReps.IsChecked ?? false) && save,
+                    SaveTime = (CheckBoxTime.IsChecked ?? false) && save,
                 };
                 TextBlockErrorMessage.Text = string.Empty;
                 var runWindow = new RunWindow(detector, removeStrategy, charGenerator, saveData, length, runsCount);
@@ -162,7 +162,6 @@ namespace GraphicalInterface
         {
             ButtonChangePath.Visibility = Visibility.Visible;
             TextBoxOutputPath.Visibility = Visibility.Visible;
-            CheckBoxCoefs.Visibility = Visibility.Visible;
             CheckBoxReps.Visibility = Visibility.Visible;
             CheckBoxTime.Visibility = Visibility.Visible;
         }
@@ -171,7 +170,6 @@ namespace GraphicalInterface
         {
             ButtonChangePath.Visibility = Visibility.Hidden;
             TextBoxOutputPath.Visibility = Visibility.Hidden;
-            CheckBoxCoefs.Visibility = Visibility.Hidden;
             CheckBoxReps.Visibility = Visibility.Hidden;
             CheckBoxTime.Visibility = Visibility.Hidden;
         }
