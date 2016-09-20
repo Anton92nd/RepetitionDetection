@@ -8,7 +8,6 @@ namespace RepetitionDetection.CharGenerators
     {
         private readonly StringBuilder text;
         private readonly int k;
-        private readonly Random random;
         private readonly bool[] used;
 
         public int AlphabetSize { get { return k; } }
@@ -22,7 +21,6 @@ namespace RepetitionDetection.CharGenerators
         {
             this.text = text;
             k = alphabetSize;
-            random = new Random();
             used = new bool[alphabetSize];
         }
 
@@ -36,7 +34,7 @@ namespace RepetitionDetection.CharGenerators
                 {
                     used[text[text.Length - 1 - i] - 'a'] = true;
                 }
-                var rand = random.Next(1, k - text.Length + 1);
+                var rand = RandomNumberGenerator.Generate(1, k - text.Length + 1);
                 for (var i = 0; i < k; ++i)
                 {
                     if (!used[i])
@@ -57,7 +55,7 @@ namespace RepetitionDetection.CharGenerators
                     used[text[text.Length - 1 - i] - 'a'] = true;
                 }
                 var notUsed = Array.FindIndex(used, b => !b);
-                var rand = random.Next(0, 2);
+                var rand = RandomNumberGenerator.Generate(0, 2);
                 if (rand == 0)
                 {
                     return text[text.Length - k + 1];

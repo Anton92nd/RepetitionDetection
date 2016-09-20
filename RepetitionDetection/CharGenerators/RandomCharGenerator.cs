@@ -5,7 +5,6 @@ namespace RepetitionDetection.CharGenerators
     public class RandomCharGenerator : ICharGenerator
     {
         private readonly int alphabetSize;
-        private readonly Random random;
 
         public int AlphabetSize { get { return alphabetSize; } }
 
@@ -17,12 +16,11 @@ namespace RepetitionDetection.CharGenerators
         public RandomCharGenerator(int alphabetSize)
         {
             this.alphabetSize = alphabetSize;
-            random = new Random();
         }
 
         public char Generate()
         {
-            return (char)random.Next('a', 'a' + alphabetSize);
+            return (char)RandomNumberGenerator.Generate('a', 'a' + alphabetSize);
         }
     }
 }

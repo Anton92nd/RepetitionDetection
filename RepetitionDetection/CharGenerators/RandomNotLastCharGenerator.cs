@@ -7,7 +7,6 @@ namespace RepetitionDetection.CharGenerators
     {
         private readonly StringBuilder text;
         private readonly int alphabetSize;
-        private readonly Random random;
 
         public int AlphabetSize { get { return alphabetSize; } }
 
@@ -20,14 +19,13 @@ namespace RepetitionDetection.CharGenerators
         {
             this.text = text;
             this.alphabetSize = alphabetSize;
-            random = new Random();
         }
 
         public char Generate()
         {
             if (text.Length == 0)
-                return (char) ('a' + random.Next(0, alphabetSize));
-            var rand = random.Next(0, alphabetSize - 1);
+                return (char)('a' + RandomNumberGenerator.Generate(0, alphabetSize));
+            var rand = RandomNumberGenerator.Generate(0, alphabetSize - 1);
             var lastChar = text[text.Length - 1] - 'a';
             return (char) ('a' + rand + (rand >= lastChar ? 1 : 0));
         }
