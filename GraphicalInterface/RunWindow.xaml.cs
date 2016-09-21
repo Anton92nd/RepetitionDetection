@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,24 +13,25 @@ using RepetitionDetection.TextGeneration.RemoveStrategies;
 namespace GraphicalInterface
 {
     /// <summary>
-    /// Interaction logic for RunWindow.xaml
+    ///     Interaction logic for RunWindow.xaml
     /// </summary>
     public partial class RunWindow : Window
     {
-        private readonly Detector detector;
-        private readonly IRemoveStrategy removeStrategy;
         private readonly ICharGenerator charGenerator;
-        private readonly SaveData saveData;
+        private readonly Detector detector;
         private readonly int length;
+        private readonly IRemoveStrategy removeStrategy;
         private readonly int runsCount;
+        private readonly SaveData saveData;
         private CancellationToken cancellationToken;
         private OutputLogger logger;
-        private volatile int run;
-        private volatile int totalCharsGenerated;
-        private CancellationTokenSource tokenSource;
         private long ms;
+        private volatile int run;
+        private CancellationTokenSource tokenSource;
+        private volatile int totalCharsGenerated;
 
-        public RunWindow(Detector detector, IRemoveStrategy removeStrategy, ICharGenerator charGenerator, SaveData saveData, int length, int runsCount)
+        public RunWindow(Detector detector, IRemoveStrategy removeStrategy, ICharGenerator charGenerator,
+            SaveData saveData, int length, int runsCount)
         {
             this.detector = detector;
             this.removeStrategy = removeStrategy;
@@ -43,7 +44,8 @@ namespace GraphicalInterface
 
         private void GroupBoxParameters_Loaded(object sender, RoutedEventArgs e)
         {
-            TextBlockExponent.Text = string.Format("Exponent: ({0}){1}", detector.E, detector.DetectEqual ? string.Empty : "+");
+            TextBlockExponent.Text = string.Format("Exponent: ({0}){1}", detector.E,
+                detector.DetectEqual ? string.Empty : "+");
             TextBlockCharGenerator.Text = string.Format("Char generator: {0}", charGenerator);
             TextBlockRemoveStrategy.Text = string.Format("Repetition removing strategy: {0}", removeStrategy);
             TextBlockLength.Text = string.Format("Length: {0}", length);
@@ -58,13 +60,28 @@ namespace GraphicalInterface
 
         private void RunWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            var output = saveData.SaveTime || saveData.SaveReps ? new StreamWriter(File.Open(saveData.SavePath, FileMode.Create)) : null;
-            logger = new OutputLogger(output);
+            var statsOutput = saveData.SaveStats
+                ? new StreamWriter(
+                    File.Open(
+                        Path.Combine(saveData.SavePath, "stats_" + DateTime.Now.ToString("yy-MM-dd_HH-mm") + ".txt"),
+                        FileMode.Create))
+                : null;
+            var fullLogOutput = saveData.SaveFullLog
+                ? new StreamWriter(
+                    File.Open(
+                        Path.Combine(saveData.SavePath, "full_" + DateTime.Now.ToString("yy-MM-dd_HH-mm") + ".txt"),
+                        FileMode.Create))
+                : null;
+            logger = new OutputLogger(fullLogOutput);
             tokenSource = new CancellationTokenSource();
             cancellationToken = tokenSource.Token;
+            if (statsOutput != null)
+                statsOutput.WriteLine(
+                    "Exponent: {0}\nDetect equal to exponent: {1}\nAlphabet size: {2}\nLength: {3}\nRuns count: {4}\nChar generator: {5}\nRemoving strategy: {6}",
+                    detector.E, detector.DetectEqual, charGenerator.AlphabetSize, length, runsCount,
+                    charGenerator.GetType().Name, removeStrategy.GetType().Name);
             var generateTask = Task.Run(() =>
             {
-                var sw = new Stopwatch();
                 totalCharsGenerated = 0;
                 ms = 0;
                 for (run = 0; run < runsCount; ++run)
@@ -72,25 +89,30 @@ namespace GraphicalInterface
                     if (cancellationToken.IsCancellationRequested)
                         break;
                     detector.Reset();
-                    if (output != null)
-                        output.WriteLine("Run #{0}:", run + 1);
-                    sw.Reset();
-                    sw.Start();
-                    RandomWordGenerator.Generate(detector, length, removeStrategy, charGenerator, logger, cancellationToken, saveData);
-                    sw.Stop();
-                    ms += sw.ElapsedMilliseconds;
-                    if (saveData.SaveTime)
-                        output.WriteLine("Time: {0}", sw.ElapsedMilliseconds);
-                    if (output != null)
-                        output.WriteLine("-----");
-                    totalCharsGenerated += RandomWordGenerator.CharsGenerated;
-                    if (output != null)
-                        output.Flush();
+                    if (statsOutput != null)
+                        statsOutput.WriteLine("Run #{0}:", run + 1);
+                    RandomWordGenerator.Generate(detector, length, removeStrategy, charGenerator, logger,
+                        cancellationToken);
+                    if (statsOutput != null)
+                    {
+                        statsOutput.WriteLine("Coef: {0:0.000000}, Time: {1:0.000}",
+                            RandomWordGenerator.Statistics.CharsGenerated*1.0/length,
+                            RandomWordGenerator.Statistics.Milliseconds / 1000.0);
+                        statsOutput.WriteLine("Repetition periods:\n{0}",
+                            string.Join("\n", RandomWordGenerator.Statistics.CountOfPeriods
+                                .OrderBy(p => p.Key)
+                                .Select(p => string.Format("{0}: {1}", p.Key, p.Value))));
+                        statsOutput.WriteLine("-----");
+                    }
+                    totalCharsGenerated += RandomWordGenerator.Statistics.CharsGenerated;
+                    ms += RandomWordGenerator.Statistics.Milliseconds;
+                    if (statsOutput != null)
+                        statsOutput.Flush();
                 }
                 Thread.Sleep(100);
                 tokenSource.Cancel();
-                if (output != null)
-                    output.Close();
+                if (statsOutput != null)
+                    statsOutput.Close();
             }, cancellationToken);
             UpdateStatus += ended => Dispatcher.Invoke(() =>
             {
@@ -113,13 +135,13 @@ namespace GraphicalInterface
             }, cancellationToken);
         }
 
-        private delegate void UpdateStatusEvent(bool ended);
-
         private event UpdateStatusEvent UpdateStatus;
 
         private void RunWindow_OnClosed(object sender, EventArgs e)
         {
             tokenSource.Cancel();
         }
+
+        private delegate void UpdateStatusEvent(bool ended);
     }
 }

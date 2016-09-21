@@ -2,8 +2,8 @@
 {
     public class SaveData
     {
-        public bool SaveReps { get; set; }
-        public bool SaveTime { get; set; }
+        public bool SaveStats { get; set; }
+        public bool SaveFullLog { get; set; }
         public string SavePath { get; set; }
     }
 }

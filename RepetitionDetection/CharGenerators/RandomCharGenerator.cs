@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace RepetitionDetection.CharGenerators
+﻿namespace RepetitionDetection.CharGenerators
 {
     public class RandomCharGenerator : ICharGenerator
     {

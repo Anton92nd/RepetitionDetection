@@ -16,6 +16,8 @@ namespace RepetitionDetection.TextGeneration.RemoveStrategies
             return repetition.Period*periodsCount;
         }
 
+        public int PeriodsToRemove { get { return periodsCount; } }
+
         public override string ToString()
         {
             return string.Format("Remove {0} period(s) strategy", periodsCount);

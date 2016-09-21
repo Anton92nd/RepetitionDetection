@@ -1,6 +1,12 @@
-﻿using System.Text;
+﻿using System;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
 using System.Windows;
-using Microsoft.Win32;
+using System.Windows.Forms;
+using Newtonsoft.Json;
 using RepetitionDetection.CharGenerators;
 using RepetitionDetection.Commons;
 using RepetitionDetection.Detection;
@@ -17,8 +23,59 @@ namespace GraphicalInterface
         public MainWindow()
         {
             InitializeComponent();
+            MyInitialize();
             Title = "Repetition-free word generator";
         }
+
+        private InitialSettings InitialSettings;
+
+        private void MyInitialize()
+        {
+            if (!TryLoadFromSettings(out InitialSettings))
+                InitialSettings = new InitialSettings
+                {
+                    SaveData = new SaveData
+                    {
+                        SavePath = "C:\\runs\\",
+                        SaveFullLog = false,
+                        SaveStats = true,
+                    },
+                    AlphabetSize = 3,
+                    CharGeneratorIndex = 0,
+                    DetectEqualToExponent = true,
+                    Numerator = 2,
+                    Denominator = 1,
+                    GeneratedStringLength = 1000,
+                    RepetitionRemovingStrategyIndex = 0,
+                    RunsCount = 100,
+                    PeriodsToRemove = 1,
+                };
+        }
+
+        private bool TryLoadFromSettings(out InitialSettings settings)
+        {
+            settings = null;
+            if (!File.Exists(SettingsPath))
+                return false;
+            try
+            {
+                settings = JsonConvert.DeserializeObject<InitialSettings>(File.ReadAllText(SettingsPath));
+                if (settings == null)
+                    throw new Exception();
+                return true;
+            }
+            catch
+            {
+            }
+            return false;
+        }
+
+        private string SettingsPath
+        {
+            get { return Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), inititalSettingsFileName); }
+        }
+
+        private const string inititalSettingsFileName = "settings.ini";
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -33,14 +90,26 @@ namespace GraphicalInterface
                 if (!int.TryParse(TextBoxRunsCount.Text, out runsCount) || runsCount <= 0)
                     Raise("Runscount must be positive integer");
                 TextBlockErrorMessage.Text = string.Empty;
-                var save = CheckBoxSave.IsChecked ?? false;
                 var saveData = new SaveData
                 {
                     SavePath = TextBoxOutputPath.Text,
-                    SaveReps = (CheckBoxReps.IsChecked ?? false) && save,
-                    SaveTime = (CheckBoxTime.IsChecked ?? false) && save,
+                    SaveStats = CheckBoxStatistics.IsChecked ?? false,
+                    SaveFullLog = CheckBoxFullLog.IsChecked ?? false,
                 };
                 TextBlockErrorMessage.Text = string.Empty;
+                File.WriteAllText(SettingsPath, JsonConvert.SerializeObject(new InitialSettings
+                {
+                    AlphabetSize = charGenerator.AlphabetSize,
+                    CharGeneratorIndex = ComboBoxCharGenerator.SelectedIndex,
+                    SaveData = saveData,
+                    RunsCount = runsCount,
+                    DetectEqualToExponent = detector.DetectEqual,
+                    GeneratedStringLength = length,
+                    Numerator = detector.E.Num,
+                    Denominator = detector.E.Denom,
+                    RepetitionRemovingStrategyIndex = ComboBoxRemoveStrategy.SelectedIndex,
+                    PeriodsToRemove = removeStrategy.PeriodsToRemove, 
+                }));
                 var runWindow = new RunWindow(detector, removeStrategy, charGenerator, saveData, length, runsCount);
                 runWindow.ShowDialog();
             }
@@ -126,13 +195,23 @@ namespace GraphicalInterface
         private void CharGenerator_OnLoaded(object sender, RoutedEventArgs e)
         {
             ComboBoxCharGenerator.ItemsSource = new[] {"Random uniform", "Random uniform, except last symbol", "Binary"};
-            ComboBoxCharGenerator.SelectedIndex = 0;
+            ComboBoxCharGenerator.SelectedIndex = InitialSettings.CharGeneratorIndex;
         }
 
         private void RemoveStrategy_OnLoaded(object sender, RoutedEventArgs e)
         {
             ComboBoxRemoveStrategy.ItemsSource = new[] {"Remove border", "Remove period(s)"};
-            ComboBoxRemoveStrategy.SelectedIndex = 0;
+            ComboBoxRemoveStrategy.SelectedIndex = InitialSettings.RepetitionRemovingStrategyIndex;
+            if (ComboBoxRemoveStrategy.SelectedIndex == 0)
+            {
+                TextBlockPeriodsCount.Visibility = Visibility.Hidden;
+                TextBoxPeriodsCount.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                TextBlockPeriodsCount.Visibility = Visibility.Visible;
+                TextBoxPeriodsCount.Visibility = Visibility.Visible;
+            }
         }
 
         private void ComboBoxRemoveStrategy_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -151,27 +230,61 @@ namespace GraphicalInterface
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            var saveFileDialog = new SaveFileDialog();
-            if (saveFileDialog.ShowDialog() == true)
+            var folderBrowserDialog = new FolderBrowserDialog();
+            if (folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                TextBoxOutputPath.Text = saveFileDialog.FileName;
+                TextBoxOutputPath.Text = folderBrowserDialog.SelectedPath;
             }
         }
 
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        private void TextBoxNumerator_OnLoaded(object sender, RoutedEventArgs e)
         {
-            ButtonChangePath.Visibility = Visibility.Visible;
-            TextBoxOutputPath.Visibility = Visibility.Visible;
-            CheckBoxReps.Visibility = Visibility.Visible;
-            CheckBoxTime.Visibility = Visibility.Visible;
+            TextBoxNumerator.Text = InitialSettings.Numerator.ToString(CultureInfo.InvariantCulture);
         }
 
-        private void CheckBoxSave_OnUnchecked(object sender, RoutedEventArgs e)
+        private void TextBoxDenominator_OnLoaded(object sender, RoutedEventArgs e)
         {
-            ButtonChangePath.Visibility = Visibility.Hidden;
-            TextBoxOutputPath.Visibility = Visibility.Hidden;
-            CheckBoxReps.Visibility = Visibility.Hidden;
-            CheckBoxTime.Visibility = Visibility.Hidden;
+            TextBoxDenominator.Text = InitialSettings.Denominator.ToString(CultureInfo.InvariantCulture);
+        }
+
+        private void CheckBoxDetectEqual_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            CheckBoxDetectEqual.IsChecked = InitialSettings.DetectEqualToExponent;
+        }
+
+        private void TextBoxAlphabet_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            TextBoxAlphabet.Text = InitialSettings.AlphabetSize.ToString(CultureInfo.InvariantCulture);
+        }
+
+        private void TextBoxLength_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            TextBoxLength.Text = InitialSettings.GeneratedStringLength.ToString(CultureInfo.InvariantCulture);
+        }
+
+        private void TextBoxRunsCount_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            TextBoxRunsCount.Text = InitialSettings.RunsCount.ToString(CultureInfo.InvariantCulture);
+        }
+
+        private void TextBoxOutputPath_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            TextBoxOutputPath.Text = InitialSettings.SaveData.SavePath;
+        }
+
+        private void CheckBoxFullLog_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            CheckBoxFullLog.IsChecked = InitialSettings.SaveData.SaveFullLog;
+        }
+
+        private void CheckBoxStatistics_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            CheckBoxStatistics.IsChecked = InitialSettings.SaveData.SaveStats;
+        }
+
+        private void TextBoxPeriodsCount_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            TextBoxPeriodsCount.Text = InitialSettings.PeriodsToRemove.ToString(CultureInfo.InvariantCulture);
         }
     }
 }

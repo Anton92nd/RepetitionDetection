@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using System.Threading;
 using JetBrains.Annotations;
 using RepetitionDetection.CharGenerators;
@@ -11,30 +12,30 @@ namespace RepetitionDetection.TextGeneration
 {
     public static class RandomWordGenerator
     {
-        public static int CharsGenerated { get; private set; }
+        public static readonly Statistics Statistics = new Statistics();
 
         public static StringBuilder Generate([NotNull] Detector detector, int length, [NotNull] IRemoveStrategy removeStrategy,
-            [NotNull] ICharGenerator generator, [CanBeNull] IGeneratorLogger logger = null, [CanBeNull] CancellationToken? token = null, SaveData saveData = null)
+            [NotNull] ICharGenerator generator, [CanBeNull] IGeneratorLogger logger = null, [CanBeNull] CancellationToken? token = null)
         {
-            if (saveData == null)
-                saveData = new SaveData {SaveTime = false, SaveReps = false};
-            CharsGenerated = 0;
+            Statistics.Clear();
             var text = detector.Text;
             text.EnsureCapacity(length);
+            var sw = Stopwatch.StartNew();
             while (text.Length < length)
             {
                 if (token != null && token.Value.IsCancellationRequested)
                     break;
                 text.Append(generator.Generate());
-                CharsGenerated++;
+                Statistics.CharsGenerated++;
                 if (logger != null)
                     logger.LogAfterGenerate(text);
                 Repetition repetition;
                 if (detector.TryDetect(out repetition))
                 {
-                    if (logger != null && saveData.SaveReps)
-                        logger.LogRepetition(text, repetition);
+                    AddToStats(repetition);
                     var charsToDelete = removeStrategy.GetCharsToDelete(text.Length, repetition);
+                    if (logger != null)
+                        logger.LogRepetition(text, repetition);
                     for (var i = 0; i < charsToDelete; ++i)
                     {
                         detector.BackTrack();
@@ -42,7 +43,17 @@ namespace RepetitionDetection.TextGeneration
                     }
                 }
             }
+            sw.Stop();
+            Statistics.Milliseconds = sw.ElapsedMilliseconds;
             return text;
+        }
+
+        private static void AddToStats(Repetition repetition)
+        {
+            if (!Statistics.CountOfPeriods.ContainsKey(repetition.Period))
+                Statistics.CountOfPeriods[repetition.Period] = 1;
+            else
+                Statistics.CountOfPeriods[repetition.Period]++;
         }
     }
 }
