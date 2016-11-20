@@ -30,7 +30,7 @@ namespace Tests.TextGenerationTests
                 var sw = Stopwatch.StartNew();
                 RandomWordGenerator.Generate(detector, length, new RemoveBorderStrategy(), generator);
                 sw.Stop();
-                Console.WriteLine("Length: {0}\n\tTime: {1} ms\n\tConversion coeff: {2:0.000000}", length, sw.ElapsedMilliseconds, RandomWordGenerator.CharsGenerated * 1.0 / length);
+                Console.WriteLine("Length: {0}\n\tTime: {1} ms\n\tConversion coeff: {2:0.000000}", length, sw.ElapsedMilliseconds, RandomWordGenerator.Statistics.CharsGenerated * 1.0 / length);
             }
         }
 
@@ -43,7 +43,7 @@ namespace Tests.TextGenerationTests
             var sw = Stopwatch.StartNew();
             RandomWordGenerator.Generate(detector, length, new RemoveBorderStrategy(), generator);
             sw.Stop();
-            Console.WriteLine("Length: {0}\n\tTime: {1} ms\n\tConversion coeff: {2:0.000000}", length, sw.ElapsedMilliseconds, RandomWordGenerator.CharsGenerated * 1.0 / length);
+            Console.WriteLine("Length: {0}\n\tTime: {1} ms\n\tConversion coeff: {2:0.000000}", length, sw.ElapsedMilliseconds, RandomWordGenerator.Statistics.CharsGenerated * 1.0 / length);
         }
 
         [TestCase(5)]
@@ -66,7 +66,7 @@ namespace Tests.TextGenerationTests
             foreach (var length in lengthsBoundary)
             {
                 RandomWordGenerator.Generate(detector, length, strategy, generator);
-                charsGenerated += RandomWordGenerator.CharsGenerated;
+                charsGenerated += RandomWordGenerator.Statistics.CharsGenerated;
                 times.Add(sw.ElapsedMilliseconds);
                 coefs.Add(charsGenerated * 1.0 / length);
             }

@@ -54,6 +54,8 @@ namespace Tests
             {
                 var Runs = new[] { 300, 300, 200, 200, 100, 100, 100, 50 };
                 var lengths = new[] { 100, 200, 300, 400, 500, 600, 700, 800 };
+                bool detectEqual = false;
+                var e = new RationalNumber(7, 5);
 
                 for (var i = 0; i < Runs.Length; ++i)
                 {
@@ -61,12 +63,9 @@ namespace Tests
                     Console.WriteLine("Calculating conversion for length = {0}", length);
                     var text = new StringBuilder();
 
-
-                    var e = new RationalNumber(7, 5);
-                    var generator = new BinaryCharGenerator(text, 4);
-                    var detector = new RepetitionDetector(text, e, false);
+                    var generator = new CleverCharGenerator(text, 4, e, detectEqual);
+                    var detector = new RepetitionDetector(text, e, detectEqual);
                     var removeStrategy = new RemoveBorderStrategy();
-
 
                     Calculate(Runs[i], detector, lengths[i], removeStrategy, generator, null, output);
                 }
@@ -80,6 +79,8 @@ namespace Tests
             {
                 var Runs = new[] { 100, 100, 100, 100, 100 };
                 var lengths = new[] { 100, 200, 300, 400, 500 };
+                var e = new RationalNumber(7, 4);
+                var detectEqual = false;
 
                 for (var i = 0; i < Runs.Length; ++i)
                 {
@@ -87,10 +88,8 @@ namespace Tests
                     Console.WriteLine("Calculating conversion for length = {0}", length);
                     var text = new StringBuilder();
 
-
-                    var e = new RationalNumber(7, 4);
-                    var generator = new BinaryCharGenerator(text, 3);
-                    var detector = new RepetitionDetector(text, e, false);
+                    var generator = new CleverCharGenerator(text, 3, e, detectEqual);
+                    var detector = new RepetitionDetector(text, e, detectEqual);
                     var removeStrategy = new RemoveBorderStrategy();
 
                     Calculate(Runs[i], detector, lengths[i], removeStrategy, generator, null, output);
@@ -134,14 +133,16 @@ namespace Tests
 
                 var removeStrategy = new RemoveBorderStrategy();
                 var logger = new ConsoleTextLengthLogger(length / 100);
+                var detectEqual = false;
+
                 for (var k = 5; k <= 10; ++k)
                 {
                     Console.WriteLine("Conversion for k = {0}", k);
                     var text = new StringBuilder();
 
                     var e = new RationalNumber(k, k - 1);
-                    var generator = new BinaryCharGenerator(text, k);
-                    var detector = new RepetitionDetector(text, e, false);
+                    var generator = new CleverCharGenerator(text, k, e, detectEqual);
+                    var detector = new RepetitionDetector(text, e, detectEqual);
 
                     Calculate(runsCount, detector, length, removeStrategy, generator, logger, output);
                 }
@@ -162,7 +163,7 @@ namespace Tests
                 RandomWordGenerator.Generate(detector, length, removeStrategy, generator, logger);
                 sw.Stop();
                 times[run] = sw.ElapsedMilliseconds;
-                conversionCoeffs[run] = RandomWordGenerator.CharsGenerated * 1.0 / length;
+                conversionCoeffs[run] = RandomWordGenerator.Statistics.CharsGenerated * 1.0 / length;
                 Console.WriteLine("\rRun {0} generated in {1} ms", run + 1, sw.ElapsedMilliseconds);
             }
             output.WriteLine("{0} {1} {2} {3}", runs, length, conversionCoeffs.Average(), times.Average());

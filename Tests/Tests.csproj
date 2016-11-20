@@ -61,6 +61,7 @@
     <Compile Include="StringMatchingTests\StringMatchingAlgoPerfomanceTests.cs" />
     <Compile Include="StringMatchingTests\StringMatchingTests.cs" />
     <Compile Include="TextGenerationTests\AllWordsTests.cs" />
+    <Compile Include="TextGenerationTests\CleverCharGeneratorTests.cs" />
     <Compile Include="TextGenerationTests\RandomWordsGeneratorTests.cs" />
   </ItemGroup>
   <ItemGroup>
