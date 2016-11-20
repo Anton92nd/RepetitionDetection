@@ -78,7 +78,7 @@
     <Compile Include="Catching\Catcher.cs" />
     <Compile Include="Catching\CatcherInterval.cs" />
     <Compile Include="Catching\CatcherState.cs" />
-    <Compile Include="CharGenerators\BinaryCharGenerator.cs" />
+    <Compile Include="CharGenerators\CleverCharGenerator.cs" />
     <Compile Include="CharGenerators\ICharGenerator.cs" />
     <Compile Include="CharGenerators\RandomCharGenerator.cs" />
     <Compile Include="CharGenerators\RandomNotLastCharGenerator.cs" />

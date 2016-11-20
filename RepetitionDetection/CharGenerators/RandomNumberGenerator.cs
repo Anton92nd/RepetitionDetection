@@ -7,7 +7,7 @@ namespace RepetitionDetection.CharGenerators
     {
         public static int Generate(int minValue, int maxValue)
         {
-            return minValue + GenerateInt()%(maxValue - minValue);
+            return minValue + Generate(maxValue - minValue);
         }
 
         public static int Generate(int maxValue)
