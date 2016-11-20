@@ -82,7 +82,7 @@ namespace GraphicalInterface
             try
             {
                 var detector = GetDetector();
-                var charGenerator = GetCharGenerator(detector.Text);
+                var charGenerator = GetCharGenerator(detector.Text, detector.E, detector.DetectEqual);
                 var removeStrategy = GetRemoveStrategy(detector.E);
                 int length, runsCount;
                 if (!int.TryParse(TextBoxLength.Text, out length) || length <= 0)
@@ -135,7 +135,7 @@ namespace GraphicalInterface
             return new RemovePeriodMultipleStrategy(periodsCount);
         }
 
-        private ICharGenerator GetCharGenerator(StringBuilder text)
+        private ICharGenerator GetCharGenerator(StringBuilder text, RationalNumber E, bool detectEqual)
         {
             int alphabetSize;
             if (!int.TryParse(TextBoxAlphabet.Text, out alphabetSize))
@@ -143,16 +143,14 @@ namespace GraphicalInterface
                 Raise("Alphabet size must be integer");
             }
             var index = ComboBoxCharGenerator.SelectedIndex;
-            if (index < 0 || index > 2)
+            if (index < 0 || index > 1)
                 Raise("Select char generator");
             switch (index)
             {
                 case 0:
                     return new RandomCharGenerator(alphabetSize);
-                case 1:
-                    return new RandomNotLastCharGenerator(text, alphabetSize);
                 default:
-                    return new BinaryCharGenerator(text, alphabetSize);
+                    return new CleverCharGenerator(text, alphabetSize, E, detectEqual);
             }
         }
 
@@ -194,7 +192,7 @@ namespace GraphicalInterface
 
         private void CharGenerator_OnLoaded(object sender, RoutedEventArgs e)
         {
-            ComboBoxCharGenerator.ItemsSource = new[] {"Random uniform", "Random uniform, except last symbol", "Binary"};
+            ComboBoxCharGenerator.ItemsSource = new[] {"Random uniform", "Clever"};
             ComboBoxCharGenerator.SelectedIndex = InitialSettings.CharGeneratorIndex;
         }
 

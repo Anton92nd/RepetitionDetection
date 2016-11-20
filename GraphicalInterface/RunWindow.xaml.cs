@@ -129,7 +129,12 @@ namespace GraphicalInterface
                 while (true)
                 {
                     if (UpdateStatus != null)
-                        UpdateStatus(cancellationToken.IsCancellationRequested);
+                    {
+                        var ended = cancellationToken.IsCancellationRequested;
+                        UpdateStatus(ended);
+                        if (ended)
+                            break;
+                    }
                     Thread.Sleep(50);
                 }
             }, cancellationToken);
