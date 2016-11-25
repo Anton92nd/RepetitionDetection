@@ -91,8 +91,10 @@ namespace GraphicalInterface
                     detector.Reset();
                     if (statsOutput != null)
                         statsOutput.WriteLine("Run #{0}:", run + 1);
-                    RandomWordGenerator.Generate(detector, length, removeStrategy, charGenerator, logger,
+                    var text = RandomWordGenerator.Generate(detector, length, removeStrategy, charGenerator, logger,
                         cancellationToken);
+                    if (fullLogOutput != null)
+                        fullLogOutput.WriteLine("Result: {0}\n", text);
                     if (statsOutput != null)
                     {
                         statsOutput.WriteLine("Coef: {0:0.000000}, Time: {1:0.000}",
@@ -113,6 +115,8 @@ namespace GraphicalInterface
                 tokenSource.Cancel();
                 if (statsOutput != null)
                     statsOutput.Close();
+                if (fullLogOutput != null)
+                    fullLogOutput.Close();
             }, cancellationToken);
             UpdateStatus += ended => Dispatcher.Invoke(() =>
             {
