@@ -60,18 +60,21 @@ namespace GraphicalInterface
 
         private void RunWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            var statsOutput = saveData.SaveStats
-                ? new StreamWriter(
-                    File.Open(
-                        Path.Combine(saveData.SavePath, "stats_" + DateTime.Now.ToString("yy-MM-dd_HH-mm") + ".txt"),
-                        FileMode.Create))
-                : null;
-            var fullLogOutput = saveData.SaveFullLog
-                ? new StreamWriter(
-                    File.Open(
-                        Path.Combine(saveData.SavePath, "full_" + DateTime.Now.ToString("yy-MM-dd_HH-mm") + ".txt"),
-                        FileMode.Create))
-                : null;
+            StreamWriter statsOutput = null, fullLogOutput = null;
+            if (saveData.SaveStats)
+            {
+                if (!Directory.Exists(saveData.SavePath))
+                    Directory.CreateDirectory(saveData.SavePath);
+                var path = Path.Combine(saveData.SavePath, "stats_" + DateTime.Now.ToString("yy-MM-dd_HH-mm") + ".txt");
+                statsOutput = new StreamWriter(File.Open(path, FileMode.Create));
+            }
+            if (saveData.SaveFullLog)
+            {
+                if (!Directory.Exists(saveData.SavePath))
+                    Directory.CreateDirectory(saveData.SavePath);
+                var path = Path.Combine(saveData.SavePath, "full_" + DateTime.Now.ToString("yy-MM-dd_HH-mm") + ".txt");
+                fullLogOutput = new StreamWriter(File.Open(path, FileMode.Create));
+            }
             logger = new OutputLogger(fullLogOutput);
             tokenSource = new CancellationTokenSource();
             cancellationToken = tokenSource.Token;
