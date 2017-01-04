@@ -77,7 +77,7 @@ namespace GraphicalInterface
             cancellationToken = tokenSource.Token;
             if (statsOutput != null)
                 statsOutput.WriteLine(
-                    "Exponent: {0}\nDetect equal to exponent: {1}\nAlphabet size: {2}\nLength: {3}\nRuns count: {4}\nChar generator: {5}\nRemoving strategy: {6}",
+                    "Exponent: {0}\nDetect equal to exponent: {1}\nAlphabet size: {2}\nLength: {3}\nRuns count: {4}\nChar generator: {5}\nRemoving strategy: {6}\n",
                     detector.E, detector.DetectEqual, charGenerator.AlphabetSize, length, runsCount,
                     charGenerator.GetType().Name, removeStrategy.GetType().Name);
             var generateTask = Task.Run(() =>
@@ -89,22 +89,13 @@ namespace GraphicalInterface
                     if (cancellationToken.IsCancellationRequested)
                         break;
                     detector.Reset();
-                    if (statsOutput != null)
-                        statsOutput.WriteLine("Run #{0}:", run + 1);
                     var text = RandomWordGenerator.Generate(detector, length, removeStrategy, charGenerator, logger,
                         cancellationToken);
                     if (fullLogOutput != null)
                         fullLogOutput.WriteLine("Result: {0}\n", text);
                     if (statsOutput != null)
                     {
-                        statsOutput.WriteLine("Coef: {0:0.000000}, Time: {1:0.000}",
-                            RandomWordGenerator.Statistics.CharsGenerated*1.0/length,
-                            RandomWordGenerator.Statistics.Milliseconds / 1000.0);
-                        statsOutput.WriteLine("Repetition periods:\n{0}",
-                            string.Join("\n", RandomWordGenerator.Statistics.CountOfPeriods
-                                .OrderBy(p => p.Key)
-                                .Select(p => string.Format("{0}: {1}", p.Key, p.Value))));
-                        statsOutput.WriteLine("-----");
+                        statsOutput.WriteLine(detector.Text);
                     }
                     totalCharsGenerated += RandomWordGenerator.Statistics.CharsGenerated;
                     ms += RandomWordGenerator.Statistics.Milliseconds;
