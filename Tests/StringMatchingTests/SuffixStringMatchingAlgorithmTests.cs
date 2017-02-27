@@ -16,7 +16,7 @@ namespace Tests.StringMatchingTests
         [TestCase("aaababaababababaaaaabaabaaaaaabab", "aaabab", new []{5, 12, 32}, Description = "Not actual second occurence")]
         public void TestFindOccurences(string text, string pattern, int[] expectedOccurences)
         {
-            var criticalPosition = Factorizer.GetFactorization(pattern).PatternCriticalPosition;
+            var criticalPosition = pattern.GetFactorizations().PatternCriticalPosition;
             var period = PeriodCalculator.GetPeriod(pattern, pattern.Length);
 
             var sb = new StringBuilder();

@@ -31,8 +31,8 @@ namespace Tests
             934, 467, 574)]
         public void FactorizerTest(string pattern, int prefixLength, int prefixCriticalPosition, int patternCriticalPosition)
         {
-            var factorization = Factorizer.GetFactorization(pattern);
-            Assert.That(factorization, Is.EqualTo(new Factorization(pattern, prefixLength, prefixCriticalPosition, patternCriticalPosition)));
+            var factorizations = pattern.GetFactorizations();
+            Assert.That(factorizations, Is.EqualTo(new Factorizations(pattern, prefixLength, prefixCriticalPosition, patternCriticalPosition)));
         }
     }
 }

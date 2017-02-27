@@ -76,8 +76,8 @@
     <Compile Include="Commons\InvalidUsageException.cs" />
     <Compile Include="Commons\RationalNumber.cs" />
     <Compile Include="Commons\Repetition.cs" />
-    <Compile Include="CriticalFactorization\Factorization.cs" />
-    <Compile Include="CriticalFactorization\Factorizer.cs" />
+    <Compile Include="CriticalFactorization\Factorizations.cs" />
+    <Compile Include="CriticalFactorization\FactorizationExtensions.cs" />
     <Compile Include="CriticalFactorization\PrefixFactorizer.cs" />
     <Compile Include="Detection\LargeRepetitionDetector.cs" />
     <Compile Include="Detection\Detector.cs" />

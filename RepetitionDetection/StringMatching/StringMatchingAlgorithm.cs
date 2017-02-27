@@ -9,21 +9,24 @@ namespace RepetitionDetection.StringMatching
     {
         public StringMatchingAlgorithm([NotNull] StringBuilder text, [NotNull] string pattern, int startPosition)
         {
-            var factorizations = Factorizer.GetFactorization(pattern);
-            if (factorizations.PatternCriticalPosition > pattern.Length/2)
+            var factorizations = pattern.GetFactorizations();
+            if (factorizations.PatternFactorizationIsGood())
+            {
+                shift = 0;
+                incompleteAlgorithm = null;
+                completeAlgorithm = new GoodFactorizationStringMatchingAlgorithm(text, startPosition, pattern,
+                    pattern.Length,
+                    factorizations.PatternCriticalPosition, PeriodCalculator.GetPeriod(pattern, pattern.Length));
+            }
+            else
             {
                 shift = pattern.Length - factorizations.PrefixLength;
                 incompleteAlgorithm = new SuffixStringMatchingAlgorithm(text, pattern, startPosition, pattern.Length,
                     factorizations.PatternCriticalPosition, PeriodCalculator.GetPeriod(pattern, pattern.Length));
-                completeAlgorithm = new GoodFactorizationStringMatchingAlgorithm(text, startPosition, pattern, factorizations.PrefixLength,
-                    factorizations.PrefixCriticalPosition, PeriodCalculator.GetPeriod(pattern, factorizations.PrefixLength));
-            }
-            else
-            {
-                shift = 0;
-                incompleteAlgorithm = null;
-                completeAlgorithm = new GoodFactorizationStringMatchingAlgorithm(text, startPosition, pattern, pattern.Length,
-                    factorizations.PatternCriticalPosition, PeriodCalculator.GetPeriod(pattern, pattern.Length));
+                completeAlgorithm = new GoodFactorizationStringMatchingAlgorithm(text, startPosition, pattern,
+                    factorizations.PrefixLength,
+                    factorizations.PrefixCriticalPosition,
+                    PeriodCalculator.GetPeriod(pattern, factorizations.PrefixLength));
             }
         }
 
