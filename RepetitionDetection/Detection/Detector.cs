@@ -14,7 +14,7 @@ namespace RepetitionDetection.Detection
         {
             if (text.Length > 0)
             {
-                throw new InvalidUsageException("Text must be empty when creating detector");
+                throw new InvalidProgramStateException("Text must be empty when creating detector");
             }
             Text = text;
             E = e;

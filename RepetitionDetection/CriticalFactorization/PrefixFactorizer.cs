@@ -16,7 +16,7 @@ namespace RepetitionDetection.CriticalFactorization
         public void Factorize(int prefixLength)
         {
             if (prefixLength <= 1)
-                throw new InvalidUsageException("Prefix length must be greater than 1");
+                throw new InvalidProgramStateException("Prefix length must be greater than 1");
             PrefixLength = prefixLength;
             maximalSuffixCalculatorForLess.Calculate(prefixLength);
             maximalSuffixCalculatorForGreater.Calculate(prefixLength);

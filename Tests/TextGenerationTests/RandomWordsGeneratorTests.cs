@@ -92,7 +92,7 @@ namespace Tests.TextGenerationTests
             }
             else
             {
-                throw new InvalidUsageException(string.Format("Wrong type of detector: {0}", detectorType.FullName));
+                throw new InvalidProgramStateException(string.Format("Wrong type of detector: {0}", detectorType.FullName));
             }
             return detector;
         }

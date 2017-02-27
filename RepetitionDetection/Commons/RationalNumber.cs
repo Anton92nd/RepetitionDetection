@@ -8,7 +8,7 @@ namespace RepetitionDetection.Commons
         public RationalNumber(int numerator, int denominator = 1)
         {
             if (denominator == 0)
-                throw new InvalidUsageException("Denominator can't be equal to zero");
+                throw new InvalidProgramStateException("Denominator can't be equal to zero");
             if (denominator < 0)
             {
                 denominator *= -1;
@@ -32,14 +32,14 @@ namespace RepetitionDetection.Commons
         public static RationalNumber operator /(RationalNumber a, RationalNumber b)
         {
             if (b.Num == 0)
-                throw new InvalidUsageException("Can't divide by zero");
+                throw new InvalidProgramStateException("Can't divide by zero");
             return new RationalNumber(a.Num * b.Denom, a.Denom * b.Num);
         }
 
         public static RationalNumber operator /(RationalNumber a, int b)
         {
             if (b == 0)
-                throw new InvalidUsageException("Can't divide by zero");
+                throw new InvalidProgramStateException("Can't divide by zero");
             return new RationalNumber(a.Num, a.Denom * b);
         }
 
