@@ -17,7 +17,7 @@ namespace Tests.StringMatchingTests
         public void TestFindOccurences(string text, string pattern, int[] expectedOccurences)
         {
             var criticalPosition = pattern.GetFactorizations().PatternCriticalPosition;
-            var period = PeriodCalculator.GetPeriod(pattern, pattern.Length);
+            var period = pattern.GetPeriod(pattern.Length);
 
             var sb = new StringBuilder();
             var algorithm = new SuffixStringMatchingAlgorithm(sb, pattern, 0, pattern.Length, criticalPosition, period);

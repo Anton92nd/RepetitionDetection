@@ -15,11 +15,11 @@ namespace Tests.MaximalSuffixTests
         [TestCase("aabaca", new []{0, 0, 2, 2, 4, 4})]
         [TestCase("zzxzzz", new []{0, 0, 0, 0, 0, 3})]
         [TestCase("abaabcbcd", new []{0, 1, 1, 1, 1, 5, 5, 5, 8})]
-        public void TestCase(string input, int[] expectedMaximalSuffixes)
+        public void TestCase(string pattern, int[] expectedMaximalSuffixes)
         {
-            var maximalSuffixCalculator = new MaximalSuffixCalculator(input, new CharLessComparer());
-            var maximalSuffixes = new int[input.Length];
-            for (var i = 0; i < input.Length; i++)
+            var maximalSuffixCalculator = new MaximalSuffixCalculator(pattern, new CharLessComparer());
+            var maximalSuffixes = new int[pattern.Length];
+            for (var i = 0; i < pattern.Length; i++)
             {
                 maximalSuffixCalculator.Calculate(i + 1);
                 maximalSuffixes[i] = maximalSuffixCalculator.MaximalSuffixPosition;

@@ -7,7 +7,7 @@ namespace RepetitionDetection.CriticalFactorization
 {
     public class PrefixFactorizer
     {
-        public PrefixFactorizer([NotNull] string word)
+        public PrefixFactorizer([NotNull] TextSubstring word)
         {
             maximalSuffixCalculatorForLess = new MaximalSuffixCalculator(word, new CharLessComparer());
             maximalSuffixCalculatorForGreater = new MaximalSuffixCalculator(word, new CharGreaterComparer());

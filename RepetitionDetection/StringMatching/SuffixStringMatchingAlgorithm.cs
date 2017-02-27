@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using JetBrains.Annotations;
+using RepetitionDetection.Commons;
 
 namespace RepetitionDetection.StringMatching
 {
@@ -8,7 +9,7 @@ namespace RepetitionDetection.StringMatching
     {
         public SuffixStringMatchingAlgorithm(
             [NotNull] StringBuilder text,
-            [NotNull] string pattern,
+            [NotNull] TextSubstring pattern,
             int startPosition,
             int prefixLength,
             int criticalPosition,
@@ -65,7 +66,7 @@ namespace RepetitionDetection.StringMatching
         private readonly StringBuilder text;
 
         [NotNull]
-        private readonly string pattern;
+        private readonly TextSubstring pattern;
 
         private readonly int prefixLength;
         private readonly int criticalPosition;

@@ -1,5 +1,6 @@
 ﻿using System;
 using JetBrains.Annotations;
+using RepetitionDetection.Commons;
 
 namespace RepetitionDetection.CriticalFactorization
 {
@@ -7,6 +8,12 @@ namespace RepetitionDetection.CriticalFactorization
     {
         [NotNull]
         public static Factorizations GetFactorizations([NotNull] this string pattern)
+        {
+            return ((TextSubstring) pattern).GetFactorizations();
+        }
+
+        [NotNull]
+        public static Factorizations GetFactorizations([NotNull] this TextSubstring pattern)
         {
             var prefixFactorizer = new PrefixFactorizer(pattern);
             var previousCriticalPosition = 0;

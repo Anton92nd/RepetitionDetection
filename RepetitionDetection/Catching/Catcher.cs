@@ -21,7 +21,7 @@ namespace RepetitionDetection.Catching
             this.timeToLive = timeToLive;
             RemoveTime = -1;
             h = new RationalNumber(j - i + 1, 2);
-            var pattern = text.ToString(i, h.Ceil());
+            var pattern = new TextSubstring(text, i, h.Ceil());
             stringMatchingAlgorithm = new StringMatchingAlgorithm(text, pattern, i + 1);
         }
 

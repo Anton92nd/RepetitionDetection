@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using JetBrains.Annotations;
+using RepetitionDetection.Commons;
 using RepetitionDetection.CriticalFactorization;
 using RepetitionDetection.Periods;
 
@@ -7,26 +8,26 @@ namespace RepetitionDetection.StringMatching
 {
     public class StringMatchingAlgorithm
     {
-        public StringMatchingAlgorithm([NotNull] StringBuilder text, [NotNull] string pattern, int startPosition)
+        public StringMatchingAlgorithm([NotNull] StringBuilder text, [NotNull] TextSubstring pattern, int startPosition)
         {
             var factorizations = pattern.GetFactorizations();
             if (factorizations.PatternFactorizationIsGood())
             {
                 shift = 0;
                 incompleteAlgorithm = null;
-                completeAlgorithm = new GoodFactorizationStringMatchingAlgorithm(text, startPosition, pattern,
+                completeAlgorithm = new GoodFactorizationStringMatchingAlgorithm(text, pattern, startPosition,
                     pattern.Length,
-                    factorizations.PatternCriticalPosition, PeriodCalculator.GetPeriod(pattern, pattern.Length));
+                    factorizations.PatternCriticalPosition, pattern.GetPeriod(pattern.Length));
             }
             else
             {
                 shift = pattern.Length - factorizations.PrefixLength;
                 incompleteAlgorithm = new SuffixStringMatchingAlgorithm(text, pattern, startPosition, pattern.Length,
-                    factorizations.PatternCriticalPosition, PeriodCalculator.GetPeriod(pattern, pattern.Length));
-                completeAlgorithm = new GoodFactorizationStringMatchingAlgorithm(text, startPosition, pattern,
+                    factorizations.PatternCriticalPosition, pattern.GetPeriod(pattern.Length));
+                completeAlgorithm = new GoodFactorizationStringMatchingAlgorithm(text, pattern, startPosition,
                     factorizations.PrefixLength,
                     factorizations.PrefixCriticalPosition,
-                    PeriodCalculator.GetPeriod(pattern, factorizations.PrefixLength));
+                    pattern.GetPeriod(factorizations.PrefixLength));
             }
         }
 

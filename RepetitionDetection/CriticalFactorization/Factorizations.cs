@@ -1,11 +1,12 @@
 ﻿using System;
 using JetBrains.Annotations;
+using RepetitionDetection.Commons;
 
 namespace RepetitionDetection.CriticalFactorization
 {
     public class Factorizations : IEquatable<Factorizations>
     {
-        public Factorizations([NotNull] string pattern, int prefixLength, int prefixCriticalPosition, int patternCriticalPosition)
+        public Factorizations([NotNull] TextSubstring pattern, int prefixLength, int prefixCriticalPosition, int patternCriticalPosition)
         {
             Pattern = pattern;
             PrefixLength = prefixLength;
@@ -41,6 +42,6 @@ namespace RepetitionDetection.CriticalFactorization
         public int PatternCriticalPosition { get; private set; }
 
         [NotNull]
-        private string Pattern { get; set; }
+        private TextSubstring Pattern { get; set; }
     }
 }

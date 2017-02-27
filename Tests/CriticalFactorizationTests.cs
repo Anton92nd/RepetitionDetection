@@ -29,10 +29,10 @@ namespace Tests
         [TestCase("aaaaabc", 5, 1, 5)]   // (a, aaaa) (aaaaa, bc)
         [TestCase("aaabababaabaabbaabbbabbaaaababbababbaaaababaabaabbabaaabaaaabbaaabaaaaaaaaaabbabaababaabbbabbbababaabbbbaaaabbbbabbaabbbabbbbaabbaabababbbbbaababbbaaaaaaaaaaaabbaabaababaaaaabbbabbabbaabbaaaabbbaabaaaaaabbbaaaaabbbabbbbbbabbaaaaabaaabbaabaaaaaaabaababbaababbbabababbbbbabababbabaaabbaababbaaaabababbbbaaaabaabbabbababaaabaaaaaabbbabaaaabaaababbbbbabbbaaabbaaaaaaaaaaabbbaabbbbababbabbaabaaabaaababbbbbababaaaabbbaabbabbbbaabababbaabbaaaabaaababaabbabbbbbababaaabaabaabbbbbbbabbaaaaaabaabbbabbbabbaabaabbabaababbbbabbabbbaabbaaabaaabbbbaabaaababababbabababbabbbbbbabbbbbaabbabbbbbbbbaaaaabbaaabbaababbbbaabbaaabbabbabbbabbaaaaaaabbababbbabaaababbbbbbabbaaabaaaababaabababaaabaabbaabbaaabaaabaaabaaabbbbaaaaabaaababaabbaababbbabababbbbbbabbbbbabaabbaaabbbbbbbbbababbbbabbaababbaabbabbabaaabbbbaabbaaabaaabbabbbbbbabbbbbabaababbabbababbbbababbbbaaabababbaaaababbabaabbbabbaaaaaaaabaaaaababbbabaaabbaabaababaabbbbaaabbabbaaaabbbabbaaaabaaabaaabbbaabbbabbbaababbbaaabaabbbbabbaaaababbaababababbbabbababbbb", 
             934, 467, 574)]
-        public void FactorizerTest(string pattern, int prefixLength, int prefixCriticalPosition, int patternCriticalPosition)
+        public void FactorizerTest(string word, int prefixLength, int prefixCriticalPosition, int patternCriticalPosition)
         {
-            var factorizations = pattern.GetFactorizations();
-            Assert.That(factorizations, Is.EqualTo(new Factorizations(pattern, prefixLength, prefixCriticalPosition, patternCriticalPosition)));
+            var factorizations = word.GetFactorizations();
+            Assert.That(factorizations, Is.EqualTo(new Factorizations(word, prefixLength, prefixCriticalPosition, patternCriticalPosition)));
         }
     }
 }

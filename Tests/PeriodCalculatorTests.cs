@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using RepetitionDetection.Commons;
 using RepetitionDetection.Periods;
 
 namespace Tests
@@ -12,9 +13,9 @@ namespace Tests
         [TestCase("abcdef", 6)]
         [TestCase("bacbac", 3)]
         [TestCase("abaabc", 6)]
-        public void TestPatternPeriod(string template, int expectedPeriod)
+        public void TestPatternPeriod(string pattern, int expectedPeriod)
         {
-            Assert.That(PeriodCalculator.GetPeriod(template, template.Length), Is.EqualTo(expectedPeriod));
+            Assert.That(pattern.GetPeriod(pattern.Length), Is.EqualTo(expectedPeriod));
         }
     }
 }

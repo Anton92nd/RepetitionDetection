@@ -75,6 +75,7 @@
     <Compile Include="Commons\InvalidProgramStateException.cs" />
     <Compile Include="Commons\RationalNumber.cs" />
     <Compile Include="Commons\Repetition.cs" />
+    <Compile Include="Commons\TextSubstring.cs" />
     <Compile Include="CriticalFactorization\Factorizations.cs" />
     <Compile Include="CriticalFactorization\FactorizationExtensions.cs" />
     <Compile Include="CriticalFactorization\PrefixFactorizer.cs" />
@@ -88,7 +89,7 @@
     <Compile Include="Logging\OutputLogger.cs" />
     <Compile Include="Logging\SaveData.cs" />
     <Compile Include="MaximalSuffixes\MaximalSuffixCalculator.cs" />
-    <Compile Include="Periods\PeriodCalculator.cs" />
+    <Compile Include="Periods\PeriodExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringMatching\AlgorithmState.cs" />
     <Compile Include="StringMatching\GoodFactorizationStringMatchingAlgorithm.cs" />

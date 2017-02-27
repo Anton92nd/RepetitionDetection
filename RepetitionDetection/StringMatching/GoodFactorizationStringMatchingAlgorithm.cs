@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Text;
 using JetBrains.Annotations;
+using RepetitionDetection.Commons;
 
 namespace RepetitionDetection.StringMatching
 {
     public class GoodFactorizationStringMatchingAlgorithm : IPartialStringMatchingAlgorithm
     {
-        public GoodFactorizationStringMatchingAlgorithm([NotNull] StringBuilder text, int startPosition, [NotNull] string pattern, int prefixLength, int criticalPosition, int period)
+        public GoodFactorizationStringMatchingAlgorithm([NotNull] StringBuilder text, [NotNull] TextSubstring pattern, int startPosition, int prefixLength, int criticalPosition, int period)
         { 
             this.text = text;
 
@@ -64,7 +65,7 @@ namespace RepetitionDetection.StringMatching
         private readonly StringBuilder text;
 
         [NotNull]
-        private readonly string pattern;
+        private readonly TextSubstring pattern;
 
         private readonly int prefixLength;
         private readonly int criticalPosition;

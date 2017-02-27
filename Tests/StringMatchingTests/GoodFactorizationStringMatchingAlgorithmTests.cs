@@ -18,10 +18,10 @@ namespace Tests.StringMatchingTests
         public void TestFindOccurences(string text, string pattern, int[] expectedOccurences)
         {
             var criticalPosition = pattern.GetFactorizations().PatternCriticalPosition;
-            var period = PeriodCalculator.GetPeriod(pattern, pattern.Length);
+            var period = pattern.GetPeriod(pattern.Length);
 
             var sb = new StringBuilder();
-            var algorithm = new GoodFactorizationStringMatchingAlgorithm(sb, 0, pattern, pattern.Length, criticalPosition, period);
+            var algorithm = new GoodFactorizationStringMatchingAlgorithm(sb, pattern, 0, pattern.Length, criticalPosition, period);
 
             var occurences = new List<int>();
             for (var i = 0; i < text.Length; ++i)
