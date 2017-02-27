@@ -8,7 +8,7 @@ using RepetitionDetection.StringMatching;
 namespace Tests.StringMatchingTests
 {
     [TestFixture]
-    public class CompleteStringMatchingAlgorithmTests
+    public class GoodFactorizationStringMatchingAlgorithmTests
     {
         [TestCase("abacabadabacababba", "aba", new []{2, 6, 10, 14})]
         [TestCase("aaaaa", "aa", new []{1, 2, 3, 4})]
@@ -21,7 +21,7 @@ namespace Tests.StringMatchingTests
             var period = PeriodCalculator.GetPeriod(pattern, pattern.Length);
 
             var sb = new StringBuilder();
-            var algorithm = new CompleteStringMatchingAlgorithm(sb, 0, pattern, pattern.Length, criticalPosition, period);
+            var algorithm = new GoodFactorizationStringMatchingAlgorithm(sb, 0, pattern, pattern.Length, criticalPosition, period);
 
             var occurences = new List<int>();
             for (var i = 0; i < text.Length; ++i)

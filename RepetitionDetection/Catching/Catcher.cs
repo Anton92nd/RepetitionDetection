@@ -86,7 +86,7 @@ namespace RepetitionDetection.Catching
             {
                 stateStack.Pop();
             }
-            stringMatchingAlgorithm.SetState(stateStack.Peek().StringMatchingState);
+            stringMatchingAlgorithm.State = stateStack.Peek().StringMatchingState;
         }
 
         public bool IsActive()

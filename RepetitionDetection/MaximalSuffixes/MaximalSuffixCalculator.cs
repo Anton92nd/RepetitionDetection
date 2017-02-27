@@ -5,35 +5,35 @@ namespace RepetitionDetection.MaximalSuffixes
 {
     public class MaximalSuffixCalculator
     {
-        public MaximalSuffixCalculator([NotNull] string str, [NotNull] IComparer<char> charComparer)
+        public MaximalSuffixCalculator([NotNull] string word, [NotNull] IComparer<char> charComparer)
         {
             this.charComparer = charComparer;
             currentSuffixPosition = 1;
             commonSymbolsCount = 1;
             MaximalSuffixPosition = 0;
-            Period = 1;
-            this.str = str;
+            suffixPeriod = 1;
+            this.word = word;
         }
 
         public void Calculate(int stringLength)
         {
             while (currentSuffixPosition + commonSymbolsCount <= stringLength)
             {
-                var fromMaximalSuffix = str[MaximalSuffixPosition + commonSymbolsCount - 1];
-                var fromCurrentSuffix = str[currentSuffixPosition + commonSymbolsCount - 1];
+                var fromMaximalSuffix = word[MaximalSuffixPosition + commonSymbolsCount - 1];
+                var fromCurrentSuffix = word[currentSuffixPosition + commonSymbolsCount - 1];
                 var comparisonResult = charComparer.Compare(fromMaximalSuffix, fromCurrentSuffix);
 
                 if (comparisonResult > 0)
                 {
                     currentSuffixPosition = currentSuffixPosition + commonSymbolsCount;
                     commonSymbolsCount = 1;
-                    Period = currentSuffixPosition - MaximalSuffixPosition;
+                    suffixPeriod = currentSuffixPosition - MaximalSuffixPosition;
                 }
                 else if (comparisonResult == 0)
                 {
-                    if (commonSymbolsCount == Period)
+                    if (commonSymbolsCount == suffixPeriod)
                     {
-                        currentSuffixPosition = currentSuffixPosition + Period;
+                        currentSuffixPosition = currentSuffixPosition + suffixPeriod;
                         commonSymbolsCount = 1;
                     }
                     else
@@ -43,7 +43,7 @@ namespace RepetitionDetection.MaximalSuffixes
                 {
                     MaximalSuffixPosition = currentSuffixPosition;
                     currentSuffixPosition = MaximalSuffixPosition + 1;
-                    commonSymbolsCount = Period = 1;
+                    commonSymbolsCount = suffixPeriod = 1;
                 }
             }
         }
@@ -52,10 +52,11 @@ namespace RepetitionDetection.MaximalSuffixes
         private readonly IComparer<char> charComparer;
 
         [NotNull]
-        private readonly string str;
+        private readonly string word;
 
         public int MaximalSuffixPosition { get; private set; }
-        public int Period { get; private set; }
+
+        private int suffixPeriod;
         private int currentSuffixPosition;
         private int commonSymbolsCount;
     }

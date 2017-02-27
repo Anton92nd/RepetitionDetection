@@ -92,9 +92,9 @@
     <Compile Include="Periods\PeriodCalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringMatching\AlgorithmState.cs" />
-    <Compile Include="StringMatching\CompleteStringMatchingAlgorithm.cs" />
-    <Compile Include="StringMatching\IncompleteStringMatchingAlgorithm.cs" />
-    <Compile Include="StringMatching\IStringMatchingAlgorithm.cs" />
+    <Compile Include="StringMatching\GoodFactorizationStringMatchingAlgorithm.cs" />
+    <Compile Include="StringMatching\SuffixStringMatchingAlgorithm.cs" />
+    <Compile Include="StringMatching\IPartialStringMatchingAlgorithm.cs" />
     <Compile Include="StringMatching\StringMatchingAlgorithm.cs" />
     <Compile Include="StringMatching\StringMatchingState.cs" />
     <Compile Include="TextGeneration\AllWordsGenerator.cs" />
