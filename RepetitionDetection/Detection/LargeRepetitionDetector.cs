@@ -19,7 +19,7 @@ namespace RepetitionDetection.Detection
         {
             repetition = new Repetition(0, 0);
 
-            UpdateCatchers(reverse:false);
+            UpdateCatchers(create:true);
             DeleteCatchers();
 
             var result = false;
@@ -38,26 +38,26 @@ namespace RepetitionDetection.Detection
             return result;
         }
 
-        private void UpdateCatchers(bool reverse)
+        private void UpdateCatchers(bool create)
         {
             var n = Text.Length;
             for (var deg2 = 1; deg2*S <= n && n%deg2 == 0; deg2 *= 2)
             {
-                UpdateCatcher(new CatcherInterval(n - 1 - deg2 * S, n - 1 - deg2 * (S - 1)), reverse);
+                UpdateCatcher(new CatcherInterval(n - 1 - deg2 * S, n - 1 - deg2 * (S - 1)), create);
                 if (n%(deg2*2) == 0)
                 {
                     var l = n - 1 - deg2*2*S;
                     var m = n - 1 - deg2*2*S + deg2;
                     var r = n - 1 - deg2*2*(S - 1);
-                    UpdateCatcher(new CatcherInterval(l, m), !reverse);
-                    UpdateCatcher(new CatcherInterval(m, r), !reverse);
+                    UpdateCatcher(new CatcherInterval(l, m), !create);
+                    UpdateCatcher(new CatcherInterval(m, r), !create);
                 }
             }
         }
 
-        private void UpdateCatcher(CatcherInterval interval, bool reverse)
+        private void UpdateCatcher(CatcherInterval interval, bool create)
         {
-            if (!reverse)
+            if (create)
             {
                 CreateCatcher(interval);
             }
@@ -67,7 +67,7 @@ namespace RepetitionDetection.Detection
             }
         }
 
-        public override void BackTrack()
+        public override void Backtrack()
         {
             foreach (var catcher in catchers.Values)
             {
@@ -75,7 +75,7 @@ namespace RepetitionDetection.Detection
                     catcher.Backtrack();
             }
 
-            UpdateCatchers(reverse:true);
+            UpdateCatchers(create:false);
             DeleteCatchers();
         }
 

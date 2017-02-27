@@ -41,11 +41,11 @@ namespace RepetitionDetection.Detection
 
         private bool FoundRepetition(Repetition repetition)
         {
-            return DetectEqual ? new RationalNumber(Text.Length - (repetition.LeftPosition + 1), repetition.Period) >= E
-                : new RationalNumber(Text.Length - (repetition.LeftPosition + 1), repetition.Period) > E;
+            var exponent = new RationalNumber(Text.Length - (repetition.LeftPosition + 1), repetition.Period);
+            return DetectEqual ? exponent >= E : exponent > E;
         }
 
-        public override void BackTrack()
+        public override void Backtrack()
         {
         }
 

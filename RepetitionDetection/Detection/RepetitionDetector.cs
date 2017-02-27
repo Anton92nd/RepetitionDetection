@@ -26,12 +26,12 @@ namespace RepetitionDetection.Detection
             return largeRepetitionsDetector.TryDetect(out repetition);
         }
 
-        public override void BackTrack()
+        public override void Backtrack()
         {
             if (!skipBacktrack)
             {
-                largeRepetitionsDetector.BackTrack();
-                smallRepetitionsDetector.BackTrack();
+                largeRepetitionsDetector.Backtrack();
+                smallRepetitionsDetector.Backtrack();
             }
             skipBacktrack = false;
         }

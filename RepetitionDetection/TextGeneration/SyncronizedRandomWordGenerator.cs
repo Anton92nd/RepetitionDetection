@@ -11,19 +11,15 @@ namespace RepetitionDetection.TextGeneration
 {
     public static class SyncronizedRandomWordGenerator
     {
-        public static int CharsGenerated;
-
         public static StringBuilder Generate([NotNull] Detector detector1, [NotNull] Detector detector2, int length,
             [NotNull] IRemoveStrategy removeStrategy,
             [NotNull] ICharGenerator generator, [CanBeNull] IGeneratorLogger logger = null)
         {
-            CharsGenerated = 0;
             var text = detector1.Text;
             text.EnsureCapacity(length);
             while (text.Length < length)
             {
                 text.Append(generator.Generate());
-                CharsGenerated++;
                 if (logger != null)
                     logger.LogAfterGenerate(text);
                 Repetition repetition1, repetition2;
@@ -45,8 +41,8 @@ namespace RepetitionDetection.TextGeneration
                     throw new Exception("Not matching");
                 for (var i = 0; i < delete1; ++i)
                 {
-                    detector1.BackTrack();
-                    detector2.BackTrack();
+                    detector1.Backtrack();
+                    detector2.Backtrack();
                     text.Remove(text.Length - 1, 1);
                 }
             }

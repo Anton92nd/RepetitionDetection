@@ -23,7 +23,7 @@ namespace RepetitionDetection.Detection
         }
 
         public abstract bool TryDetect(out Repetition repetition);
-        public abstract void BackTrack();
+        public abstract void Backtrack();
         public abstract void Reset();
     }
 }

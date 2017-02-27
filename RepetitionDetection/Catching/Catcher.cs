@@ -18,10 +18,10 @@ namespace RepetitionDetection.Catching
             this.text = text;
             this.e = e;
             this.detectEqual = detectEqual;
-            TimeToLive = timeToLive;
-            h = new RationalNumber(j - i + 1, 2);
-            pattern = text.ToString(i, h.Ceil());
+            this.timeToLive = timeToLive;
             RemoveTime = -1;
+            h = new RationalNumber(j - i + 1, 2);
+            var pattern = text.ToString(i, h.Ceil());
             stringMatchingAlgorithm = new StringMatchingAlgorithm(text, pattern, i + 1);
         }
 
@@ -56,8 +56,8 @@ namespace RepetitionDetection.Catching
 
         private bool FoundRepetition(Repetition repetition)
         {
-            return detectEqual ? new RationalNumber(text.Length - (repetition.LeftPosition + 1), repetition.Period) >= e
-                : new RationalNumber(text.Length - (repetition.LeftPosition + 1), repetition.Period) > e;
+            var exponent = new RationalNumber(text.Length - (repetition.LeftPosition + 1), repetition.Period);
+            return detectEqual ? exponent >= e : exponent > e;
         }
 
         private List<Repetition> UpdateRepetitions(List<Repetition> repetitions, int textLength)
@@ -96,8 +96,8 @@ namespace RepetitionDetection.Catching
 
         public bool ShouldBeDeleted()
         {
-            return text.Length <= J + 1 || RemoveTime >= 0 && (RemoveTime > text.Length  && RemoveTime - text.Length > TimeToLive ||
-                   RemoveTime < text.Length && text.Length - RemoveTime > TimeToLive);
+            return text.Length <= J + 1 || RemoveTime >= 0 && (RemoveTime > text.Length  && RemoveTime - text.Length > timeToLive ||
+                   RemoveTime < text.Length && text.Length - RemoveTime > timeToLive);
         }
 
         public override string ToString()
@@ -105,19 +105,16 @@ namespace RepetitionDetection.Catching
             return string.Format("Catcher {{I={0},J={1}}}", I, J);
         }
 
-        public readonly int I, J;
+        private readonly int I, J;
 
         public int RemoveTime;
-
-        [NotNull]
-        private readonly string pattern;
 
         [NotNull]
         private readonly StringBuilder text;
 
         private readonly RationalNumber e;
         private readonly bool detectEqual;
-        public readonly int TimeToLive;
+        private readonly int timeToLive;
 
         [NotNull]
         private readonly Stack<CatcherState> stateStack;

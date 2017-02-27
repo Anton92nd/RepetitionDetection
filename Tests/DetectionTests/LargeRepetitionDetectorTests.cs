@@ -51,12 +51,12 @@ namespace Tests.DetectionTests
 
             Assert.That(repetition, Is.EqualTo(new Repetition(3, 8)));
 
-            detector.BackTrack();
+            detector.Backtrack();
             sb.Remove(sb.Length - 1, 1);
             sb.Append('p');
             Assert.That(detector.TryDetect(out repetition), Is.False);
 
-            detector.BackTrack();
+            detector.Backtrack();
             sb.Remove(sb.Length - 1, 1);
             sb.Append('o');
             Assert.That(detector.TryDetect(out repetition), Is.True);

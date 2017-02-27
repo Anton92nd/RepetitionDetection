@@ -38,7 +38,7 @@ namespace RepetitionDetection.TextGeneration
                         logger.LogRepetition(text, repetition);
                     for (var i = 0; i < charsToDelete; ++i)
                     {
-                        detector.BackTrack();
+                        detector.Backtrack();
                         text.Remove(text.Length - 1, 1);
                     }
                 }

@@ -47,7 +47,7 @@ namespace RepetitionDetection.Detection
                 : new RationalNumber(Text.Length - (repetition.LeftPosition + 1), repetition.Period) > E;
         }
 
-        public override void BackTrack()
+        public override void Backtrack()
         {
         }
 
