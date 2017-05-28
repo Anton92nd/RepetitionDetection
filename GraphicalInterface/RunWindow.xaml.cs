@@ -65,14 +65,14 @@ namespace GraphicalInterface
             {
                 if (!Directory.Exists(saveData.SavePath))
                     Directory.CreateDirectory(saveData.SavePath);
-                var path = Path.Combine(saveData.SavePath, "stats_" + DateTime.Now.ToString("yy-MM-dd_HH-mm") + ".txt");
+                var path = Path.Combine(saveData.SavePath, "stats_" + DateTime.Now.ToString("yy-MM-dd_HH-mm-ss") + ".txt");
                 statsOutput = new StreamWriter(File.Open(path, FileMode.Create));
             }
             if (saveData.SaveFullLog)
             {
                 if (!Directory.Exists(saveData.SavePath))
                     Directory.CreateDirectory(saveData.SavePath);
-                var path = Path.Combine(saveData.SavePath, "full_" + DateTime.Now.ToString("yy-MM-dd_HH-mm") + ".txt");
+                var path = Path.Combine(saveData.SavePath, "full_" + DateTime.Now.ToString("yy-MM-dd_HH-mm-ss") + ".txt");
                 fullLogOutput = new StreamWriter(File.Open(path, FileMode.Create));
             }
             logger = new OutputLogger(fullLogOutput);
