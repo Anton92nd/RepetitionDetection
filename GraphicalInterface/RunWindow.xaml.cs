@@ -114,6 +114,14 @@ namespace GraphicalInterface
                     if (statsOutput != null)
                         statsOutput.Flush();
                 }
+                if (statsOutput != null)
+                {
+                    var runs = Math.Min(runsCount, run + 1);
+                    statsOutput.WriteLine("-----");
+                    statsOutput.WriteLine("Average coef: {0:0.000000}\nAverage time: {1:0.000}",
+                                           totalCharsGenerated*1.0/length/runs,
+                                           ms*1.0/runs);
+                }
                 Thread.Sleep(100);
                 tokenSource.Cancel();
                 if (statsOutput != null)
