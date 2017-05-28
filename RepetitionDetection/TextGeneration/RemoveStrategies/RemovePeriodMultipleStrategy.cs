@@ -4,23 +4,21 @@ namespace RepetitionDetection.TextGeneration.RemoveStrategies
 {
     public class RemovePeriodMultipleStrategy : IRemoveStrategy
     {
-        private readonly int periodsCount;
+        public int PeriodsCount { get; set; }
 
-        public RemovePeriodMultipleStrategy(int periodsCount = 1)
+        public RemovePeriodMultipleStrategy(int periodsCount)
         {
-            this.periodsCount = periodsCount;
+            PeriodsCount = periodsCount;
         }
 
         public int GetCharsToDelete(int textLength, Repetition repetition)
         {
-            return repetition.Period*periodsCount;
+            return repetition.Period*PeriodsCount;
         }
-
-        public int PeriodsToRemove { get { return periodsCount; } }
 
         public override string ToString()
         {
-            return string.Format("Remove {0} period(s) strategy", periodsCount);
+            return string.Format("Remove {0} period(s) strategy", PeriodsCount);
         }
     }
 }

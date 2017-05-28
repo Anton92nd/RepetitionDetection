@@ -48,7 +48,7 @@ namespace GraphicalInterface
                     GeneratedStringLength = 1000,
                     RepetitionRemovingStrategyIndex = 0,
                     RunsCount = 100,
-                    PeriodsToRemove = 1,
+                    RemoveStrategy = new RemoveBorderStrategy(),
                 };
         }
 
@@ -59,7 +59,10 @@ namespace GraphicalInterface
                 return false;
             try
             {
-                settings = JsonConvert.DeserializeObject<InitialSettings>(File.ReadAllText(SettingsPath));
+                settings = JsonConvert.DeserializeObject<InitialSettings>(File.ReadAllText(SettingsPath), new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto,
+                });
                 if (settings == null)
                     throw new Exception();
                 return true;
@@ -108,7 +111,10 @@ namespace GraphicalInterface
                     Numerator = detector.E.Num,
                     Denominator = detector.E.Denom,
                     RepetitionRemovingStrategyIndex = ComboBoxRemoveStrategy.SelectedIndex,
-                    PeriodsToRemove = removeStrategy.PeriodsToRemove, 
+                    RemoveStrategy = removeStrategy, 
+                }, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
                 }));
                 var runWindow = new RunWindow(detector, removeStrategy, charGenerator, saveData, length, runsCount);
                 runWindow.ShowDialog();
@@ -282,7 +288,14 @@ namespace GraphicalInterface
 
         private void TextBoxPeriodsCount_OnLoaded(object sender, RoutedEventArgs e)
         {
-            TextBoxPeriodsCount.Text = InitialSettings.PeriodsToRemove.ToString(CultureInfo.InvariantCulture);
+            if (InitialSettings.RemoveStrategy is RemovePeriodMultipleStrategy)
+            {
+                TextBoxPeriodsCount.Text = ((RemovePeriodMultipleStrategy)InitialSettings.RemoveStrategy).PeriodsCount.ToString(CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                TextBoxPeriodsCount.Text = "1";
+            }
         }
     }
 }

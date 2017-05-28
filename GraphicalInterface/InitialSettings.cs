@@ -1,4 +1,5 @@
 ﻿using RepetitionDetection.Logging;
+using RepetitionDetection.TextGeneration.RemoveStrategies;
 
 namespace GraphicalInterface
 {
@@ -12,7 +13,7 @@ namespace GraphicalInterface
         public int RunsCount { get; set; }
         public int CharGeneratorIndex { get; set; }
         public int RepetitionRemovingStrategyIndex { get; set; }
-        public int PeriodsToRemove { get; set; }
+        public IRemoveStrategy RemoveStrategy { get; set; }
         public SaveData SaveData { get; set; }
     }
 }
