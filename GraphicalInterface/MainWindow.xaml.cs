@@ -92,6 +92,18 @@ namespace GraphicalInterface
                     Raise("Length must be positive integer");
                 if (!int.TryParse(TextBoxRunsCount.Text, out runsCount) || runsCount <= 0)
                     Raise("Runscount must be positive integer");
+                if (TextBoxRemovingUpperBound.Visibility == Visibility.Visible)
+                {
+                    int removingUpperBound;
+                    if (!int.TryParse(TextBoxRemovingUpperBound.Text, out removingUpperBound))
+                    {
+                        Raise("Removing upper bound must be positive integer");
+                    }
+                    else
+                    {
+                        removeStrategy = new NoMoreThanStrategy(removeStrategy, removingUpperBound);
+                    }
+                }
                 TextBlockErrorMessage.Text = string.Empty;
                 var saveData = new SaveData
                 {
@@ -295,6 +307,29 @@ namespace GraphicalInterface
             else
             {
                 TextBoxPeriodsCount.Text = "1";
+            }
+        }
+
+        private void CheckBoxRemovingUpperBound_OnClick(object sender, RoutedEventArgs e)
+        {
+            TextBoxRemovingUpperBound.Visibility = TextBoxRemovingUpperBound.Visibility == Visibility.Visible
+                ? Visibility.Hidden
+                : Visibility.Visible;
+        }
+
+        private void TextBoxRemovingUpperBound_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if (InitialSettings.RemoveStrategy is NoMoreThanStrategy)
+            {
+                var strategy = (NoMoreThanStrategy) InitialSettings.RemoveStrategy;
+                CheckBoxRemovingUpperBound.IsChecked = true;
+                TextBoxRemovingUpperBound.Visibility = Visibility.Visible;
+                TextBoxRemovingUpperBound.Text = strategy.MaxCharactersToRemove.ToString(CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                CheckBoxRemovingUpperBound.IsChecked = false;
+                TextBoxRemovingUpperBound.Visibility = Visibility.Hidden;
             }
         }
     }

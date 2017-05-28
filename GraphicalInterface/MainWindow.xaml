@@ -1,7 +1,7 @@
 ﻿<Window x:Class="GraphicalInterface.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="324.771" Width="625">
+        Title="MainWindow" Height="382.771" Width="625">
     <Grid Margin="0,0,0,0">
         <TextBlock HorizontalAlignment="Left" Margin="183,10,0,0" TextWrapping="Wrap" Text="Repetition-free word generator" FontSize="20" VerticalAlignment="Top"/>
         <GroupBox Header="Input" HorizontalAlignment="Left" Margin="10,42,0,0" VerticalAlignment="Top" Height="108" Width="196">
@@ -16,7 +16,7 @@
             </Grid>
         </GroupBox>
         <Button Content="Start" FontSize="18" HorizontalAlignment="Left" Margin="38,224,0,0" VerticalAlignment="Top" Width="130" Height="50" Click="Button_Click" RenderTransformOrigin="0.5,0.889"/>
-        <GroupBox Header="Generator settings"  HorizontalAlignment="Left" Margin="211,42,0,0" VerticalAlignment="Top" Height="232" Width="192">
+        <GroupBox Header="Generator settings"  HorizontalAlignment="Left" Margin="211,42,0,0" VerticalAlignment="Top" Height="300" Width="192">
             <Grid>
                 <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Length:" VerticalAlignment="Top"/>
                 <TextBox Name="TextBoxLength" Loaded="TextBoxLength_OnLoaded" HorizontalAlignment="Left" Height="23" Margin="91,9,0,0" TextWrapping="Wrap" Text="10000" VerticalAlignment="Top" Width="75"/>
@@ -28,9 +28,11 @@
                 <ComboBox Name="ComboBoxRemoveStrategy" HorizontalAlignment="Left" Margin="10,149,0,0" VerticalAlignment="Top" Width="120" Loaded="RemoveStrategy_OnLoaded" SelectionChanged="ComboBoxRemoveStrategy_SelectionChanged"/>
                 <TextBlock Name="TextBlockPeriodsCount" Visibility="Hidden" HorizontalAlignment="Left" Margin="10,176,0,0" TextWrapping="Wrap" Text="Periods to remove:" VerticalAlignment="Top"/>
                 <TextBox Name="TextBoxPeriodsCount" Loaded="TextBoxPeriodsCount_OnLoaded" Visibility="Hidden" HorizontalAlignment="Left" Height="23" Margin="114,175,0,0" TextWrapping="Wrap" Text="1" VerticalAlignment="Top" Width="34"/>
+                <CheckBox Name="CheckBoxRemovingUpperBound" Click="CheckBoxRemovingUpperBound_OnClick" Content="Removing upper bound" HorizontalAlignment="Left" Margin="10,208,0,0" VerticalAlignment="Top"/>
+                <TextBox Name="TextBoxRemovingUpperBound" Loaded="TextBoxRemovingUpperBound_OnLoaded" Visibility="Hidden" HorizontalAlignment="Left" Height="23" Margin="114,227,0,0" TextWrapping="Wrap" Text="20" VerticalAlignment="Top" Width="34"/>
             </Grid>
         </GroupBox>
-        <GroupBox Visibility="Visible" Header="Output" HorizontalAlignment="Left" Margin="408,42,0,0" VerticalAlignment="Top" Height="232" Width="188">
+        <GroupBox Visibility="Visible" Header="Output" HorizontalAlignment="Left" Margin="408,42,0,0" VerticalAlignment="Top" Height="300" Width="188">
             <Grid>
                 <TextBox Name="TextBoxOutputPath" Loaded="TextBoxOutputPath_OnLoaded" HorizontalAlignment="Left" Height="23" Margin="10,32,0,0" TextWrapping="Wrap" Text="C:\runs\" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
                 <Button Content="Change" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
