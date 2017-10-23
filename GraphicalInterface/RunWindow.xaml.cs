@@ -23,10 +23,10 @@ namespace GraphicalInterface
         private readonly IRemoveStrategy removeStrategy;
         private readonly int runsCount;
         private readonly SaveData saveData;
-        private CancellationToken cancellationToken;
+        private CancellationToken token;
         private OutputLogger logger;
         private long ms;
-        private volatile int run;
+        private volatile int runsPerformed;
         private CancellationTokenSource tokenSource;
         private volatile int totalCharsGenerated;
 
@@ -77,82 +77,83 @@ namespace GraphicalInterface
             }
             logger = new OutputLogger(fullLogOutput);
             tokenSource = new CancellationTokenSource();
-            cancellationToken = tokenSource.Token;
+            token = tokenSource.Token;
             if (statsOutput != null)
                 statsOutput.WriteLine(
                     "Exponent: {0}\nDetect equal to exponent: {1}\nAlphabet size: {2}\nLength: {3}\nRuns count: {4}\nChar generator: {5}\nRemoving strategy: {6}",
                     detector.E, detector.DetectEqual, charGenerator.AlphabetSize, length, runsCount,
-                    charGenerator.GetType().Name, removeStrategy.ToString());
-            var generateTask = Task.Run(() =>
+                    charGenerator.GetType().Name, removeStrategy);
+            Task.Run(() =>
             {
                 totalCharsGenerated = 0;
                 ms = 0;
-                for (run = 0; run < runsCount; ++run)
+                runsPerformed = 0;
+                while (runsPerformed < runsCount && !token.IsCancellationRequested)
                 {
-                    if (cancellationToken.IsCancellationRequested)
-                        break;
                     detector.Reset();
                     if (statsOutput != null)
-                        statsOutput.WriteLine("Run #{0}:", run + 1);
-                    var text = RandomWordGenerator.Generate(detector, length, removeStrategy, charGenerator, logger,
-                        cancellationToken);
-                    if (fullLogOutput != null)
-                        fullLogOutput.WriteLine("Result: {0}\n", text);
-                    if (statsOutput != null)
+                        statsOutput.WriteLine("Run #{0}:", runsPerformed + 1);
+
+                    var text = RandomWordGenerator.Generate(detector, length, removeStrategy, charGenerator, logger, token);
+                    if (!token.IsCancellationRequested)
                     {
-                        statsOutput.WriteLine("Coef: {0:0.000000}, Time: {1:0.000}",
-                            RandomWordGenerator.Statistics.CharsGenerated*1.0/length,
-                            RandomWordGenerator.Statistics.Milliseconds / 1000.0);
-                        statsOutput.WriteLine("Repetition periods:\n{0}",
-                            string.Join("\n", RandomWordGenerator.Statistics.CountOfPeriods
-                                .OrderBy(p => p.Key)
-                                .Select(p => string.Format("{0}: {1}", p.Key, p.Value))));
-                        statsOutput.WriteLine("-----");
+                        runsPerformed++;
+                        totalCharsGenerated += RandomWordGenerator.Statistics.CharsGenerated;
+                        ms += RandomWordGenerator.Statistics.Milliseconds;
+
+                        if (statsOutput != null)
+                            statsOutput.Flush();
+                        if (fullLogOutput != null)
+                            fullLogOutput.WriteLine("Result: {0}\n", text);
+                        if (statsOutput != null)
+                        {
+                            statsOutput.WriteLine("Coef: {0:0.000000}, Time: {1:0.000} ms",
+                                RandomWordGenerator.Statistics.CharsGenerated * 1.0 / length,
+                                RandomWordGenerator.Statistics.Milliseconds);
+                            statsOutput.WriteLine("Repetition periods:\n{0}",
+                                string.Join("\n", RandomWordGenerator.Statistics.CountOfPeriods
+                                    .OrderBy(p => p.Key)
+                                    .Select(p => string.Format("{0}: {1}", p.Key, p.Value))));
+                            statsOutput.WriteLine("-----");
+                        }
                     }
-                    totalCharsGenerated += RandomWordGenerator.Statistics.CharsGenerated;
-                    ms += RandomWordGenerator.Statistics.Milliseconds;
-                    if (statsOutput != null)
-                        statsOutput.Flush();
                 }
                 if (statsOutput != null)
                 {
-                    var runs = Math.Min(runsCount, run + 1);
                     statsOutput.WriteLine("-----");
-                    statsOutput.WriteLine("Average coef: {0:0.000000}\nAverage time: {1:0.000}",
-                                           totalCharsGenerated*1.0/length/runs,
-                                           ms*1.0/runs);
+                    statsOutput.WriteLine("Runs performed: {0}\nAverage coef: {1:0.000000}\nAverage time: {2:0.000} ms",
+                        runsPerformed,
+                        totalCharsGenerated*1.0/length/runsPerformed,
+                        ms*1.0/runsPerformed);
                 }
-                Thread.Sleep(100);
+                Thread.Sleep(500);
                 tokenSource.Cancel();
                 if (statsOutput != null)
                     statsOutput.Close();
                 if (fullLogOutput != null)
                     fullLogOutput.Close();
-            }, cancellationToken);
-            UpdateStatus += ended => Dispatcher.Invoke(() =>
+            }, token);
+            UpdateStatus += () => Dispatcher.Invoke(() =>
             {
                 TextBoxCurrentLength.Text = logger.TextLength.ToString();
-                TextBoxRunNumber.Text = (run + 1 - (ended ? 1 : 0)).ToString();
-                if (run > 0)
+                TextBoxRunsCompleted.Text = runsPerformed.ToString();
+                if (runsPerformed > 0)
                 {
-                    TextBoxAverageCoef.Text = string.Format("{0:0.000000}", totalCharsGenerated*1.0/length/run);
-                    TextBoxAverageTime.Text = string.Format("{0:0.000}", ms*1.0/run);
+                    TextBoxAverageCoef.Text = string.Format("{0:0.000000}", totalCharsGenerated*1.0/length/runsPerformed);
+                    TextBoxAverageTime.Text = string.Format("{0:0.000}", ms*1.0/runsPerformed);
                 }
             });
-            var monitoringTask = Task.Run(() =>
+            Task.Run(() =>
             {
-                while (true)
+                while (!token.IsCancellationRequested)
                 {
-                    if (UpdateStatus != null)
-                    {
-                        var ended = cancellationToken.IsCancellationRequested;
-                        UpdateStatus(ended);
-                        if (ended)
-                            break;
-                    }
-                    Thread.Sleep(50);
+                    // ReSharper disable once PossibleNullReferenceException
+                    UpdateStatus();
+                    Thread.Sleep(100);
                 }
-            }, cancellationToken);
+                // ReSharper disable once PossibleNullReferenceException
+                UpdateStatus();
+            }, token);
         }
 
         private event UpdateStatusEvent UpdateStatus;
@@ -162,6 +163,6 @@ namespace GraphicalInterface
             tokenSource.Cancel();
         }
 
-        private delegate void UpdateStatusEvent(bool ended);
+        private delegate void UpdateStatusEvent();
     }
 }
