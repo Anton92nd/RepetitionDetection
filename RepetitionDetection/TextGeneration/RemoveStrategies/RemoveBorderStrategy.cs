@@ -11,7 +11,7 @@ namespace RepetitionDetection.TextGeneration.RemoveStrategies
 
         public override string ToString()
         {
-            return "Remove border strategy";
+            return "RemoveBorderStrategy";
         }
     }
 }

@@ -21,7 +21,7 @@ namespace RepetitionDetection.TextGeneration.RemoveStrategies
 
         public override string ToString()
         {
-            return string.Format("NoMoreThanStrategy: BaseStrategy: {0}, MaxCharactersToRemove: {1}", BaseStrategy, MaxCharactersToRemove);
+            return string.Format("NoMoreThanStrategy({0}, {1})", MaxCharactersToRemove, BaseStrategy);
         }
     }
 }

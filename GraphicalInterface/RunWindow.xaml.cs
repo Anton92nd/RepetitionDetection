@@ -82,7 +82,7 @@ namespace GraphicalInterface
                 statsOutput.WriteLine(
                     "Exponent: {0}\nDetect equal to exponent: {1}\nAlphabet size: {2}\nLength: {3}\nRuns count: {4}\nChar generator: {5}\nRemoving strategy: {6}",
                     detector.E, detector.DetectEqual, charGenerator.AlphabetSize, length, runsCount,
-                    charGenerator.GetType().Name, removeStrategy.GetType().Name);
+                    charGenerator.GetType().Name, removeStrategy.ToString());
             var generateTask = Task.Run(() =>
             {
                 totalCharsGenerated = 0;

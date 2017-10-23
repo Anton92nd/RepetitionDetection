@@ -14,7 +14,7 @@ namespace RepetitionDetection.Logging
             Output = output;
             if (Output != null)
             {
-                Output.WriteLine("text | repetition length");
+                Output.WriteLine("text | repetition length | border length");
             }
         }
 
@@ -33,7 +33,8 @@ namespace RepetitionDetection.Logging
         {
             if (Output != null)
             {
-                Output.WriteLine("{0} {1}", text, text.Length - 1 - repetition.LeftPosition);
+                var length = text.Length - 1 - repetition.LeftPosition;
+                Output.WriteLine("{0} {1} {2}", text, length, length - repetition.Period);
             }
         }
     }

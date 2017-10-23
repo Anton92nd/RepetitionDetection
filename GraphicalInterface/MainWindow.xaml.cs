@@ -36,7 +36,7 @@ namespace GraphicalInterface
                 {
                     SaveData = new SaveData
                     {
-                        SavePath = "C:\\runs\\",
+                        SavePath = @"C:\runs\",
                         SaveFullLog = false,
                         SaveStats = true,
                     },
@@ -150,7 +150,7 @@ namespace GraphicalInterface
                 Raise("Periods count must be positive");
             if (new RationalNumber(periodsCount) >= e)
                 Raise("Periods count must be less than exponent");
-            return new RemovePeriodMultipleStrategy(periodsCount);
+            return new RemovePeriodsStrategy(periodsCount);
         }
 
         private ICharGenerator GetCharGenerator(StringBuilder text, RationalNumber E, bool detectEqual)
@@ -300,9 +300,9 @@ namespace GraphicalInterface
 
         private void TextBoxPeriodsCount_OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (InitialSettings.RemoveStrategy is RemovePeriodMultipleStrategy)
+            if (InitialSettings.RemoveStrategy is RemovePeriodsStrategy)
             {
-                TextBoxPeriodsCount.Text = ((RemovePeriodMultipleStrategy)InitialSettings.RemoveStrategy).PeriodsCount.ToString(CultureInfo.InvariantCulture);
+                TextBoxPeriodsCount.Text = ((RemovePeriodsStrategy)InitialSettings.RemoveStrategy).PeriodsCount.ToString(CultureInfo.InvariantCulture);
             }
             else
             {

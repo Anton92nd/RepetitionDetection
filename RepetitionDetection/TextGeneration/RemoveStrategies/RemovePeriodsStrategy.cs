@@ -2,11 +2,11 @@
 
 namespace RepetitionDetection.TextGeneration.RemoveStrategies
 {
-    public class RemovePeriodMultipleStrategy : IRemoveStrategy
+    public class RemovePeriodsStrategy : IRemoveStrategy
     {
         public int PeriodsCount { get; set; }
 
-        public RemovePeriodMultipleStrategy(int periodsCount)
+        public RemovePeriodsStrategy(int periodsCount)
         {
             PeriodsCount = periodsCount;
         }
@@ -18,7 +18,7 @@ namespace RepetitionDetection.TextGeneration.RemoveStrategies
 
         public override string ToString()
         {
-            return string.Format("Remove {0} period(s) strategy", PeriodsCount);
+            return string.Format("RemovePeriodsStrategy({0})", PeriodsCount);
         }
     }
 }

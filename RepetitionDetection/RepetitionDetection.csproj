@@ -101,7 +101,7 @@
     <Compile Include="TextGeneration\RemoveStrategies\NoMoreThanStrategy.cs" />
     <Compile Include="TextGeneration\RemoveStrategies\IRemoveStrategy.cs" />
     <Compile Include="TextGeneration\RemoveStrategies\RemoveBorderStrategy.cs" />
-    <Compile Include="TextGeneration\RemoveStrategies\RemovePeriodMultipleStrategy.cs" />
+    <Compile Include="TextGeneration\RemoveStrategies\RemovePeriodsStrategy.cs" />
     <Compile Include="TextGeneration\Statistics.cs" />
     <Compile Include="TextGeneration\SyncronizedRandomWordGenerator.cs" />
   </ItemGroup>
