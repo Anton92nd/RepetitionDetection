@@ -12,7 +12,7 @@ namespace Tests
         [Test]
         public void TestEqual1()
         {
-            var text = "xxxxaceorsuvaceo";
+            const string text = "xxxxaceorsuvaceo";
             var e = new RationalNumber(3, 2);
             var sb = new StringBuilder();
             sb.Append(text.Substring(0, 9));
@@ -23,8 +23,7 @@ namespace Tests
             for (var i = 9; i < text.Length; ++i)
             {
                 sb.Append(text[i]);
-                Repetition rep;
-                if (catcher.TryCatch(out rep))
+                if (catcher.TryCatch(out var rep))
                 {
                     repetitions.Add(rep);
                 }
@@ -38,7 +37,7 @@ namespace Tests
         [Test]
         public void TestEqual2()
         {
-            var text = "xxxvaceorsuvace";
+            const string text = "xxxvaceorsuvace";
             var e = new RationalNumber(3, 2);
             var sb = new StringBuilder();
             sb.Append(text.Substring(0, 9));
@@ -49,8 +48,7 @@ namespace Tests
             for (var i = 9; i < text.Length; ++i)
             {
                 sb.Append(text[i]);
-                Repetition rep;
-                if (catcher.TryCatch(out rep))
+                if (catcher.TryCatch(out var rep))
                 {
                     repetitions.Add(rep);
                 }
@@ -64,7 +62,7 @@ namespace Tests
         [Test]
         public void TestLarger1()
         {
-            var text = "xxxxaceorsuvaceor";
+            const string text = "xxxxaceorsuvaceor";
             var e = new RationalNumber(3, 2);
             var sb = new StringBuilder();
             sb.Append(text.Substring(0, 9));
@@ -75,8 +73,7 @@ namespace Tests
             for (var i = 9; i < text.Length; ++i)
             {
                 sb.Append(text[i]);
-                Repetition rep;
-                if (catcher.TryCatch(out rep))
+                if (catcher.TryCatch(out var rep))
                 {
                     repetitions.Add(rep);
                 }
@@ -90,7 +87,7 @@ namespace Tests
         [Test]
         public void TestLarger2()
         {
-            var text = "xxxvaceorsuvaceo";
+            const string text = "xxxvaceorsuvaceo";
             var e = new RationalNumber(3, 2);
             var sb = new StringBuilder();
             sb.Append(text.Substring(0, 9));
@@ -101,8 +98,7 @@ namespace Tests
             for (var i = 9; i < text.Length; ++i)
             {
                 sb.Append(text[i]);
-                Repetition rep;
-                if (catcher.TryCatch(out rep))
+                if (catcher.TryCatch(out var rep))
                 {
                     repetitions.Add(rep);
                 }
@@ -116,7 +112,7 @@ namespace Tests
         [Test]
         public void TestEqualWithBackTrack()
         {
-            var text = "xxxxaceorsuvaceo";
+            const string text = "xxxxaceorsuvaceo";
             var e = new RationalNumber(3, 2);
             var sb = new StringBuilder();
             sb.Append(text.Substring(0, 9));

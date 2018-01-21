@@ -50,7 +50,7 @@ namespace Tests.TextGenerationTests
             }
             else
             {
-                throw new InvalidProgramStateException(string.Format("Wrong type of detector: {0}", detectorType.FullName));
+                throw new InvalidProgramStateException($"Wrong type of detector: {detectorType.FullName}");
             }
             return detector;
         }
@@ -71,7 +71,7 @@ namespace Tests.TextGenerationTests
             var result = AllWordsGenerator.Generate(detector, alphabet);
             sw.Stop();
             Assert.That(result, Is.EquivalentTo(expectedStrings));
-            Console.WriteLine("Time: {0} ms", sw.ElapsedMilliseconds);
+            Console.WriteLine($"Time: {sw.ElapsedMilliseconds} ms");
         }
     }
 }

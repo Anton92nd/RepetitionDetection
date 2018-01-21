@@ -12,13 +12,11 @@ namespace RepetitionDetection.Periods
             var prefixFunction = new int[prefixLength];
             prefixFunction[0] = 0;
             var result = 0;
-            for (int i = 1; i < prefixLength; ++i)
+            for (var i = 1; i < prefixLength; ++i)
             {
                 var j = prefixFunction[i - 1];
-                while (j > 0  && pattern[i] != pattern[j])
-                {
+                while (j > 0 && pattern[i] != pattern[j])
                     j = prefixFunction[j - 1];
-                }
                 if (pattern[i] == pattern[j])
                     ++j;
                 prefixFunction[i] = j;

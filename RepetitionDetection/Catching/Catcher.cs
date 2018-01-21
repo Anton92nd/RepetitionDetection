@@ -33,9 +33,7 @@ namespace RepetitionDetection.Catching
             {
                 repetitions = UpdateRepetitions(repetitions, textLength);
                 if (stringMatchingAlgorithm.CheckForMatch(textLength))
-                {
                     repetitions.Add(UpdateRepetition(new Repetition(I - 1, textLength - h.Ceil() - I)));
-                }
                 stateStack.Push(new CatcherState(repetitions, stringMatchingAlgorithm.State));
             }
             if (stateStack.Count == 0)
@@ -46,9 +44,7 @@ namespace RepetitionDetection.Catching
         {
             var newRepetitions = UpdateRepetitions(stateStack.Peek().Repetitions, text.Length);
             if (stringMatchingAlgorithm.CheckForMatch(text.Length))
-            {
                 newRepetitions.Add(UpdateRepetition(new Repetition(I - 1, text.Length - h.Ceil() - I)));
-            }
             foundRepetition = newRepetitions.FirstOrDefault(FoundRepetition);
             stateStack.Push(new CatcherState(newRepetitions, stringMatchingAlgorithm.State));
             return foundRepetition.Period > 0;
@@ -83,9 +79,7 @@ namespace RepetitionDetection.Catching
         public void Backtrack()
         {
             if (stateStack.Count > 1)
-            {
                 stateStack.Pop();
-            }
             stringMatchingAlgorithm.State = stateStack.Peek().StringMatchingState;
         }
 
@@ -96,32 +90,32 @@ namespace RepetitionDetection.Catching
 
         public bool ShouldBeDeleted()
         {
-            return text.Length <= J + 1 || RemoveTime >= 0 && (RemoveTime > text.Length  && RemoveTime - text.Length > timeToLive ||
-                   RemoveTime < text.Length && text.Length - RemoveTime > timeToLive);
+            return text.Length <= J + 1 || RemoveTime >= 0 &&
+                   (RemoveTime > text.Length && RemoveTime - text.Length > timeToLive ||
+                    RemoveTime < text.Length && text.Length - RemoveTime > timeToLive);
         }
 
         public override string ToString()
         {
-            return string.Format("Catcher {{I={0},J={1}}}", I, J);
+            return $"Catcher {{I={I},J={J}}}";
         }
+
+        private readonly bool detectEqual;
+
+        private readonly RationalNumber e;
+
+        private readonly RationalNumber h;
 
         private readonly int I, J;
 
-        public int RemoveTime;
+        [NotNull] private readonly Stack<CatcherState> stateStack;
 
-        [NotNull]
-        private readonly StringBuilder text;
+        [NotNull] private readonly StringMatchingAlgorithm stringMatchingAlgorithm;
 
-        private readonly RationalNumber e;
-        private readonly bool detectEqual;
+        [NotNull] private readonly StringBuilder text;
+
         private readonly int timeToLive;
 
-        [NotNull]
-        private readonly Stack<CatcherState> stateStack;
-
-        [NotNull]
-        private readonly StringMatchingAlgorithm stringMatchingAlgorithm;
-
-        private readonly RationalNumber h;
+        public int RemoveTime;
     }
 }

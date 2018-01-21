@@ -37,7 +37,9 @@ namespace RepetitionDetection.MaximalSuffixes
                         commonSymbolsCount = 1;
                     }
                     else
+                    {
                         commonSymbolsCount++;
+                    }
                 }
                 else
                 {
@@ -48,16 +50,15 @@ namespace RepetitionDetection.MaximalSuffixes
             }
         }
 
-        [NotNull]
-        private readonly IComparer<char> charComparer;
-
-        [NotNull]
-        private readonly string word;
-
         public int MaximalSuffixPosition { get; private set; }
 
-        private int suffixPeriod;
-        private int currentSuffixPosition;
+        [NotNull] private readonly IComparer<char> charComparer;
+
+        [NotNull] private readonly string word;
+
         private int commonSymbolsCount;
+        private int currentSuffixPosition;
+
+        private int suffixPeriod;
     }
 }

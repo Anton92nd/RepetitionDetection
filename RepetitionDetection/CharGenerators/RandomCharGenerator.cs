@@ -2,23 +2,21 @@
 {
     public class RandomCharGenerator : ICharGenerator
     {
-        private readonly int alphabetSize;
+        public RandomCharGenerator(int alphabetSize)
+        {
+            AlphabetSize = alphabetSize;
+        }
 
-        public int AlphabetSize { get { return alphabetSize; } }
+        public int AlphabetSize { get; }
+
+        public char Generate()
+        {
+            return (char) RandomNumberGenerator.Generate('a', 'a' + AlphabetSize);
+        }
 
         public override string ToString()
         {
             return "RandomCharGenerator";
-        }
-
-        public RandomCharGenerator(int alphabetSize)
-        {
-            this.alphabetSize = alphabetSize;
-        }
-
-        public char Generate()
-        {
-            return (char)RandomNumberGenerator.Generate('a', 'a' + alphabetSize);
         }
     }
 }

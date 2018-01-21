@@ -5,12 +5,8 @@ namespace RepetitionDetection.Detection
 {
     public class RepetitionDetector : Detector
     {
-        private readonly Detector smallRepetitionsDetector;
-        private readonly Detector largeRepetitionsDetector;
-        private bool skipBacktrack;
-
         public RepetitionDetector(StringBuilder text, RationalNumber e, bool detectEqual) : base(text, e, detectEqual)
-        {    
+        {
             smallRepetitionsDetector = new SmallRepetitionDetector(text, e, detectEqual);
             largeRepetitionsDetector = new LargeRepetitionDetector(text, e, detectEqual);
             skipBacktrack = false;
@@ -42,5 +38,9 @@ namespace RepetitionDetection.Detection
             largeRepetitionsDetector.Reset();
             skipBacktrack = false;
         }
+
+        private readonly Detector largeRepetitionsDetector;
+        private readonly Detector smallRepetitionsDetector;
+        private bool skipBacktrack;
     }
 }

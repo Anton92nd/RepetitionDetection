@@ -24,12 +24,11 @@ namespace RepetitionDetection.CriticalFactorization
                 }
                 currentCriticalPosition = prefixFactorizer.CriticalPosition;
                 currentPrefixLength = prefixFactorizer.PrefixLength;
-                if (prefixFactorizer.CriticalPosition >= (pattern.Length + 1)/2)
-                {
+                if (prefixFactorizer.CriticalPosition >= (pattern.Length + 1) / 2)
                     break;
-                }         
             }
-            return new Factorizations(pattern, Math.Max(previousPrefixLength, previousCriticalPosition * 2), previousCriticalPosition, currentCriticalPosition);
+            return new Factorizations(pattern, Math.Max(previousPrefixLength, previousCriticalPosition * 2),
+                previousCriticalPosition, currentCriticalPosition);
         }
     }
 }

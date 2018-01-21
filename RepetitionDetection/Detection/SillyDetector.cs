@@ -7,8 +7,6 @@ namespace RepetitionDetection.Detection
 {
     public class SillyDetector : Detector
     {
-        private readonly List<int> suffixFunction;
-
         public SillyDetector(StringBuilder text, RationalNumber e, bool detectEqual) : base(text, e, detectEqual)
         {
             suffixFunction = new List<int>();
@@ -43,7 +41,8 @@ namespace RepetitionDetection.Detection
 
         private bool FoundRepetition(Repetition repetition)
         {
-            return DetectEqual ? new RationalNumber(Text.Length - (repetition.LeftPosition + 1), repetition.Period) >= E
+            return DetectEqual
+                ? new RationalNumber(Text.Length - (repetition.LeftPosition + 1), repetition.Period) >= E
                 : new RationalNumber(Text.Length - (repetition.LeftPosition + 1), repetition.Period) > E;
         }
 
@@ -55,5 +54,7 @@ namespace RepetitionDetection.Detection
         {
             Text.Clear();
         }
+
+        private readonly List<int> suffixFunction;
     }
 }

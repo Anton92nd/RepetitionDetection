@@ -22,7 +22,7 @@ namespace Tests.DetectionTests
             var removeStrategy = new RemoveBorderStrategy();
             var generator = new RandomNotLastCharGenerator(text, 4);
 
-            SyncronizedRandomWordGenerator.Generate(detector1, detector2, 1000, removeStrategy, generator, null);
+            SyncronizedRandomWordGenerator.Generate(detector1, detector2, 1000, removeStrategy, generator);
         }
     }
 }

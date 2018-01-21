@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using RepetitionDetection.CharGenerators;
@@ -16,7 +16,7 @@ using RepetitionDetection.TextGeneration.RemoveStrategies;
 namespace GraphicalInterface
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
@@ -27,18 +27,16 @@ namespace GraphicalInterface
             Title = "Repetition-free word generator";
         }
 
-        private InitialSettings InitialSettings;
-
         private void MyInitialize()
         {
-            if (!TryLoadFromSettings(out InitialSettings))
-                InitialSettings = new InitialSettings
+            if (!TryLoadFromSettings(out initialSettings))
+                initialSettings = new InitialSettings
                 {
                     SaveData = new SaveData
                     {
                         SavePath = @"C:\runs\",
                         SaveFullLog = false,
-                        SaveStats = true,
+                        SaveStats = true
                     },
                     AlphabetSize = 3,
                     CharGeneratorIndex = 0,
@@ -48,7 +46,7 @@ namespace GraphicalInterface
                     GeneratedStringLength = 1000,
                     RepetitionRemovingStrategyIndex = 0,
                     RunsCount = 100,
-                    RemoveStrategy = new RemoveBorderStrategy(),
+                    RemoveStrategy = new RemoveBorderStrategy()
                 };
         }
 
@@ -59,10 +57,11 @@ namespace GraphicalInterface
                 return false;
             try
             {
-                settings = JsonConvert.DeserializeObject<InitialSettings>(File.ReadAllText(SettingsPath), new JsonSerializerSettings
-                {
-                    TypeNameHandling = TypeNameHandling.Auto,
-                });
+                settings = JsonConvert.DeserializeObject<InitialSettings>(File.ReadAllText(SettingsPath),
+                    new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
                 if (settings == null)
                     throw new Exception();
                 return true;
@@ -73,13 +72,6 @@ namespace GraphicalInterface
             return false;
         }
 
-        private string SettingsPath
-        {
-            get { return Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), inititalSettingsFileName); }
-        }
-
-        private const string inititalSettingsFileName = "settings.ini";
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -87,29 +79,21 @@ namespace GraphicalInterface
                 var detector = GetDetector();
                 var charGenerator = GetCharGenerator(detector.Text, detector.E, detector.DetectEqual);
                 var removeStrategy = GetRemoveStrategy(detector.E);
-                int length, runsCount;
-                if (!int.TryParse(TextBoxLength.Text, out length) || length <= 0)
+                if (!int.TryParse(TextBoxLength.Text, out var length) || length <= 0)
                     Raise("Length must be positive integer");
-                if (!int.TryParse(TextBoxRunsCount.Text, out runsCount) || runsCount <= 0)
+                if (!int.TryParse(TextBoxRunsCount.Text, out var runsCount) || runsCount <= 0)
                     Raise("Runscount must be positive integer");
                 if (TextBoxRemovingUpperBound.Visibility == Visibility.Visible)
-                {
-                    int removingUpperBound;
-                    if (!int.TryParse(TextBoxRemovingUpperBound.Text, out removingUpperBound))
-                    {
+                    if (!int.TryParse(TextBoxRemovingUpperBound.Text, out var removingUpperBound))
                         Raise("Removing upper bound must be positive integer");
-                    }
                     else
-                    {
                         removeStrategy = new NoMoreThanStrategy(removeStrategy, removingUpperBound);
-                    }
-                }
                 TextBlockErrorMessage.Text = string.Empty;
                 var saveData = new SaveData
                 {
                     SavePath = TextBoxOutputPath.Text,
                     SaveStats = CheckBoxStatistics.IsChecked ?? false,
-                    SaveFullLog = CheckBoxFullLog.IsChecked ?? false,
+                    SaveFullLog = CheckBoxFullLog.IsChecked ?? false
                 };
                 TextBlockErrorMessage.Text = string.Empty;
                 File.WriteAllText(SettingsPath, JsonConvert.SerializeObject(new InitialSettings
@@ -123,7 +107,7 @@ namespace GraphicalInterface
                     Numerator = detector.E.Num,
                     Denominator = detector.E.Denom,
                     RepetitionRemovingStrategyIndex = ComboBoxRemoveStrategy.SelectedIndex,
-                    RemoveStrategy = removeStrategy, 
+                    RemoveStrategy = removeStrategy
                 }, new JsonSerializerSettings
                 {
                     TypeNameHandling = TypeNameHandling.Auto
@@ -131,7 +115,7 @@ namespace GraphicalInterface
                 var runWindow = new RunWindow(detector, removeStrategy, charGenerator, saveData, length, runsCount);
                 runWindow.ShowDialog();
             }
-            catch(InputDataException)
+            catch (InputDataException)
             {
             }
         }
@@ -143,8 +127,7 @@ namespace GraphicalInterface
                 Raise("Select char generator");
             if (index == 0)
                 return new RemoveBorderStrategy();
-            int periodsCount;
-            if (!int.TryParse(TextBoxPeriodsCount.Text, out periodsCount))
+            if (!int.TryParse(TextBoxPeriodsCount.Text, out var periodsCount))
                 Raise("Periods count must be integer");
             if (periodsCount <= 0)
                 Raise("Periods count must be positive");
@@ -155,11 +138,8 @@ namespace GraphicalInterface
 
         private ICharGenerator GetCharGenerator(StringBuilder text, RationalNumber E, bool detectEqual)
         {
-            int alphabetSize;
-            if (!int.TryParse(TextBoxAlphabet.Text, out alphabetSize))
-            {
+            if (!int.TryParse(TextBoxAlphabet.Text, out var alphabetSize))
                 Raise("Alphabet size must be integer");
-            }
             var index = ComboBoxCharGenerator.SelectedIndex;
             if (index < 0 || index > 1)
                 Raise("Select char generator");
@@ -181,24 +161,15 @@ namespace GraphicalInterface
 
         private RationalNumber GetExponent()
         {
-            int numerator, denominator;
-            if (!int.TryParse(TextBoxNumerator.Text, out numerator))
-            {
+            if (!int.TryParse(TextBoxNumerator.Text, out var numerator))
                 Raise("Numerator must be integer");
-            }
-            if (!int.TryParse(TextBoxDenominator.Text, out denominator))
-            {
+            if (!int.TryParse(TextBoxDenominator.Text, out var denominator))
                 Raise("Denominator must be integer");
-            }
             if (denominator == 0)
-            {
                 Raise("Denominator can't be equal to 0");
-            }
             var result = new RationalNumber(numerator, denominator);
             if (result <= new RationalNumber(1))
-            {
                 Raise("Exponent must be greater than 1");
-            }
             return result;
         }
 
@@ -211,13 +182,13 @@ namespace GraphicalInterface
         private void CharGenerator_OnLoaded(object sender, RoutedEventArgs e)
         {
             ComboBoxCharGenerator.ItemsSource = new[] {"Random uniform", "Clever"};
-            ComboBoxCharGenerator.SelectedIndex = InitialSettings.CharGeneratorIndex;
+            ComboBoxCharGenerator.SelectedIndex = initialSettings.CharGeneratorIndex;
         }
 
         private void RemoveStrategy_OnLoaded(object sender, RoutedEventArgs e)
         {
             ComboBoxRemoveStrategy.ItemsSource = new[] {"Remove border", "Remove period(s)"};
-            ComboBoxRemoveStrategy.SelectedIndex = InitialSettings.RepetitionRemovingStrategyIndex;
+            ComboBoxRemoveStrategy.SelectedIndex = initialSettings.RepetitionRemovingStrategyIndex;
             if (ComboBoxRemoveStrategy.SelectedIndex == 0)
             {
                 TextBlockPeriodsCount.Visibility = Visibility.Hidden;
@@ -230,7 +201,7 @@ namespace GraphicalInterface
             }
         }
 
-        private void ComboBoxRemoveStrategy_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void ComboBoxRemoveStrategy_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ComboBoxRemoveStrategy.SelectedIndex == 0)
             {
@@ -248,66 +219,62 @@ namespace GraphicalInterface
         {
             var folderBrowserDialog = new FolderBrowserDialog();
             if (folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
                 TextBoxOutputPath.Text = folderBrowserDialog.SelectedPath;
-            }
         }
 
         private void TextBoxNumerator_OnLoaded(object sender, RoutedEventArgs e)
         {
-            TextBoxNumerator.Text = InitialSettings.Numerator.ToString(CultureInfo.InvariantCulture);
+            TextBoxNumerator.Text = initialSettings.Numerator.ToString(CultureInfo.InvariantCulture);
         }
 
         private void TextBoxDenominator_OnLoaded(object sender, RoutedEventArgs e)
         {
-            TextBoxDenominator.Text = InitialSettings.Denominator.ToString(CultureInfo.InvariantCulture);
+            TextBoxDenominator.Text = initialSettings.Denominator.ToString(CultureInfo.InvariantCulture);
         }
 
         private void CheckBoxDetectEqual_OnLoaded(object sender, RoutedEventArgs e)
         {
-            CheckBoxDetectEqual.IsChecked = InitialSettings.DetectEqualToExponent;
+            CheckBoxDetectEqual.IsChecked = initialSettings.DetectEqualToExponent;
         }
 
         private void TextBoxAlphabet_OnLoaded(object sender, RoutedEventArgs e)
         {
-            TextBoxAlphabet.Text = InitialSettings.AlphabetSize.ToString(CultureInfo.InvariantCulture);
+            TextBoxAlphabet.Text = initialSettings.AlphabetSize.ToString(CultureInfo.InvariantCulture);
         }
 
         private void TextBoxLength_OnLoaded(object sender, RoutedEventArgs e)
         {
-            TextBoxLength.Text = InitialSettings.GeneratedStringLength.ToString(CultureInfo.InvariantCulture);
+            TextBoxLength.Text = initialSettings.GeneratedStringLength.ToString(CultureInfo.InvariantCulture);
         }
 
         private void TextBoxRunsCount_OnLoaded(object sender, RoutedEventArgs e)
         {
-            TextBoxRunsCount.Text = InitialSettings.RunsCount.ToString(CultureInfo.InvariantCulture);
+            TextBoxRunsCount.Text = initialSettings.RunsCount.ToString(CultureInfo.InvariantCulture);
         }
 
         private void TextBoxOutputPath_OnLoaded(object sender, RoutedEventArgs e)
         {
-            TextBoxOutputPath.Text = InitialSettings.SaveData.SavePath;
+            TextBoxOutputPath.Text = initialSettings.SaveData.SavePath;
         }
 
         private void CheckBoxFullLog_OnLoaded(object sender, RoutedEventArgs e)
         {
-            CheckBoxFullLog.IsChecked = InitialSettings.SaveData.SaveFullLog;
+            CheckBoxFullLog.IsChecked = initialSettings.SaveData.SaveFullLog;
         }
 
         private void CheckBoxStatistics_OnLoaded(object sender, RoutedEventArgs e)
         {
-            CheckBoxStatistics.IsChecked = InitialSettings.SaveData.SaveStats;
+            CheckBoxStatistics.IsChecked = initialSettings.SaveData.SaveStats;
         }
 
         private void TextBoxPeriodsCount_OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (InitialSettings.RemoveStrategy is RemovePeriodsStrategy)
-            {
-                TextBoxPeriodsCount.Text = ((RemovePeriodsStrategy)InitialSettings.RemoveStrategy).PeriodsCount.ToString(CultureInfo.InvariantCulture);
-            }
+            if (initialSettings.RemoveStrategy is RemovePeriodsStrategy)
+                TextBoxPeriodsCount.Text =
+                    ((RemovePeriodsStrategy) initialSettings.RemoveStrategy).PeriodsCount.ToString(CultureInfo
+                        .InvariantCulture);
             else
-            {
                 TextBoxPeriodsCount.Text = "1";
-            }
         }
 
         private void CheckBoxRemovingUpperBound_OnClick(object sender, RoutedEventArgs e)
@@ -319,9 +286,9 @@ namespace GraphicalInterface
 
         private void TextBoxRemovingUpperBound_OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (InitialSettings.RemoveStrategy is NoMoreThanStrategy)
+            if (initialSettings.RemoveStrategy is NoMoreThanStrategy)
             {
-                var strategy = (NoMoreThanStrategy) InitialSettings.RemoveStrategy;
+                var strategy = (NoMoreThanStrategy) initialSettings.RemoveStrategy;
                 CheckBoxRemovingUpperBound.IsChecked = true;
                 TextBoxRemovingUpperBound.Visibility = Visibility.Visible;
                 TextBoxRemovingUpperBound.Text = strategy.MaxCharactersToRemove.ToString(CultureInfo.InvariantCulture);
@@ -332,5 +299,12 @@ namespace GraphicalInterface
                 TextBoxRemovingUpperBound.Visibility = Visibility.Hidden;
             }
         }
+
+        private static string SettingsPath => Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
+            InititalSettingsFileName);
+
+        private InitialSettings initialSettings;
+
+        private const string InititalSettingsFileName = "settings.ini";
     }
 }

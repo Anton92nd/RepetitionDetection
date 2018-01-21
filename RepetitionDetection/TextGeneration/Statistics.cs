@@ -11,15 +11,15 @@ namespace RepetitionDetection.TextGeneration
             CountOfPeriods = new Dictionary<int, int>();
         }
 
-        public int CharsGenerated { get; set; }
-        public long Milliseconds { get; set; }
-        public readonly Dictionary<int, int> CountOfPeriods;
-
         public void Clear()
         {
             CountOfPeriods.Clear();
             CharsGenerated = 0;
             Milliseconds = 0;
         }
+
+        public int CharsGenerated { get; set; }
+        public long Milliseconds { get; set; }
+        public readonly Dictionary<int, int> CountOfPeriods;
     }
 }

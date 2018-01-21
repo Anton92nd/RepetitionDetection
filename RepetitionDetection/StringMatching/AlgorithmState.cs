@@ -13,7 +13,7 @@
 
         public override string ToString()
         {
-            return string.Format("Position: {0}, Matched: {1}", PositionInText, MatchedSymbolsCount);
+            return $"Position: {PositionInText}, Matched: {MatchedSymbolsCount}";
         }
     }
 }

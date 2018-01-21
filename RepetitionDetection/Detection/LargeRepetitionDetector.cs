@@ -10,7 +10,8 @@ namespace RepetitionDetection.Detection
 {
     public class LargeRepetitionDetector : Detector
     {
-        public LargeRepetitionDetector([NotNull] StringBuilder text, RationalNumber e, bool detectEqual) : base(text, e, detectEqual)
+        public LargeRepetitionDetector([NotNull] StringBuilder text, RationalNumber e, bool detectEqual) : base(text, e,
+            detectEqual)
         {
             catchers = new Dictionary<CatcherInterval, Catcher>();
         }
@@ -19,36 +20,30 @@ namespace RepetitionDetection.Detection
         {
             repetition = new Repetition(0, 0);
 
-            UpdateCatchers(create:true);
+            UpdateCatchers(true);
             DeleteCatchers();
 
             var result = false;
             foreach (var pair in catchers)
-            {
-                if (pair.Value.IsActive())
+                if (pair.Value.IsActive() && pair.Value.TryCatch(out var rep))
                 {
-                    Repetition rep;
-                    if (pair.Value.TryCatch(out rep))
-                    {
-                        result = true;
-                        repetition = rep;
-                    }
+                    result = true;
+                    repetition = rep;
                 }
-            }
             return result;
         }
 
         private void UpdateCatchers(bool create)
         {
             var n = Text.Length;
-            for (var deg2 = 1; deg2*S <= n && n%deg2 == 0; deg2 *= 2)
+            for (var deg2 = 1; deg2 * S <= n && n % deg2 == 0; deg2 *= 2)
             {
                 UpdateCatcher(new CatcherInterval(n - 1 - deg2 * S, n - 1 - deg2 * (S - 1)), create);
-                if (n%(deg2*2) == 0)
+                if (n % (deg2 * 2) == 0)
                 {
-                    var l = n - 1 - deg2*2*S;
-                    var m = n - 1 - deg2*2*S + deg2;
-                    var r = n - 1 - deg2*2*(S - 1);
+                    var l = n - 1 - deg2 * 2 * S;
+                    var m = n - 1 - deg2 * 2 * S + deg2;
+                    var r = n - 1 - deg2 * 2 * (S - 1);
                     UpdateCatcher(new CatcherInterval(l, m), !create);
                     UpdateCatcher(new CatcherInterval(m, r), !create);
                 }
@@ -58,24 +53,18 @@ namespace RepetitionDetection.Detection
         private void UpdateCatcher(CatcherInterval interval, bool create)
         {
             if (create)
-            {
                 CreateCatcher(interval);
-            }
             else
-            {
                 RemoveCatcher(interval);
-            }
         }
 
         public override void Backtrack()
         {
             foreach (var catcher in catchers.Values)
-            {
                 if (catcher.IsActive())
                     catcher.Backtrack();
-            }
 
-            UpdateCatchers(create:false);
+            UpdateCatchers(false);
             DeleteCatchers();
         }
 
@@ -93,20 +82,15 @@ namespace RepetitionDetection.Detection
                 .ToArray();
 
             foreach (var catcher in catchersToDelete)
-            {
                 catchers.Remove(catcher);
-            }
         }
 
         private void RemoveCatcher(CatcherInterval interval)
         {
             if (interval.L < -1)
                 return;
-            Catcher catcher;
-            if (!catchers.TryGetValue(interval, out catcher))
-            {
-                throw new InvalidProgramStateException(string.Format("Can't find catcher for interval: {0}", interval));
-            }
+            if (!catchers.TryGetValue(interval, out var catcher))
+                throw new InvalidProgramStateException($"Can't find catcher for interval: {interval}");
             catcher.RemoveTime = Text.Length;
         }
 
@@ -115,10 +99,9 @@ namespace RepetitionDetection.Detection
             if (interval.L < -1)
                 return;
             var n = interval.L + 1 + S * interval.Length;
-            Catcher catcher;
             var i = interval.R;
             var j = Math.Max(i, n - 1 - (new RationalNumber(S) / E * interval.Length).Ceil());
-            if (!catchers.TryGetValue(interval, out catcher))
+            if (!catchers.TryGetValue(interval, out var catcher))
             {
                 catcher = new Catcher(Text, i, j, E, DetectEqual, interval.Length);
                 catcher.WarmUp(j + 2, Text.Length);

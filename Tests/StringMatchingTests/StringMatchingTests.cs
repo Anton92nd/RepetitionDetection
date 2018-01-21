@@ -8,11 +8,11 @@ namespace Tests.StringMatchingTests
     [TestFixture]
     public class StringMatchingTests
     {
-        [TestCase("abacabadabacaba", "aba", new []{2, 6, 10, 14})]
-        [TestCase("aaaaa", "a", new []{ 0, 1, 2, 3, 4})]
-        [TestCase("ababababa", "aba", new []{2, 4, 6, 8})]
-        [TestCase("babaaababaaabaaaababaaa", "aababaaa", new []{11, 22})]
-        [TestCase("aaaaabcbcb", "aaaabc", new []{6})]
+        [TestCase("abacabadabacaba", "aba", new[] {2, 6, 10, 14})]
+        [TestCase("aaaaa", "a", new[] {0, 1, 2, 3, 4})]
+        [TestCase("ababababa", "aba", new[] {2, 4, 6, 8})]
+        [TestCase("babaaababaaabaaaababaaa", "aababaaa", new[] {11, 22})]
+        [TestCase("aaaaabcbcb", "aaaabc", new[] {6})]
         public void Test(string text, string pattern, int[] expectedOccurences)
         {
             var sb = new StringBuilder();
@@ -23,9 +23,7 @@ namespace Tests.StringMatchingTests
             {
                 sb.Append(text[i]);
                 if (algorithm.CheckForMatch(i + 1))
-                {
                     occurences.Add(i);
-                }
             }
             Assert.That(occurences, Is.EquivalentTo(expectedOccurences));
         }
@@ -37,9 +35,7 @@ namespace Tests.StringMatchingTests
             const string pattern = "aba";
             var algo = new StringMatchingAlgorithm(sb, pattern, 0);
             for (var i = 0; i < sb.Length; i++)
-            {
                 algo.CheckForMatch(i + 1);
-            }
             var abacabState = algo.State;
             sb.Append('a');
             Assert.That(algo.CheckForMatch(sb.Length), Is.True);

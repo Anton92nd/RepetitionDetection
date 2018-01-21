@@ -10,7 +10,7 @@
 
         public override string ToString()
         {
-            return string.Format("Complete: ({0}), Incomplete: ({1})", CompleteAlgorithmState, IncompleteAlgorithmState);
+            return $"Complete: ({CompleteAlgorithmState}), Incomplete: ({IncompleteAlgorithmState})";
         }
 
         public readonly AlgorithmState CompleteAlgorithmState;

@@ -13,8 +13,8 @@ namespace RepetitionDetection.Catching
             StringMatchingState = stringMatchingState;
         }
 
-        public StringMatchingState StringMatchingState { get; private set; }
+        public StringMatchingState StringMatchingState { get; }
 
-        public List<Repetition> Repetitions { get; private set; }
+        public List<Repetition> Repetitions { get; }
     }
 }

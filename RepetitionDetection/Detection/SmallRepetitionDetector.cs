@@ -7,7 +7,8 @@ namespace RepetitionDetection.Detection
 {
     public class SmallRepetitionDetector : Detector
     {
-        public SmallRepetitionDetector([NotNull] StringBuilder text, RationalNumber e, bool detectEqual) : base(text, e, detectEqual)
+        public SmallRepetitionDetector([NotNull] StringBuilder text, RationalNumber e, bool detectEqual) : base(text, e,
+            detectEqual)
         {
             lastSymbolsCount = S - 1;
             suffixFunction = new int[lastSymbolsCount];

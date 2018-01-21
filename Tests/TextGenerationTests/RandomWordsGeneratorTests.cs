@@ -21,7 +21,7 @@ namespace Tests.TextGenerationTests
         [TestCase(4, 7, 4, false, typeof(SillyDetector))]
         public void TestDetector(int alphabet, int numerator, int denominator, bool detectEqual, Type detectorType)
         {
-            var lengths = new[] { 1000, 2000 };
+            var lengths = new[] {1000, 2000};
             var generator = new RandomCharGenerator(alphabet);
             var detector = GetDetector(detectorType, detectEqual, new RationalNumber(numerator, denominator));
             foreach (var length in lengths)
@@ -30,7 +30,7 @@ namespace Tests.TextGenerationTests
                 var sw = Stopwatch.StartNew();
                 RandomWordGenerator.Generate(detector, length, new RemoveBorderStrategy(), generator);
                 sw.Stop();
-                Console.WriteLine("Length: {0}\n\tTime: {1} ms\n\tConversion coeff: {2:0.000000}", length, sw.ElapsedMilliseconds, RandomWordGenerator.Statistics.CharsGenerated * 1.0 / length);
+                Console.WriteLine($"Length: {length}\n\tTime: {sw.ElapsedMilliseconds} ms\n\tConversion coeff: {RandomWordGenerator.Statistics.CharsGenerated * 1.0 / length:0.000000}");
             }
         }
 
@@ -43,7 +43,7 @@ namespace Tests.TextGenerationTests
             var sw = Stopwatch.StartNew();
             RandomWordGenerator.Generate(detector, length, new RemoveBorderStrategy(), generator);
             sw.Stop();
-            Console.WriteLine("Length: {0}\n\tTime: {1} ms\n\tConversion coeff: {2:0.000000}", length, sw.ElapsedMilliseconds, RandomWordGenerator.Statistics.CharsGenerated * 1.0 / length);
+            Console.WriteLine($"Length: {length}\n\tTime: {sw.ElapsedMilliseconds} ms\n\tConversion coeff: {RandomWordGenerator.Statistics.CharsGenerated * 1.0 / length:0.000000}");
         }
 
         [TestCase(5)]
@@ -71,11 +71,9 @@ namespace Tests.TextGenerationTests
                 coefs.Add(charsGenerated * 1.0 / length);
             }
             sw.Stop();
-            Console.WriteLine((string) "Alphabet size = {0}, e = {1}+", (object) k, (object) e);
+            Console.WriteLine($"Alphabet size = {k}, e = {e}+");
             for (var i = 0; i < lengthsBoundary.Length; ++i)
-            {
-                Console.WriteLine("\tLength: {0}, Time: {1} ms, Conversion coeff: {2}", lengthsBoundary[i], times[i], coefs[i]);
-            }
+                Console.WriteLine($"\tLength: {lengthsBoundary[i]}, Time: {times[i]} ms, Conversion coeff: {coefs[i]}");
         }
 
         private static Detector GetDetector(Type detectorType, bool detectEqual, RationalNumber e)
@@ -83,17 +81,11 @@ namespace Tests.TextGenerationTests
             var text = new StringBuilder();
             Detector detector;
             if (detectorType == typeof(SillyDetector))
-            {
                 detector = new SillyDetector(text, e, detectEqual);
-            }
             else if (detectorType == typeof(RepetitionDetector))
-            {
                 detector = new RepetitionDetector(text, e, detectEqual);
-            }
             else
-            {
-                throw new InvalidProgramStateException(string.Format("Wrong type of detector: {0}", detectorType.FullName));
-            }
+                throw new InvalidProgramStateException($"Wrong type of detector: {detectorType.FullName}");
             return detector;
         }
     }

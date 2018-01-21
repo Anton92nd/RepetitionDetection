@@ -34,13 +34,13 @@ namespace Tests.DetectionTests
         public void TestWithBacktrack()
         {
             var e = new RationalNumber(3, 2);
-            var text = "wxyzaceorsuvaceo";
+            const string text = "wxyzaceorsuvaceo";
             var sb = new StringBuilder();
 
             var detector = new LargeRepetitionDetector(sb, e, true);
             var repetition = new Repetition(0, 0);
 
-            foreach (char c in text)
+            foreach (var c in text)
             {
                 sb.Append(c);
                 if (detector.TryDetect(out repetition))

@@ -7,21 +7,10 @@ namespace RepetitionDetection.Logging
 {
     public class OutputLogger : IGeneratorLogger
     {
-        public volatile int TextLength;
-
         public OutputLogger([CanBeNull] StreamWriter output)
         {
             Output = output;
-            if (Output != null)
-            {
-                Output.WriteLine("text | repetition length | border length");
-            }
-        }
-
-        public StreamWriter Output { get; private set; }
-
-        public void LogBeforeGenerate([NotNull] StringBuilder text)
-        {
+            Output?.WriteLine("text | repetition length | border length");
         }
 
         public void LogAfterGenerate([NotNull] StringBuilder text)
@@ -34,8 +23,15 @@ namespace RepetitionDetection.Logging
             if (Output != null)
             {
                 var length = text.Length - 1 - repetition.LeftPosition;
-                Output.WriteLine("{0} {1} {2}", text, length, length - repetition.Period);
+                Output.WriteLine($"{text} {length} {length - repetition.Period}");
             }
         }
+
+        public void LogBeforeGenerate([NotNull] StringBuilder text)
+        {
+        }
+
+        public StreamWriter Output { get; }
+        public volatile int TextLength;
     }
 }

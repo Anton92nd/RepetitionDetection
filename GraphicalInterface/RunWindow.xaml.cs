@@ -17,19 +17,6 @@ namespace GraphicalInterface
     /// </summary>
     public partial class RunWindow : Window
     {
-        private readonly ICharGenerator charGenerator;
-        private readonly Detector detector;
-        private readonly int length;
-        private readonly IRemoveStrategy removeStrategy;
-        private readonly int runsCount;
-        private readonly SaveData saveData;
-        private CancellationToken token;
-        private OutputLogger logger;
-        private long ms;
-        private volatile int runsPerformed;
-        private CancellationTokenSource tokenSource;
-        private volatile int totalCharsGenerated;
-
         public RunWindow(Detector detector, IRemoveStrategy removeStrategy, ICharGenerator charGenerator,
             SaveData saveData, int length, int runsCount)
         {
@@ -44,13 +31,12 @@ namespace GraphicalInterface
 
         private void GroupBoxParameters_Loaded(object sender, RoutedEventArgs e)
         {
-            TextBlockExponent.Text = string.Format("Exponent: ({0}){1}", detector.E,
-                detector.DetectEqual ? string.Empty : "+");
-            TextBlockCharGenerator.Text = string.Format("Char generator: {0}", charGenerator);
-            TextBlockRemoveStrategy.Text = string.Format("Repetition removing strategy: {0}", removeStrategy);
-            TextBlockLength.Text = string.Format("Length: {0}", length);
-            TextBlockRunsCount.Text = string.Format("Runs count: {0}", runsCount);
-            TextBlockAlphabetSize.Text = string.Format("Alphabet size: {0}", charGenerator.AlphabetSize);
+            TextBlockExponent.Text = $"Exponent: ({detector.E}){(detector.DetectEqual ? string.Empty : "+")}";
+            TextBlockCharGenerator.Text = $"Char generator: {charGenerator}";
+            TextBlockRemoveStrategy.Text = $"Repetition removing strategy: {removeStrategy}";
+            TextBlockLength.Text = $"Length: {length}";
+            TextBlockRunsCount.Text = $"Runs count: {runsCount}";
+            TextBlockAlphabetSize.Text = $"Alphabet size: {charGenerator.AlphabetSize}";
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -65,24 +51,29 @@ namespace GraphicalInterface
             {
                 if (!Directory.Exists(saveData.SavePath))
                     Directory.CreateDirectory(saveData.SavePath);
-                var path = Path.Combine(saveData.SavePath, "stats_" + DateTime.Now.ToString("yy-MM-dd_HH-mm-ss") + ".txt");
+                var path = Path.Combine(saveData.SavePath,
+                    "stats_" + DateTime.Now.ToString("yy-MM-dd_HH-mm-ss") + ".txt");
                 statsOutput = new StreamWriter(File.Open(path, FileMode.Create));
             }
             if (saveData.SaveFullLog)
             {
                 if (!Directory.Exists(saveData.SavePath))
                     Directory.CreateDirectory(saveData.SavePath);
-                var path = Path.Combine(saveData.SavePath, "full_" + DateTime.Now.ToString("yy-MM-dd_HH-mm-ss") + ".txt");
+                var path = Path.Combine(saveData.SavePath,
+                    "full_" + DateTime.Now.ToString("yy-MM-dd_HH-mm-ss") + ".txt");
                 fullLogOutput = new StreamWriter(File.Open(path, FileMode.Create));
             }
             logger = new OutputLogger(fullLogOutput);
             tokenSource = new CancellationTokenSource();
             token = tokenSource.Token;
-            if (statsOutput != null)
-                statsOutput.WriteLine(
-                    "Exponent: {0}\nDetect equal to exponent: {1}\nAlphabet size: {2}\nLength: {3}\nRuns count: {4}\nChar generator: {5}\nRemoving strategy: {6}",
-                    detector.E, detector.DetectEqual, charGenerator.AlphabetSize, length, runsCount,
-                    charGenerator.GetType().Name, removeStrategy);
+            statsOutput?.WriteLine(string.Join("\n",
+                $"Exponent: {detector.E}",
+                $"Detect equal to exponent: {detector.DetectEqual}",
+                $"Alphabet size: {charGenerator.AlphabetSize}",
+                $"Length: {length}",
+                $"Runs count: {runsCount}",
+                $"Char generator: {charGenerator.GetType().Name}",
+                $"Removing strategy: {removeStrategy}"));
             Task.Run(() =>
             {
                 totalCharsGenerated = 0;
@@ -91,20 +82,18 @@ namespace GraphicalInterface
                 while (runsPerformed < runsCount && !token.IsCancellationRequested)
                 {
                     detector.Reset();
-                    if (statsOutput != null)
-                        statsOutput.WriteLine("Run #{0}:", runsPerformed + 1);
+                    statsOutput?.WriteLine("Run #{0}:", runsPerformed + 1);
 
-                    var text = RandomWordGenerator.Generate(detector, length, removeStrategy, charGenerator, logger, token);
+                    var text = RandomWordGenerator.Generate(detector, length, removeStrategy, charGenerator, logger,
+                        token);
                     if (!token.IsCancellationRequested)
                     {
                         runsPerformed++;
                         totalCharsGenerated += RandomWordGenerator.Statistics.CharsGenerated;
                         ms += RandomWordGenerator.Statistics.Milliseconds;
 
-                        if (statsOutput != null)
-                            statsOutput.Flush();
-                        if (fullLogOutput != null)
-                            fullLogOutput.WriteLine("Result: {0}\n", text);
+                        statsOutput?.Flush();
+                        fullLogOutput?.WriteLine($"Result: {text}\n");
                         if (statsOutput != null)
                         {
                             statsOutput.WriteLine("Coef: {0:0.000000}, Time: {1:0.000} ms",
@@ -113,7 +102,7 @@ namespace GraphicalInterface
                             statsOutput.WriteLine("Repetition periods:\n{0}",
                                 string.Join("\n", RandomWordGenerator.Statistics.CountOfPeriods
                                     .OrderBy(p => p.Key)
-                                    .Select(p => string.Format("{0}: {1}", p.Key, p.Value))));
+                                    .Select(p => $"{p.Key}: {p.Value}")));
                             statsOutput.WriteLine("-----");
                         }
                     }
@@ -123,15 +112,13 @@ namespace GraphicalInterface
                     statsOutput.WriteLine("-----");
                     statsOutput.WriteLine("Runs performed: {0}\nAverage coef: {1:0.000000}\nAverage time: {2:0.000} ms",
                         runsPerformed,
-                        totalCharsGenerated*1.0/length/runsPerformed,
-                        ms*1.0/runsPerformed);
+                        totalCharsGenerated * 1.0 / length / runsPerformed,
+                        ms * 1.0 / runsPerformed);
                 }
                 Thread.Sleep(500);
                 tokenSource.Cancel();
-                if (statsOutput != null)
-                    statsOutput.Close();
-                if (fullLogOutput != null)
-                    fullLogOutput.Close();
+                statsOutput?.Close();
+                fullLogOutput?.Close();
             }, token);
             UpdateStatus += () => Dispatcher.Invoke(() =>
             {
@@ -139,8 +126,8 @@ namespace GraphicalInterface
                 TextBoxRunsCompleted.Text = runsPerformed.ToString();
                 if (runsPerformed > 0)
                 {
-                    TextBoxAverageCoef.Text = string.Format("{0:0.000000}", totalCharsGenerated*1.0/length/runsPerformed);
-                    TextBoxAverageTime.Text = string.Format("{0:0.000}", ms*1.0/runsPerformed);
+                    TextBoxAverageCoef.Text = $"{totalCharsGenerated * 1.0 / length / runsPerformed:0.000000}";
+                    TextBoxAverageTime.Text = $"{ms * 1.0 / runsPerformed:0.000}";
                 }
             });
             Task.Run(() =>
@@ -162,6 +149,19 @@ namespace GraphicalInterface
         {
             tokenSource.Cancel();
         }
+
+        private readonly ICharGenerator charGenerator;
+        private readonly Detector detector;
+        private readonly int length;
+        private readonly IRemoveStrategy removeStrategy;
+        private readonly int runsCount;
+        private readonly SaveData saveData;
+        private OutputLogger logger;
+        private long ms;
+        private volatile int runsPerformed;
+        private CancellationToken token;
+        private CancellationTokenSource tokenSource;
+        private volatile int totalCharsGenerated;
 
         private delegate void UpdateStatusEvent();
     }

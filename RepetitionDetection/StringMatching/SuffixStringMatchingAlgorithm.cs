@@ -27,7 +27,6 @@ namespace RepetitionDetection.StringMatching
         {
             var result = false;
             while (textPosition + criticalPosition + matchedSymbolsCount < textLength)
-            {
                 if (pattern[criticalPosition + matchedSymbolsCount] == text[textPosition + criticalPosition + matchedSymbolsCount])
                 {
                     matchedSymbolsCount++;
@@ -43,16 +42,12 @@ namespace RepetitionDetection.StringMatching
                     textPosition = textPosition + matchedSymbolsCount + 1;
                     matchedSymbolsCount = 0;
                 }
-            }
             return result;
         }
 
         public AlgorithmState State
         {
-            get
-            {
-                return new AlgorithmState(textPosition, matchedSymbolsCount);
-            }
+            get => new AlgorithmState(textPosition, matchedSymbolsCount);
 
             set
             {
@@ -61,17 +56,18 @@ namespace RepetitionDetection.StringMatching
             }
         }
 
-        [NotNull]
-        private readonly StringBuilder text;
-
-        [NotNull]
-        private readonly string pattern;
-
-        private readonly int prefixLength;
         private readonly int criticalPosition;
+
+        [NotNull] private readonly string pattern;
+
         private readonly int period;
 
-        private int textPosition;
+        private readonly int prefixLength;
+
+        [NotNull] private readonly StringBuilder text;
+
         private int matchedSymbolsCount;
+
+        private int textPosition;
     }
 }

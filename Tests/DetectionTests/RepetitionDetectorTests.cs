@@ -23,9 +23,9 @@ namespace Tests.DetectionTests
             var detector = new RepetitionDetector(sb, e, detectEqual);
             var repetition = new Repetition(0, 0);
 
-            foreach (var c in text)
+            foreach (var @char in text)
             {
-                sb.Append(c);
+                sb.Append(@char);
                 if (detector.TryDetect(out repetition))
                 {
                     break;
@@ -39,15 +39,15 @@ namespace Tests.DetectionTests
         public void TestWithBacktrack()
         {
             var e = new RationalNumber(3, 2);
-            var text = "wxyzaceorsuvaceo";
+            const string text = "wxyzaceorsuvaceo";
             var sb = new StringBuilder();
 
             var detector = new LargeRepetitionDetector(sb, e, true);
             var repetition = new Repetition(0, 0);
 
-            for (var i = 0; i < text.Length; ++i)
+            foreach (var @char in text)
             {
-                sb.Append(text[i]);
+                sb.Append(@char);
                 if (detector.TryDetect(out repetition))
                 {
                     break;
@@ -71,7 +71,7 @@ namespace Tests.DetectionTests
         [Test]
         public void TestBacktrack()
         {
-            var text = "acbaca";
+            const string text = "acbaca";
             var sb = new StringBuilder();
             var detector = new RepetitionDetector(sb, new RationalNumber(7, 4), true);
             Repetition rep;

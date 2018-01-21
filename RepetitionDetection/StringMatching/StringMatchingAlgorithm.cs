@@ -33,9 +33,7 @@ namespace RepetitionDetection.StringMatching
         public bool CheckForMatch(int textLength)
         {
             if (incompleteAlgorithm == null)
-            {
                 return completeAlgorithm.CheckMatch(textLength);
-            }
             var incompleteAlgoResult = incompleteAlgorithm.CheckMatch(textLength);
             var completeAlgoResult = completeAlgorithm.CheckMatch(textLength - shift);
             return incompleteAlgoResult && completeAlgoResult;
@@ -43,10 +41,9 @@ namespace RepetitionDetection.StringMatching
 
         public StringMatchingState State
         {
-            get
-            {
-                return new StringMatchingState(incompleteAlgorithm == null ? new AlgorithmState(-1, -1) : incompleteAlgorithm.State, completeAlgorithm.State);
-            }
+            get => new StringMatchingState(
+                incompleteAlgorithm?.State ?? new AlgorithmState(-1, -1),
+                completeAlgorithm.State);
 
             set
             {
@@ -56,11 +53,9 @@ namespace RepetitionDetection.StringMatching
             }
         }
 
-        [NotNull]
-        private readonly IPartialStringMatchingAlgorithm completeAlgorithm;
+        [NotNull] private readonly IPartialStringMatchingAlgorithm completeAlgorithm;
 
-        [CanBeNull]
-        private readonly IPartialStringMatchingAlgorithm incompleteAlgorithm;
+        [CanBeNull] private readonly IPartialStringMatchingAlgorithm incompleteAlgorithm;
 
         private readonly int shift;
     }

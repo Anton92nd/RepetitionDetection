@@ -24,9 +24,11 @@ namespace Tests.TextGenerationTests
         [TestCase(2, 2, 1, true, 1)]
         [TestCase(2, 3, 1, true, 0)]
         [TestCase(4, 3, 2, true, 2)]
-        public void TestOther(int alphabetSize, int numerator, int denominator, bool detectEqual, int expectedLastSymols)
+        public void TestOther(int alphabetSize, int numerator, int denominator, bool detectEqual,
+            int expectedLastSymols)
         {
-            var charGenerator = new CleverCharGenerator(new StringBuilder(), alphabetSize, new RationalNumber(numerator, denominator), detectEqual);
+            var charGenerator = new CleverCharGenerator(new StringBuilder(), alphabetSize,
+                new RationalNumber(numerator, denominator), detectEqual);
             Assert.That(charGenerator.LastSymbols, Is.EqualTo(expectedLastSymols));
         }
     }

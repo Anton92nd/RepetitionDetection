@@ -20,7 +20,7 @@ namespace RepetitionDetection.Commons
 
         public override string ToString()
         {
-            return string.Format("Left position: {0}, Period: {1}", LeftPosition, Period);
+            return $"Left position: {LeftPosition}, Period: {Period}";
         }
     }
 }

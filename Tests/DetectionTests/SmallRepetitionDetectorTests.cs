@@ -19,11 +19,11 @@ namespace Tests.DetectionTests
 
             var detector = new SmallRepetitionDetector(sb, e, detectEqual);
 
-            Repetition repetition = new Repetition(0, 0);
+            var repetition = new Repetition(0, 0);
             var detected = false;
-            for (var i = 0; i < text.Length; ++i)
+            foreach (var @char in text)
             {
-                sb.Append(text[i]);
+                sb.Append(@char);
                 if (detector.TryDetect(out repetition))
                 {
                     detected = true;

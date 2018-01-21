@@ -12,7 +12,7 @@ namespace RepetitionDetection.CharGenerators
 
         public static int Generate(int maxValue)
         {
-            return GenerateInt()%maxValue;
+            return GenerateInt() % maxValue;
         }
 
         private static int GenerateInt()

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using RepetitionDetection.Commons;
+﻿using System.Collections.Generic;
 using RepetitionDetection.Detection;
 
 namespace RepetitionDetection.TextGeneration
@@ -11,7 +9,7 @@ namespace RepetitionDetection.TextGeneration
         {
             var result = new List<string>();
             var text = detector.Text;
-            var found = new List<bool>{false};
+            var found = new List<bool> {false};
             text.Append('a');
             while (text.Length > 0)
             {
@@ -28,8 +26,7 @@ namespace RepetitionDetection.TextGeneration
                     text[text.Length - 1]++;
                     continue;
                 }
-                Repetition repetition;
-                if (detector.TryDetect(out repetition))
+                if (detector.TryDetect(out var repetition))
                 {
                     detector.Backtrack();
                     text[text.Length - 1]++;

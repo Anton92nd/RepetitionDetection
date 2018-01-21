@@ -5,7 +5,8 @@ namespace RepetitionDetection.CriticalFactorization
 {
     public class Factorizations : IEquatable<Factorizations>
     {
-        public Factorizations([NotNull] string pattern, int prefixLength, int prefixCriticalPosition, int patternCriticalPosition)
+        public Factorizations([NotNull] string pattern, int prefixLength, int prefixCriticalPosition,
+            int patternCriticalPosition)
         {
             Pattern = pattern;
             PrefixLength = prefixLength;
@@ -17,30 +18,30 @@ namespace RepetitionDetection.CriticalFactorization
         {
             if (other == null)
                 return false;
-            return Pattern.Equals(other.Pattern) && 
-                PrefixLength == other.PrefixLength && PrefixCriticalPosition == other.PrefixCriticalPosition && 
-                PatternCriticalPosition == other.PatternCriticalPosition;
+            return Pattern.Equals(other.Pattern) &&
+                   PrefixLength == other.PrefixLength && PrefixCriticalPosition == other.PrefixCriticalPosition &&
+                   PatternCriticalPosition == other.PatternCriticalPosition;
         }
 
         [NotNull]
         public override string ToString()
         {
-            return string.Format("Pattern: {0}\nPrefix length: {1}, Prefix critical position: {2}\nPattern critical position: {3}",
-                Pattern, PrefixLength, PrefixCriticalPosition, PatternCriticalPosition);
+            return $"Pattern: {Pattern}\nPrefix length: {PrefixLength}, Prefix critical position: {PrefixCriticalPosition}\n" 
+                + $"Pattern critical position: {PatternCriticalPosition}";
         }
 
         public bool PatternFactorizationIsGood()
         {
-            return PatternCriticalPosition <= Pattern.Length/2;
+            return PatternCriticalPosition <= Pattern.Length / 2;
         }
 
-        public int PrefixLength { get; private set; }
+        public int PrefixLength { get; }
 
-        public int PrefixCriticalPosition { get; private set; }
+        public int PrefixCriticalPosition { get; }
 
-        public int PatternCriticalPosition { get; private set; }
+        public int PatternCriticalPosition { get; }
 
         [NotNull]
-        private string Pattern { get; set; }
+        private string Pattern { get; }
     }
 }

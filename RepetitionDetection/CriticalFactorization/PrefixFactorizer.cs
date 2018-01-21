@@ -22,20 +22,14 @@ namespace RepetitionDetection.CriticalFactorization
             maximalSuffixCalculatorForGreater.Calculate(prefixLength);
         }
 
-        public int CriticalPosition
-        {
-            get
-            {
-                return Math.Max(1,Math.Max(maximalSuffixCalculatorForLess.MaximalSuffixPosition, maximalSuffixCalculatorForGreater.MaximalSuffixPosition));
-            }
-        }
+        public int CriticalPosition => Math.Max(1,
+            Math.Max(maximalSuffixCalculatorForLess.MaximalSuffixPosition,
+                maximalSuffixCalculatorForGreater.MaximalSuffixPosition));
 
         public int PrefixLength { get; private set; }
 
-        [NotNull]
-        private readonly MaximalSuffixCalculator maximalSuffixCalculatorForLess;
+        [NotNull] private readonly MaximalSuffixCalculator maximalSuffixCalculatorForGreater;
 
-        [NotNull]
-        private readonly MaximalSuffixCalculator maximalSuffixCalculatorForGreater;
+        [NotNull] private readonly MaximalSuffixCalculator maximalSuffixCalculatorForLess;
     }
 }

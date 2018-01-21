@@ -27,12 +27,12 @@ namespace Tests
 
         private static void GenerateSquare()
         {
-            var Runs = new[] { 100 };
+            var runs = new[] { 100 };
             var lengths = new[] { 100000 };
             using (var outputStream = File.Open("D:\\statistics\\square4.txt", FileMode.Create))
             using (var output = new StreamWriter(outputStream))
             {
-                for (var i = 0; i < Runs.Length; ++i)
+                for (var i = 0; i < runs.Length; ++i)
                 {
                     var logger = new ConsoleTextLengthLogger(1000);
                     var text = new StringBuilder();
@@ -42,7 +42,7 @@ namespace Tests
                     var detector = new RepetitionDetector(text, e, true);
                     var removeStrategy = new RemoveBorderStrategy();
 
-                    Calculate(Runs[i], detector, lengths[i], removeStrategy, generator, logger, output);
+                    Calculate(runs[i], detector, lengths[i], removeStrategy, generator, logger, output);
                 }
             }
         }
@@ -52,22 +52,22 @@ namespace Tests
             using (var outputStream = File.Open("D:\\statistics\\binary_4_7d5+.txt", FileMode.Create))
             using (var output = new StreamWriter(outputStream))
             {
-                var Runs = new[] { 300, 300, 200, 200, 100, 100, 100, 50 };
+                var runs = new[] { 300, 300, 200, 200, 100, 100, 100, 50 };
                 var lengths = new[] { 100, 200, 300, 400, 500, 600, 700, 800 };
-                bool detectEqual = false;
+                var detectEqual = false;
                 var e = new RationalNumber(7, 5);
 
-                for (var i = 0; i < Runs.Length; ++i)
+                for (var i = 0; i < runs.Length; ++i)
                 {
                     var length = lengths[i];
-                    Console.WriteLine("Calculating conversion for length = {0}", length);
+                    Console.WriteLine($"Calculating conversion for length = {length}");
                     var text = new StringBuilder();
 
                     var generator = new CleverCharGenerator(text, 4, e, detectEqual);
                     var detector = new RepetitionDetector(text, e, detectEqual);
                     var removeStrategy = new RemoveBorderStrategy();
 
-                    Calculate(Runs[i], detector, lengths[i], removeStrategy, generator, null, output);
+                    Calculate(runs[i], detector, lengths[i], removeStrategy, generator, null, output);
                 }
             }
         }
@@ -77,22 +77,22 @@ namespace Tests
             using (var outputStream = File.Open("D:\\statistics\\binary_3_7d4+.txt", FileMode.Create))
             using (var output = new StreamWriter(outputStream))
             {
-                var Runs = new[] { 100, 100, 100, 100, 100 };
+                var runs = new[] { 100, 100, 100, 100, 100 };
                 var lengths = new[] { 100, 200, 300, 400, 500 };
                 var e = new RationalNumber(7, 4);
                 var detectEqual = false;
 
-                for (var i = 0; i < Runs.Length; ++i)
+                for (var i = 0; i < runs.Length; ++i)
                 {
                     var length = lengths[i];
-                    Console.WriteLine("Calculating conversion for length = {0}", length);
+                    Console.WriteLine($"Calculating conversion for length = {length}");
                     var text = new StringBuilder();
 
                     var generator = new CleverCharGenerator(text, 3, e, detectEqual);
                     var detector = new RepetitionDetector(text, e, detectEqual);
                     var removeStrategy = new RemoveBorderStrategy();
 
-                    Calculate(Runs[i], detector, lengths[i], removeStrategy, generator, null, output);
+                    Calculate(runs[i], detector, lengths[i], removeStrategy, generator, null, output);
                 }
             }
         }
@@ -101,7 +101,7 @@ namespace Tests
         {
             const int length = 100000;
             const int runsCount = 100;
-            using (var outputStream = File.Open(string.Format("D:\\statistics\\boundary_uniform_{0}.txt", length), FileMode.Create))
+            using (var outputStream = File.Open($"D:\\statistics\\boundary_uniform_{length}.txt", FileMode.Create))
             using (var output = new StreamWriter(outputStream))
             {
                 output.WriteLine("k | coeff");
@@ -110,7 +110,7 @@ namespace Tests
                 var logger = new ConsoleTextLengthLogger(length / 100);
                 for (var k = 5; k <= 10; ++k)
                 {
-                    Console.WriteLine("Conversion for k = {0}", k);
+                    Console.WriteLine($"Conversion for k = {k}");
                     var text = new StringBuilder();
 
                     var e = new RationalNumber(k, k - 1);
@@ -126,7 +126,7 @@ namespace Tests
         {
             const int length = 100000;
             const int runsCount = 100;
-            using (var outputStream = File.Open(string.Format("D:\\statistics\\boundary_bits_{0}.txt", length), FileMode.Create))
+            using (var outputStream = File.Open($"D:\\statistics\\boundary_bits_{length}.txt", FileMode.Create))
             using (var output = new StreamWriter(outputStream))
             {
                 output.WriteLine("k | coeff");
@@ -137,7 +137,7 @@ namespace Tests
 
                 for (var k = 5; k <= 10; ++k)
                 {
-                    Console.WriteLine("Conversion for k = {0}", k);
+                    Console.WriteLine($"Conversion for k = {k}");
                     var text = new StringBuilder();
 
                     var e = new RationalNumber(k, k - 1);
@@ -153,7 +153,7 @@ namespace Tests
             IRemoveStrategy removeStrategy, ICharGenerator generator, IGeneratorLogger logger,
             StreamWriter output)
         {
-            Console.WriteLine("Conversion for length = {0}", length);
+            Console.WriteLine($"Conversion for length = {length}");
             var conversionCoeffs = new double[runs];
             var times = new long[runs];
             for (var run = 0; run < runs; ++run)
@@ -166,7 +166,7 @@ namespace Tests
                 conversionCoeffs[run] = RandomWordGenerator.Statistics.CharsGenerated * 1.0 / length;
                 Console.WriteLine("\rRun {0} generated in {1} ms", run + 1, sw.ElapsedMilliseconds);
             }
-            output.WriteLine("{0} {1} {2} {3}", runs, length, conversionCoeffs.Average(), times.Average());
+            output.WriteLine($"{runs} {length} {conversionCoeffs.Average()} {times.Average()}");
             output.Flush();
         }
     }

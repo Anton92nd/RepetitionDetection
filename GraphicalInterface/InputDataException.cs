@@ -7,7 +7,6 @@ namespace GraphicalInterface
         public InputDataException(string message)
             : base(message)
         {
-
         }
     }
 }

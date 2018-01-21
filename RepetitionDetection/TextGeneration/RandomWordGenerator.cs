@@ -12,10 +12,10 @@ namespace RepetitionDetection.TextGeneration
 {
     public static class RandomWordGenerator
     {
-        public static readonly Statistics Statistics = new Statistics();
-
-        public static StringBuilder Generate([NotNull] Detector detector, int length, [NotNull] IRemoveStrategy removeStrategy,
-            [NotNull] ICharGenerator generator, [CanBeNull] IGeneratorLogger logger = null, [CanBeNull] CancellationToken? token = null)
+        public static StringBuilder Generate([NotNull] Detector detector, int length,
+            [NotNull] IRemoveStrategy removeStrategy,
+            [NotNull] ICharGenerator generator, [CanBeNull] IGeneratorLogger logger = null,
+            [CanBeNull] CancellationToken? token = null)
         {
             Statistics.Clear();
             var text = detector.Text;
@@ -27,15 +27,12 @@ namespace RepetitionDetection.TextGeneration
                     break;
                 text.Append(generator.Generate());
                 Statistics.CharsGenerated++;
-                if (logger != null)
-                    logger.LogAfterGenerate(text);
-                Repetition repetition;
-                if (detector.TryDetect(out repetition))
+                logger?.LogAfterGenerate(text);
+                if (detector.TryDetect(out var repetition))
                 {
                     AddToStats(repetition);
                     var charsToDelete = removeStrategy.GetCharsToDelete(text.Length, repetition);
-                    if (logger != null)
-                        logger.LogRepetition(text, repetition);
+                    logger?.LogRepetition(text, repetition);
                     for (var i = 0; i < charsToDelete; ++i)
                     {
                         detector.Backtrack();
@@ -55,5 +52,7 @@ namespace RepetitionDetection.TextGeneration
             else
                 Statistics.CountOfPeriods[repetition.Period]++;
         }
+
+        public static readonly Statistics Statistics = new Statistics();
     }
 }

@@ -21,7 +21,7 @@ namespace RepetitionDetection.Commons
 
         public static RationalNumber operator *(RationalNumber a, RationalNumber b)
         {
-            return new RationalNumber(a.Num*b.Num, a.Denom*b.Denom);
+            return new RationalNumber(a.Num * b.Num, a.Denom * b.Denom);
         }
 
         public static RationalNumber operator *(RationalNumber a, int b)
@@ -46,8 +46,8 @@ namespace RepetitionDetection.Commons
         public static RationalNumber operator +(RationalNumber a, RationalNumber b)
         {
             var denom = Lcm(a.Denom, b.Denom);
-            var k1 = denom/a.Denom;
-            var k2 = denom/b.Denom;
+            var k1 = denom / a.Denom;
+            var k2 = denom / b.Denom;
             return new RationalNumber(a.Num * k1 + b.Num * k2, denom);
         }
 
@@ -72,9 +72,9 @@ namespace RepetitionDetection.Commons
         public static bool operator <(RationalNumber a, RationalNumber b)
         {
             var lcm = Lcm(a.Denom, b.Denom);
-            var k1 = lcm/a.Denom;
-            var k2 = lcm/b.Denom;
-            return a.Num*k1 < b.Num*k2;
+            var k1 = lcm / a.Denom;
+            var k2 = lcm / b.Denom;
+            return a.Num * k1 < b.Num * k2;
         }
 
         public static bool operator <=(RationalNumber a, RationalNumber b)
@@ -98,13 +98,13 @@ namespace RepetitionDetection.Commons
         [Pure]
         public int Ceil()
         {
-            return (Num + Denom - 1)/Denom;
+            return (Num + Denom - 1) / Denom;
         }
 
         [Pure]
         public int Floor()
         {
-            return Num/Denom;
+            return Num / Denom;
         }
 
         private static int Gcd(int a, int b)
@@ -112,7 +112,7 @@ namespace RepetitionDetection.Commons
             while (a != 0)
             {
                 var a1 = a;
-                a = b%a;
+                a = b % a;
                 b = a1;
             }
             return b;
@@ -120,12 +120,12 @@ namespace RepetitionDetection.Commons
 
         private static int Lcm(int a, int b)
         {
-            return a/Gcd(a, b)*b;
+            return a / Gcd(a, b) * b;
         }
 
         public override string ToString()
         {
-            return String.Format("{0}/{1}", Num, Denom);
+            return $"{Num}/{Denom}";
         }
 
         public readonly int Num;

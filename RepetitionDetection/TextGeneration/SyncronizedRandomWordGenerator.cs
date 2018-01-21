@@ -2,7 +2,6 @@
 using System.Text;
 using JetBrains.Annotations;
 using RepetitionDetection.CharGenerators;
-using RepetitionDetection.Commons;
 using RepetitionDetection.Detection;
 using RepetitionDetection.Logging;
 using RepetitionDetection.TextGeneration.RemoveStrategies;
@@ -20,22 +19,18 @@ namespace RepetitionDetection.TextGeneration
             while (text.Length < length)
             {
                 text.Append(generator.Generate());
-                if (logger != null)
-                    logger.LogAfterGenerate(text);
-                Repetition repetition1, repetition2;
+                logger?.LogAfterGenerate(text);
                 var delete1 = 0;
-                if (detector1.TryDetect(out repetition1))
+                if (detector1.TryDetect(out var repetition1))
                 {
                     delete1 = removeStrategy.GetCharsToDelete(text.Length, repetition1);
-                    if (logger != null)
-                        logger.LogRepetition(text, repetition1);
+                    logger?.LogRepetition(text, repetition1);
                 }
                 var delete2 = 0;
-                if (detector2.TryDetect(out repetition2))
+                if (detector2.TryDetect(out var repetition2))
                 {
                     delete2 = removeStrategy.GetCharsToDelete(text.Length, repetition2);
-                    if (logger != null)
-                        logger.LogRepetition(text, repetition2);
+                    logger?.LogRepetition(text, repetition2);
                 }
                 if (delete1 != delete2)
                     throw new Exception("Not matching");

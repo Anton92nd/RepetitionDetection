@@ -10,10 +10,11 @@ namespace Tests.StringMatchingTests
     [TestFixture]
     public class SuffixStringMatchingAlgorithmTests
     {
-        [TestCase("abacabadabacababbba", "aba", new []{2, 6, 10, 14, 18})]
-        [TestCase("aaaaa", "aa", new []{1, 2, 3, 4})]
-        [TestCase("abababababbba", "aba", new []{2, 4, 6, 8, 12})]
-        [TestCase("aaababaababababaaaaabaabaaaaaabab", "aaabab", new []{5, 12, 32}, Description = "Not actual second occurence")]
+        [TestCase("abacabadabacababbba", "aba", new[] {2, 6, 10, 14, 18})]
+        [TestCase("aaaaa", "aa", new[] {1, 2, 3, 4})]
+        [TestCase("abababababbba", "aba", new[] {2, 4, 6, 8, 12})]
+        [TestCase("aaababaababababaaaaabaabaaaaaabab", "aaabab", new[] {5, 12, 32}, Description =
+            "Not actual second occurence")]
         public void TestFindOccurences(string text, string pattern, int[] expectedOccurences)
         {
             var criticalPosition = pattern.GetFactorizations().PatternCriticalPosition;
@@ -27,9 +28,7 @@ namespace Tests.StringMatchingTests
             {
                 sb.Append(text[i]);
                 if (algorithm.CheckMatch(sb.Length))
-                {
                     occurences.Add(i);
-                }
             }
 
             Assert.That(occurences, Is.EquivalentTo(expectedOccurences));

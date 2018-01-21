@@ -6,8 +6,9 @@ namespace RepetitionDetection.StringMatching
 {
     public class GoodFactorizationStringMatchingAlgorithm : IPartialStringMatchingAlgorithm
     {
-        public GoodFactorizationStringMatchingAlgorithm([NotNull] StringBuilder text, int startPosition, [NotNull] string pattern, int prefixLength, int criticalPosition, int period)
-        { 
+        public GoodFactorizationStringMatchingAlgorithm([NotNull] StringBuilder text, int startPosition,
+            [NotNull] string pattern, int prefixLength, int criticalPosition, int period)
+        {
             this.text = text;
 
             this.pattern = pattern;
@@ -19,13 +20,10 @@ namespace RepetitionDetection.StringMatching
             matchedSymbolsCount = 0;
         }
 
-        private int matchedSymbolsCount;
-
         public bool CheckMatch(int textLength)
         {
             var result = false;
             while (textPosition + criticalPosition + matchedSymbolsCount < textLength)
-            {
                 if (pattern[criticalPosition + matchedSymbolsCount] == text[textPosition + criticalPosition + matchedSymbolsCount] &&
                     pattern[matchedSymbolsCount] == text[textPosition + matchedSymbolsCount])
                 {
@@ -42,16 +40,12 @@ namespace RepetitionDetection.StringMatching
                     textPosition = textPosition + matchedSymbolsCount + 1;
                     matchedSymbolsCount = 0;
                 }
-            }
             return result;
         }
 
         public AlgorithmState State
         {
-            get
-            {
-                return new AlgorithmState(textPosition, matchedSymbolsCount);
-            }
+            get => new AlgorithmState(textPosition, matchedSymbolsCount);
 
             set
             {
@@ -60,15 +54,17 @@ namespace RepetitionDetection.StringMatching
             }
         }
 
-        [NotNull]
-        private readonly StringBuilder text;
+        private readonly int criticalPosition;
 
-        [NotNull]
-        private readonly string pattern;
+        [NotNull] private readonly string pattern;
+
+        private readonly int period;
 
         private readonly int prefixLength;
-        private readonly int criticalPosition;
-        private readonly int period;
+
+        [NotNull] private readonly StringBuilder text;
+
+        private int matchedSymbolsCount;
         private int textPosition;
     }
 }

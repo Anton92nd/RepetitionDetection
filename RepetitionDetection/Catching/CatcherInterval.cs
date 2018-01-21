@@ -15,10 +15,7 @@ namespace RepetitionDetection.Catching
             return L == other.L && R == other.R;
         }
 
-        public int Length
-        {
-            get { return R - L; }
-        }
+        public int Length => R - L;
 
         public override int GetHashCode()
         {
@@ -27,7 +24,7 @@ namespace RepetitionDetection.Catching
 
         public override string ToString()
         {
-            return string.Format("Interval ({0}, {1}]", L, R);
+            return $"Interval ({L}, {R}]";
         }
 
         public readonly int L, R;

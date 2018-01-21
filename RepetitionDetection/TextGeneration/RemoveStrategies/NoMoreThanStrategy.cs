@@ -5,9 +5,6 @@ namespace RepetitionDetection.TextGeneration.RemoveStrategies
 {
     public class NoMoreThanStrategy : IRemoveStrategy
     {
-        public IRemoveStrategy BaseStrategy { get; set; }
-        public int MaxCharactersToRemove { get; set; }
-
         public NoMoreThanStrategy(IRemoveStrategy baseStrategy, int maxCharactersToRemove)
         {
             BaseStrategy = baseStrategy;
@@ -21,7 +18,10 @@ namespace RepetitionDetection.TextGeneration.RemoveStrategies
 
         public override string ToString()
         {
-            return string.Format("NoMoreThanStrategy({0}, {1})", MaxCharactersToRemove, BaseStrategy);
+            return $"NoMoreThanStrategy({MaxCharactersToRemove}, {BaseStrategy})";
         }
+
+        public IRemoveStrategy BaseStrategy { get; set; }
+        public int MaxCharactersToRemove { get; set; }
     }
 }
