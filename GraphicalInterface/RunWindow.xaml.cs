@@ -74,7 +74,7 @@ namespace GraphicalInterface
                 $"Runs count: {runsCount}",
                 $"Char generator: {charGenerator.GetType().Name}",
                 $"Removing strategy: {removeStrategy}"));
-            Task.Run(() =>
+            Task.Factory.StartNew(() =>
             {
                 totalCharsGenerated = 0;
                 ms = 0;
@@ -119,7 +119,7 @@ namespace GraphicalInterface
                 tokenSource.Cancel();
                 statsOutput?.Close();
                 fullLogOutput?.Close();
-            }, token);
+            }, token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
             UpdateStatus += () => Dispatcher.Invoke(() =>
             {
                 TextBoxCurrentLength.Text = logger.TextLength.ToString();
@@ -130,7 +130,7 @@ namespace GraphicalInterface
                     TextBoxAverageTime.Text = $"{ms * 1.0 / runsPerformed:0.000}";
                 }
             });
-            Task.Run(() =>
+            Task.Factory.StartNew(() =>
             {
                 while (!token.IsCancellationRequested)
                 {
@@ -140,7 +140,7 @@ namespace GraphicalInterface
                 }
                 // ReSharper disable once PossibleNullReferenceException
                 UpdateStatus();
-            }, token);
+            }, token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
         }
 
         private event UpdateStatusEvent UpdateStatus;
