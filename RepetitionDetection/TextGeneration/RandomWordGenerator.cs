@@ -30,7 +30,7 @@ namespace RepetitionDetection.TextGeneration
                 logger?.LogAfterGenerate(text);
                 if (detector.TryDetect(out var repetition))
                 {
-                    AddToStats(repetition);
+                    AddToStats(repetition, text.Length);
                     var charsToDelete = removeStrategy.GetCharsToDelete(text.Length, repetition);
                     logger?.LogRepetition(text, repetition);
                     for (var i = 0; i < charsToDelete; ++i)
@@ -45,12 +45,13 @@ namespace RepetitionDetection.TextGeneration
             return text;
         }
 
-        private static void AddToStats(Repetition repetition)
+        private static void AddToStats(Repetition repetition, int textLength)
         {
-            if (!Statistics.CountOfPeriods.ContainsKey(repetition.Period))
-                Statistics.CountOfPeriods[repetition.Period] = 1;
+            var (period, border) = (repetition.Period, textLength - (repetition.LeftPosition + 1) - repetition.Period);
+            if (!Statistics.CountOfRuns.ContainsKey((period, border)))
+                Statistics.CountOfRuns[(period, border)] = 1;
             else
-                Statistics.CountOfPeriods[repetition.Period]++;
+                Statistics.CountOfRuns[(period, border)]++;
         }
 
         public static readonly Statistics Statistics = new Statistics();

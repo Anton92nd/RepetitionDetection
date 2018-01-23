@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace RepetitionDetection.TextGeneration
 {
@@ -8,18 +9,18 @@ namespace RepetitionDetection.TextGeneration
         {
             CharsGenerated = 0;
             Milliseconds = 0;
-            CountOfPeriods = new Dictionary<int, int>();
+            CountOfRuns = new Dictionary<ValueTuple<int, int>, int>();
         }
 
         public void Clear()
         {
-            CountOfPeriods.Clear();
+            CountOfRuns.Clear();
             CharsGenerated = 0;
             Milliseconds = 0;
         }
 
         public int CharsGenerated { get; set; }
         public long Milliseconds { get; set; }
-        public readonly Dictionary<int, int> CountOfPeriods;
+        public readonly Dictionary<ValueTuple<int, int>, int> CountOfRuns;
     }
 }

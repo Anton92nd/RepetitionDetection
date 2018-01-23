@@ -99,8 +99,8 @@ namespace GraphicalInterface
                             statsOutput.WriteLine("Coef: {0:0.000000}, Time: {1:0.000} ms",
                                 RandomWordGenerator.Statistics.CharsGenerated * 1.0 / length,
                                 RandomWordGenerator.Statistics.Milliseconds);
-                            statsOutput.WriteLine("Repetition periods:\n{0}",
-                                string.Join("\n", RandomWordGenerator.Statistics.CountOfPeriods
+                            statsOutput.WriteLine("Repetitions (period, border):\n{0}",
+                                string.Join("\n", RandomWordGenerator.Statistics.CountOfRuns
                                     .OrderBy(p => p.Key)
                                     .Select(p => $"{p.Key}: {p.Value}")));
                             statsOutput.WriteLine("-----");

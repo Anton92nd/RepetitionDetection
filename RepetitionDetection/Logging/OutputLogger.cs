@@ -10,7 +10,7 @@ namespace RepetitionDetection.Logging
         public OutputLogger([CanBeNull] StreamWriter output)
         {
             Output = output;
-            Output?.WriteLine("text | repetition length | border length");
+            Output?.WriteLine("text | repetition length | border length | period");
         }
 
         public void LogAfterGenerate([NotNull] StringBuilder text)
@@ -20,11 +20,8 @@ namespace RepetitionDetection.Logging
 
         public void LogRepetition([NotNull] StringBuilder text, Repetition repetition)
         {
-            if (Output != null)
-            {
-                var length = text.Length - 1 - repetition.LeftPosition;
-                Output.WriteLine($"{text} {length} {length - repetition.Period}");
-            }
+            var length = text.Length - 1 - repetition.LeftPosition;
+            Output?.WriteLine($"{text} {length} {length - repetition.Period} {repetition.Period}");
         }
 
         public void LogBeforeGenerate([NotNull] StringBuilder text)
