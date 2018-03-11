@@ -12,14 +12,13 @@ namespace RepetitionDetection.TextGeneration
     {
         public static StringBuilder Generate([NotNull] Detector detector1, [NotNull] Detector detector2, int length,
             [NotNull] IRemoveStrategy removeStrategy,
-            [NotNull] ICharGenerator generator, [CanBeNull] IGeneratorLogger logger = null)
+            [NotNull] ICharGenerator generator, [CanBeNull] GenerationLogger logger = null)
         {
             var text = detector1.Text;
             text.EnsureCapacity(length);
             while (text.Length < length)
             {
                 text.Append(generator.Generate());
-                logger?.LogAfterGenerate(text);
                 var delete1 = 0;
                 if (detector1.TryDetect(out var repetition1))
                 {

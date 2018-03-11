@@ -14,7 +14,7 @@ namespace RepetitionDetection.TextGeneration
     {
         public static StringBuilder Generate([NotNull] Detector detector, int length,
             [NotNull] IRemoveStrategy removeStrategy,
-            [NotNull] ICharGenerator generator, [CanBeNull] IGeneratorLogger logger = null,
+            [NotNull] ICharGenerator generator, [CanBeNull] GenerationLogger logger = null,
             [CanBeNull] CancellationToken? token = null)
         {
             Statistics.Clear();
@@ -27,7 +27,7 @@ namespace RepetitionDetection.TextGeneration
                     break;
                 text.Append(generator.Generate());
                 Statistics.CharsGenerated++;
-                logger?.LogAfterGenerate(text);
+                Statistics.TextLength = text.Length;
                 if (detector.TryDetect(out var repetition))
                 {
                     AddToStats(repetition, text.Length);

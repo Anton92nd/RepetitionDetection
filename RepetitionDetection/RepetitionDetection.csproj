@@ -84,9 +84,8 @@
     <Compile Include="Detection\RepetitionDetector.cs" />
     <Compile Include="Detection\SillyDetector.cs" />
     <Compile Include="Detection\SmallRepetitionDetector.cs" />
-    <Compile Include="Logging\ConsoleTextLengthLogger.cs" />
-    <Compile Include="Logging\IGeneratorLogger.cs" />
-    <Compile Include="Logging\OutputLogger.cs" />
+    <Compile Include="Logging\GenerationLogger.cs" />
+    <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Logging\SaveData.cs" />
     <Compile Include="MaximalSuffixes\MaximalSuffixCalculator.cs" />
     <Compile Include="Periods\PeriodCalculator.cs" />
