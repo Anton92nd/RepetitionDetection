@@ -23,7 +23,7 @@ namespace RepetitionDetection.TextGeneration
             var sw = Stopwatch.StartNew();
             while (text.Length < length)
             {
-                if (token != null && token.Value.IsCancellationRequested)
+                if (token?.IsCancellationRequested ?? false)
                     break;
                 text.Append(generator.Generate());
                 Statistics.CharsGenerated++;
@@ -36,7 +36,7 @@ namespace RepetitionDetection.TextGeneration
                     for (var i = 0; i < charsToDelete; ++i)
                     {
                         detector.Backtrack();
-                        text.Remove(text.Length - 1, 1);
+                        text.Length -= 1;
                     }
                 }
             }

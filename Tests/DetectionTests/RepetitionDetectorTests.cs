@@ -57,12 +57,12 @@ namespace Tests.DetectionTests
             Assert.That(repetition, Is.EqualTo(new Repetition(3, 8)));
 
             detector.Backtrack();
-            sb.Remove(sb.Length - 1, 1);
+            sb.Length -= 1;
             sb.Append('p');
             Assert.That(detector.TryDetect(out repetition), Is.False);
 
             detector.Backtrack();
-            sb.Remove(sb.Length - 1, 1);
+            sb.Length -= 1;
             sb.Append('o');
             Assert.That(detector.TryDetect(out repetition), Is.True);
             Assert.That(repetition, Is.EqualTo(new Repetition(3, 8)));
@@ -83,7 +83,7 @@ namespace Tests.DetectionTests
             while (sb.Length > 3)
             {
                 detector.Backtrack();
-                sb.Remove(sb.Length - 1, 1);
+                sb.Length -= 1;
             }
             var reps = new List<Repetition>();
             foreach (var c in "cab")

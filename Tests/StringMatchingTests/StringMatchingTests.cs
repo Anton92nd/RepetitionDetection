@@ -39,12 +39,12 @@ namespace Tests.StringMatchingTests
             var abacabState = algo.State;
             sb.Append('a');
             Assert.That(algo.CheckForMatch(sb.Length), Is.True);
-            sb.Remove(sb.Length - 1, 1);
+            sb.Length -= 1;
 
             algo.State = abacabState;
             sb.Append('a');
             Assert.That(algo.CheckForMatch(sb.Length), Is.True);
-            sb.Remove(sb.Length - 1, 1);
+            sb.Length -= 1;
 
             algo.State = abacabState;
             sb.Append('c');

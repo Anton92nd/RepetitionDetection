@@ -126,10 +126,11 @@ namespace Tests
                 catcher.TryCatch(out rep);
             }           
             catcher.Backtrack();
-            sb.Remove(sb.Length - 1, 1);
+            sb.Length -= 1;
+
             sb.Append('c');
             Assert.That(catcher.TryCatch(out rep), Is.False);
-            sb.Remove(sb.Length - 1, 1);
+            sb.Length -= 1;
             sb.Append('o');
             catcher.Backtrack();
             Assert.That(catcher.TryCatch(out rep), Is.True);

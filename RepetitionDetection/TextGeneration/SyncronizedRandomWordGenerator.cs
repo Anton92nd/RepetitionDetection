@@ -38,7 +38,7 @@ namespace RepetitionDetection.TextGeneration
                 {
                     detector1.Backtrack();
                     detector2.Backtrack();
-                    text.Remove(text.Length - 1, 1);
+                    text.Length -= 1;
                 }
             }
             return text;

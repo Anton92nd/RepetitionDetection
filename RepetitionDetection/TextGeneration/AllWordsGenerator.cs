@@ -18,7 +18,7 @@ namespace RepetitionDetection.TextGeneration
                 {
                     if (text.Length == 1)
                         break;
-                    text.Remove(text.Length - 1, 1);
+                    text.Length -= 1;
                     detector.Backtrack();
                     if (!found[text.Length])
                         result.Add(text.ToString());
