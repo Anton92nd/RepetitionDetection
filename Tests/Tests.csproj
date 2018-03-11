@@ -50,7 +50,6 @@
     <Compile Include="MaximalSuffixTests\MaximalSuffixCalculatorGreaterTests.cs" />
     <Compile Include="MaximalSuffixTests\MaximalSuffixCalculatorLessTests.cs" />
     <Compile Include="PeriodCalculatorTests.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringMatchingTests\GoodFactorizationStringMatchingAlgorithmTests.cs" />
     <Compile Include="StringMatchingTests\SuffixStringMatchingAlgorithmTests.cs" />
