@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Text;
 using RepetitionDetection.Commons;
 
@@ -15,12 +16,18 @@ namespace RepetitionDetection.Detection
             S = (e / (e - 1)).Ceil();
         }
 
-        public abstract bool TryDetect(out Repetition repetition);
         public abstract void Backtrack();
+
+        public abstract bool TryDetect(out Repetition repetition);
+
         public abstract void Reset();
+
         public StringBuilder Text { get; }
+
         public RationalNumber E { get; }
+
         public bool DetectEqual { get; }
+
         protected int S { get; }
     }
 }

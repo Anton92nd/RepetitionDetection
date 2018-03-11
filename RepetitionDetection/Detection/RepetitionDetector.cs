@@ -39,8 +39,8 @@ namespace RepetitionDetection.Detection
             skipBacktrack = false;
         }
 
-        private readonly Detector largeRepetitionsDetector;
-        private readonly Detector smallRepetitionsDetector;
+        private readonly LargeRepetitionDetector largeRepetitionsDetector;
+        private readonly SmallRepetitionDetector smallRepetitionsDetector;
         private bool skipBacktrack;
     }
 }

@@ -20,8 +20,8 @@ namespace RepetitionDetection.Detection
         {
             repetition = new Repetition(0, 0);
 
-            UpdateCatchers(true);
-            DeleteCatchers();
+            UpdateCatchers(create : true);
+            DeleteObsoleteCatchers();
 
             var result = false;
             foreach (var pair in catchers)
@@ -64,8 +64,8 @@ namespace RepetitionDetection.Detection
                 if (catcher.IsActive())
                     catcher.Backtrack();
 
-            UpdateCatchers(false);
-            DeleteCatchers();
+            UpdateCatchers(create : false);
+            DeleteObsoleteCatchers();
         }
 
         public override void Reset()
@@ -74,10 +74,10 @@ namespace RepetitionDetection.Detection
             Text.Clear();
         }
 
-        private void DeleteCatchers()
+        private void DeleteObsoleteCatchers()
         {
             var catchersToDelete = catchers
-                .Where(pair => pair.Value.ShouldBeDeleted())
+                .Where(pair => pair.Value.IsObsolete())
                 .Select(pair => pair.Key)
                 .ToArray();
 

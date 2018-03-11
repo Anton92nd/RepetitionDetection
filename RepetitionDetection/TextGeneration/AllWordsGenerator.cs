@@ -26,7 +26,7 @@ namespace RepetitionDetection.TextGeneration
                     text[text.Length - 1]++;
                     continue;
                 }
-                if (detector.TryDetect(out var repetition))
+                if (detector.TryDetect(out var _))
                 {
                     detector.Backtrack();
                     text[text.Length - 1]++;

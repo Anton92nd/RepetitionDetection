@@ -88,11 +88,9 @@ namespace RepetitionDetection.Catching
             return RemoveTime < 0 || text.Length < RemoveTime;
         }
 
-        public bool ShouldBeDeleted()
+        public bool IsObsolete()
         {
-            return text.Length <= J + 1 || RemoveTime >= 0 &&
-                   (RemoveTime > text.Length && RemoveTime - text.Length > timeToLive ||
-                    RemoveTime < text.Length && text.Length - RemoveTime > timeToLive);
+            return text.Length <= J + 1 || RemoveTime >= 0 && Math.Abs(RemoveTime - text.Length) > timeToLive;
         }
 
         public override string ToString()
