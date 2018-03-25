@@ -123,10 +123,12 @@ namespace GraphicalInterface
         private IRemoveStrategy GetRemoveStrategy(RationalNumber e)
         {
             var index = ComboBoxRemoveStrategy.SelectedIndex;
-            if (index < 0 || index > 2)
+            if (index < 0 || index > 3)
                 Raise("Select char generator");
             if (index == 0)
                 return new RemoveBorderStrategy();
+            if (index == 2)
+                return new CustomRemoveStrategy();
             if (!int.TryParse(TextBoxPeriodsCount.Text, out var periodsCount))
                 Raise("Periods count must be integer");
             if (periodsCount <= 0)
@@ -187,9 +189,9 @@ namespace GraphicalInterface
 
         private void RemoveStrategy_OnLoaded(object sender, RoutedEventArgs e)
         {
-            ComboBoxRemoveStrategy.ItemsSource = new[] {"Remove border", "Remove period(s)"};
+            ComboBoxRemoveStrategy.ItemsSource = new[] {"Remove border", "Remove period(s)", "Custom"};
             ComboBoxRemoveStrategy.SelectedIndex = initialSettings.RepetitionRemovingStrategyIndex;
-            if (ComboBoxRemoveStrategy.SelectedIndex == 0)
+            if (ComboBoxRemoveStrategy.SelectedIndex != 1)
             {
                 TextBlockPeriodsCount.Visibility = Visibility.Hidden;
                 TextBoxPeriodsCount.Visibility = Visibility.Hidden;
@@ -203,7 +205,7 @@ namespace GraphicalInterface
 
         private void ComboBoxRemoveStrategy_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ComboBoxRemoveStrategy.SelectedIndex == 0)
+            if (ComboBoxRemoveStrategy.SelectedIndex != 1)
             {
                 TextBlockPeriodsCount.Visibility = Visibility.Hidden;
                 TextBoxPeriodsCount.Visibility = Visibility.Hidden;

@@ -98,6 +98,7 @@
     <Compile Include="StringMatching\StringMatchingState.cs" />
     <Compile Include="TextGeneration\AllWordsGenerator.cs" />
     <Compile Include="TextGeneration\RandomWordGenerator.cs" />
+    <Compile Include="TextGeneration\RemoveStrategies\CustomRemoveStrategy.cs" />
     <Compile Include="TextGeneration\RemoveStrategies\NoMoreThanStrategy.cs" />
     <Compile Include="TextGeneration\RemoveStrategies\IRemoveStrategy.cs" />
     <Compile Include="TextGeneration\RemoveStrategies\RemoveBorderStrategy.cs" />
