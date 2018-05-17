@@ -76,6 +76,7 @@
     <Compile Include="Commons\InvalidProgramStateException.cs" />
     <Compile Include="Commons\RationalNumber.cs" />
     <Compile Include="Commons\Repetition.cs" />
+    <Compile Include="Commons\Run.cs" />
     <Compile Include="CriticalFactorization\Factorizations.cs" />
     <Compile Include="CriticalFactorization\FactorizationExtensions.cs" />
     <Compile Include="CriticalFactorization\PrefixFactorizer.cs" />

@@ -4,8 +4,8 @@ namespace RepetitionDetection.Commons
 {
     public struct Repetition : IEquatable<Repetition>
     {
-        public readonly int LeftPosition;
-        public readonly int Period;
+        public int LeftPosition { get; }
+        public int Period { get; }
 
         public Repetition(int leftPosition, int period)
         {

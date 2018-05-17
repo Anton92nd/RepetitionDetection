@@ -47,11 +47,11 @@ namespace RepetitionDetection.TextGeneration
 
         private static void AddToStats(Repetition repetition, int textLength)
         {
-            var (period, border) = (repetition.Period, textLength - (repetition.LeftPosition + 1) - repetition.Period);
-            if (!Statistics.CountOfRuns.ContainsKey((period, border)))
-                Statistics.CountOfRuns[(period, border)] = 1;
+            var run = new Run(textLength - (repetition.LeftPosition + 1), repetition.Period);
+            if (!Statistics.CountOfRuns.ContainsKey(run))
+                Statistics.CountOfRuns[run] = 1;
             else
-                Statistics.CountOfRuns[(period, border)]++;
+                Statistics.CountOfRuns[run]++;
         }
 
         public static readonly Statistics Statistics = new Statistics();

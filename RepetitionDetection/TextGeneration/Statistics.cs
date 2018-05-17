@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using RepetitionDetection.Commons;
 
 namespace RepetitionDetection.TextGeneration
 {
@@ -9,7 +10,7 @@ namespace RepetitionDetection.TextGeneration
         {
             CharsGenerated = 0;
             Milliseconds = 0;
-            CountOfRuns = new Dictionary<ValueTuple<int, int>, int>();
+            CountOfRuns = new Dictionary<Run, int>();
         }
 
         public void Clear()
@@ -25,6 +26,6 @@ namespace RepetitionDetection.TextGeneration
         public volatile int TextLength;
 
         public long Milliseconds { get; set; }
-        public readonly Dictionary<ValueTuple<int, int>, int> CountOfRuns;
+        public readonly Dictionary<Run, int> CountOfRuns;
     }
 }
