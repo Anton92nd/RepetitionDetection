@@ -92,6 +92,17 @@ namespace GraphicalInterface
                         logger.Log(LogLevel.Stats, "-----");
                         logger.Flush(LogLevel.Stats);
                     }
+                    else
+                    {
+                        logger.Log(LogLevel.Stats, "[Canceled]");
+                        logger.Log(LogLevel.Stats, $"Time: {RandomWordGenerator.Statistics.Milliseconds:0.000} ms");
+                        logger.Log(LogLevel.Stats, string.Format("Repetitions (period, border):\n{0}",
+                            string.Join("\n", RandomWordGenerator.Statistics.CountOfRuns
+                                .OrderBy(p => p.Key)
+                                .Select(p => $"{p.Key}: {p.Value}"))));
+                        logger.Log(LogLevel.Stats, "-----");
+                        logger.Flush(LogLevel.Stats);
+                    }
                 }
 
                 logger.Log(LogLevel.Stats, "-----");
