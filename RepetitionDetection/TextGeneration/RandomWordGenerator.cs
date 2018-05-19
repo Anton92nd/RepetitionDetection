@@ -12,12 +12,18 @@ namespace RepetitionDetection.TextGeneration
 {
     public static class RandomWordGenerator
     {
-        public static StringBuilder Generate([NotNull] Detector detector, int length,
+        public static StringBuilder Generate(
+            [NotNull] Detector detector, 
+            int length,
             [NotNull] IRemoveStrategy removeStrategy,
-            [NotNull] ICharGenerator generator, [CanBeNull] GenerationLogger logger = null,
+            [NotNull] ICharGenerator generator,
+            [CanBeNull] Statistics statistics = null,
+            [CanBeNull] GenerationLogger logger = null,
             [CanBeNull] CancellationToken? token = null)
         {
-            Statistics.Clear();
+            statistics = statistics ?? new Statistics();
+            statistics.Clear();
+
             var text = detector.Text;
             text.EnsureCapacity(length);
             var sw = Stopwatch.StartNew();
@@ -26,11 +32,12 @@ namespace RepetitionDetection.TextGeneration
                 if (token?.IsCancellationRequested ?? false)
                     break;
                 text.Append(generator.Generate());
-                Statistics.CharsGenerated++;
-                Statistics.TextLength = text.Length;
+                statistics.CharsGenerated++;
+                statistics.TextLength = text.Length;
                 if (detector.TryDetect(out var repetition))
                 {
-                    AddToStats(repetition, text.Length);
+                    statistics.AdvanceCalculator.Retract(text.Length);
+                    AddRepetitionToStats(statistics, repetition, text.Length);
                     var charsToDelete = removeStrategy.GetCharsToDelete(text.Length, repetition);
                     logger?.LogRepetition(text, repetition);
                     for (var i = 0; i < charsToDelete; ++i)
@@ -39,21 +46,23 @@ namespace RepetitionDetection.TextGeneration
                         text.Length -= 1;
                     }
                 }
+                else
+                    statistics.AdvanceCalculator.Advance(text.Length);
             }
             sw.Stop();
-            Statistics.Milliseconds = sw.ElapsedMilliseconds;
+            statistics.Milliseconds = sw.ElapsedMilliseconds;
+
+            statistics.Aggregate();
             return text;
         }
 
-        private static void AddToStats(Repetition repetition, int textLength)
+        private static void AddRepetitionToStats(Statistics statistics, Repetition repetition, int textLength)
         {
             var run = new Run(textLength - (repetition.LeftPosition + 1), repetition.Period);
-            if (!Statistics.CountOfRuns.ContainsKey(run))
-                Statistics.CountOfRuns[run] = 1;
+            if (!statistics.CountOfRuns.ContainsKey(run))
+                statistics.CountOfRuns[run] = 1;
             else
-                Statistics.CountOfRuns[run]++;
+                statistics.CountOfRuns[run]++;
         }
-
-        public static readonly Statistics Statistics = new Statistics();
     }
 }

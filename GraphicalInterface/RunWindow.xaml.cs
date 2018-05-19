@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,6 +28,7 @@ namespace GraphicalInterface
             this.saveData = saveData;
             this.length = length;
             this.runsCount = runsCount;
+            statistics = new Statistics();
             InitializeComponent();
         }
 
@@ -71,53 +73,26 @@ namespace GraphicalInterface
                     logger.Log(LogLevel.Stats, $"Run #{runsPerformed + 1}:");
                     logger.Log(LogLevel.Full, $"Run #{runsPerformed + 1}:");
 
-                    var text = RandomWordGenerator.Generate(detector, length, removeStrategy, charGenerator, logger,
-                        token);
+                    var text = RandomWordGenerator.Generate(detector, length, removeStrategy, charGenerator, statistics, logger, token);
                     if (!token.IsCancellationRequested)
                     {
                         runsPerformed++;
-                        totalCharsGenerated += RandomWordGenerator.Statistics.CharsGenerated;
-                        ms += RandomWordGenerator.Statistics.Milliseconds;
-
-                        logger.Log(LogLevel.Full, $"Result #{runsPerformed}: {text}\n");
-                        logger.Flush(LogLevel.Full);
-
-                        logger.Log(LogLevel.Stats, string.Format("Coef: {0:0.000000}, Time: {1:0.000} ms",
-                            RandomWordGenerator.Statistics.CharsGenerated * 1.0 / length,
-                            RandomWordGenerator.Statistics.Milliseconds));
-                        logger.Log(LogLevel.Stats, string.Format("Repetitions (period, border):\n{0}",
-                            string.Join("\n", RandomWordGenerator.Statistics.CountOfRuns
-                                .OrderBy(p => p.Key)
-                                .Select(p => $"{p.Key}: {p.Value}"))));
-                        logger.Log(LogLevel.Stats, "-----");
-                        logger.Flush(LogLevel.Stats);
+                        totalCharsGenerated += statistics.CharsGenerated;
+                        ms += statistics.Milliseconds;
                     }
-                    else
-                    {
-                        logger.Log(LogLevel.Stats, "[Canceled]");
-                        logger.Log(LogLevel.Stats, $"Time: {RandomWordGenerator.Statistics.Milliseconds:0.000} ms");
-                        logger.Log(LogLevel.Stats, string.Format("Repetitions (period, border):\n{0}",
-                            string.Join("\n", RandomWordGenerator.Statistics.CountOfRuns
-                                .OrderBy(p => p.Key)
-                                .Select(p => $"{p.Key}: {p.Value}"))));
-                        logger.Log(LogLevel.Stats, "-----");
-                        logger.Flush(LogLevel.Stats);
-                    }
+
+                    LogRun(text, token.IsCancellationRequested);
                 }
 
-                logger.Log(LogLevel.Stats, "-----");
-                logger.Log(LogLevel.Stats, string.Format("Runs performed: {0}\nAverage coef: {1:0.000000}\nAverage time: {2:0.000} ms",
-                    runsPerformed,
-                    totalCharsGenerated * 1.0 / length / runsPerformed,
-                    ms * 1.0 / runsPerformed));
-                
+                LogTotal();
+
                 Thread.Sleep(500);
                 tokenSource.Cancel();
                 logger.Dispose();
             }, token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
             UpdateStatus += () => Dispatcher.Invoke(() =>
             {
-                TextBoxCurrentLength.Text = RandomWordGenerator.Statistics.TextLength.ToString();
+                TextBoxCurrentLength.Text = statistics.TextLength.ToString();
                 TextBoxRunsCompleted.Text = runsPerformed.ToString();
                 if (runsPerformed > 0)
                 {
@@ -133,9 +108,60 @@ namespace GraphicalInterface
                     UpdateStatus();
                     Thread.Sleep(100);
                 }
+
                 // ReSharper disable once PossibleNullReferenceException
                 UpdateStatus();
             }, token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+        }
+
+        private void LogTotal()
+        {
+            logger.Log(LogLevel.Stats, "-----");
+            logger.Log(LogLevel.Stats, $"Runs performed: {runsPerformed}");
+            logger.Log(LogLevel.Stats, string.Format("Average coef: {0:0.000000}", totalCharsGenerated * 1.0 / length / runsPerformed));
+            logger.Log(LogLevel.Stats, string.Format("Average time: {0:0.000} ms", ms * 1.0 / runsPerformed));
+
+            logger.Log(LogLevel.Stats, string.Format("Repetitions (period, border):\n" +
+                                                     string.Join("\n", statistics.TotalCountOfRuns
+                                                         .OrderBy(p => p.Key)
+                                                         .Select(p => $"{p.Key}: {p.Value}")))
+            );
+            logger.Log(LogLevel.Stats, string.Format("Advancement coefficients (length, coef, count):\n" +
+                                                     string.Join("\n", statistics.TotalAdvances
+                                                         .Select((x, i) => $"{i}: {x.Advance * 100.0 / x.Count:0.000}% {x.Count}")))
+            );
+        }
+
+        private void LogRun(StringBuilder text, bool isCancellationRequested)
+        {
+            if (isCancellationRequested)
+            {
+                logger.Log(LogLevel.Stats, $"Result #{runsPerformed + 1}[Canceled]");
+                logger.Log(LogLevel.Stats, $"Time: {statistics.Milliseconds:0.000} ms");
+            }
+            else
+            {
+                logger.Log(LogLevel.Full, $"Result #{runsPerformed}: {text}\n");
+                logger.Flush(LogLevel.Full);
+
+                logger.Log(LogLevel.Stats, string.Format("Coef: {0:0.000000}, Time: {1:0.000} ms",
+                    statistics.CharsGenerated * 1.0 / length,
+                    statistics.Milliseconds));
+            }
+
+            logger.Log(LogLevel.Stats, string.Format("Repetitions (period, border):\n" +
+                                                     string.Join("\n", statistics.CountOfRuns
+                                                         .OrderBy(p => p.Key)
+                                                         .Select(p => $"{p.Key}: {p.Value}")))
+            );
+            logger.Log(LogLevel.Stats, string.Format("Advancement coefficients (length, coef, count):\n" +
+                                                     string.Join("\n", statistics
+                                                         .AdvanceCalculator
+                                                         .Counters
+                                                         .Select((x, i) => $"{i}: {x.Advance * 100.0 / x.Count:0.000}% {x.Count}")))
+            );
+            logger.Log(LogLevel.Stats, "-----");
+            logger.Flush(LogLevel.Stats);
         }
 
         private GenerationLogger GetLogger()
@@ -149,6 +175,7 @@ namespace GraphicalInterface
                     "stats_" + DateTime.Now.ToString("yy-MM-dd_HH-mm-ss") + ".txt");
                 loggers.Add((LogLevel.Stats, new StreamWriter(File.Open(path, FileMode.Create))));
             }
+
             if (saveData.SaveFullLog)
             {
                 if (!Directory.Exists(saveData.SavePath))
@@ -157,6 +184,7 @@ namespace GraphicalInterface
                     "full_" + DateTime.Now.ToString("yy-MM-dd_HH-mm-ss") + ".txt");
                 loggers.Add((LogLevel.Full, new StreamWriter(File.Open(path, FileMode.Create))));
             }
+
             return new GenerationLogger(loggers);
         }
 
@@ -179,6 +207,7 @@ namespace GraphicalInterface
         private CancellationToken token;
         private CancellationTokenSource tokenSource;
         private volatile int totalCharsGenerated;
+        private readonly Statistics statistics;
 
         private delegate void UpdateStatusEvent();
     }

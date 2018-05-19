@@ -28,9 +28,10 @@ namespace Tests.TextGenerationTests
             {
                 detector.Reset();
                 var sw = Stopwatch.StartNew();
-                RandomWordGenerator.Generate(detector, length, new RemoveBorderStrategy(), generator);
+                var statistics = new Statistics();
+                RandomWordGenerator.Generate(detector, length, new RemoveBorderStrategy(), generator, statistics);
                 sw.Stop();
-                Console.WriteLine($"Length: {length}\n\tTime: {sw.ElapsedMilliseconds} ms\n\tConversion coeff: {RandomWordGenerator.Statistics.CharsGenerated * 1.0 / length:0.000000}");
+                Console.WriteLine($"Length: {length}\n\tTime: {sw.ElapsedMilliseconds} ms\n\tConversion coeff: {statistics.CharsGenerated * 1.0 / length:0.000000}");
             }
         }
 
@@ -41,9 +42,10 @@ namespace Tests.TextGenerationTests
             var detector = GetDetector(detectorType, detectEqual, new RationalNumber(numerator, denominator));
             detector.Reset();
             var sw = Stopwatch.StartNew();
-            RandomWordGenerator.Generate(detector, length, new RemoveBorderStrategy(), generator);
+            var statistics = new Statistics();
+            RandomWordGenerator.Generate(detector, length, new RemoveBorderStrategy(), generator, statistics);
             sw.Stop();
-            Console.WriteLine($"Length: {length}\n\tTime: {sw.ElapsedMilliseconds} ms\n\tConversion coeff: {RandomWordGenerator.Statistics.CharsGenerated * 1.0 / length:0.000000}");
+            Console.WriteLine($"Length: {length}\n\tTime: {sw.ElapsedMilliseconds} ms\n\tConversion coeff: {statistics.CharsGenerated * 1.0 / length:0.000000}");
         }
 
         [TestCase(5)]
@@ -54,6 +56,7 @@ namespace Tests.TextGenerationTests
         [TestCase(10)]
         public void TestBoundaryLanguages(int k)
         {
+            var statistics = new Statistics();
             var lengthsBoundary = Enumerable.Range(1, 10).Select(n => n * 100).ToArray();
             var strategy = new RemoveBorderStrategy();
             var e = new RationalNumber(k, k - 1);
@@ -65,8 +68,8 @@ namespace Tests.TextGenerationTests
             var sw = Stopwatch.StartNew();
             foreach (var length in lengthsBoundary)
             {
-                RandomWordGenerator.Generate(detector, length, strategy, generator);
-                charsGenerated += RandomWordGenerator.Statistics.CharsGenerated;
+                RandomWordGenerator.Generate(detector, length, strategy, generator, statistics);
+                charsGenerated += statistics.CharsGenerated;
                 times.Add(sw.ElapsedMilliseconds);
                 coefs.Add(charsGenerated * 1.0 / length);
             }
