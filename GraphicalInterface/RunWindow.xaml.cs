@@ -126,7 +126,7 @@ namespace GraphicalInterface
                                                          .OrderBy(p => p.Key)
                                                          .Select(p => $"{p.Key}: {p.Value}")))
             );
-            logger.Log(LogLevel.Stats, string.Format("Advancement coefficients (length, coef, count):\n" +
+            logger.Log(LogLevel.Stats, string.Format("Advancement coefficients (length: coef, count):\n" +
                                                      string.Join("\n", statistics.TotalAdvances
                                                          .Select((x, i) => $"{i}: {x.Advance * 100.0 / x.Count:0.000}% {x.Count}")))
             );
@@ -154,7 +154,7 @@ namespace GraphicalInterface
                                                          .OrderBy(p => p.Key)
                                                          .Select(p => $"{p.Key}: {p.Value}")))
             );
-            logger.Log(LogLevel.Stats, string.Format("Advancement coefficients (length, coef, count):\n" +
+            logger.Log(LogLevel.Stats, string.Format("Advancement coefficients (length: coef, count):\n" +
                                                      string.Join("\n", statistics
                                                          .AdvanceCalculator
                                                          .Counters

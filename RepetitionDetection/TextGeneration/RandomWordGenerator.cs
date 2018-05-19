@@ -36,7 +36,7 @@ namespace RepetitionDetection.TextGeneration
                 statistics.TextLength = text.Length;
                 if (detector.TryDetect(out var repetition))
                 {
-                    statistics.AdvanceCalculator.Retract(text.Length);
+                    statistics.AdvanceCalculator.Retract(text.Length - 1);
                     AddRepetitionToStats(statistics, repetition, text.Length);
                     var charsToDelete = removeStrategy.GetCharsToDelete(text.Length, repetition);
                     logger?.LogRepetition(text, repetition);
@@ -47,7 +47,7 @@ namespace RepetitionDetection.TextGeneration
                     }
                 }
                 else
-                    statistics.AdvanceCalculator.Advance(text.Length);
+                    statistics.AdvanceCalculator.Advance(text.Length - 1);
             }
             sw.Stop();
             statistics.Milliseconds = sw.ElapsedMilliseconds;
