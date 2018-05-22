@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,8 @@ namespace GraphicalInterface
         public RunWindow(Detector detector, IRemoveStrategy removeStrategy, ICharGenerator charGenerator,
             SaveData saveData, int length, int runsCount)
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
             this.detector = detector;
             this.removeStrategy = removeStrategy;
             this.charGenerator = charGenerator;
