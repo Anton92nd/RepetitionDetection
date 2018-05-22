@@ -23,7 +23,7 @@ namespace RepetitionDetection.TextGeneration
         {
             statistics = statistics ?? new Statistics();
             statistics.Clear();
-
+            var afterAdvance = true;
             var text = detector.Text;
             text.EnsureCapacity(length);
             var sw = Stopwatch.StartNew();
@@ -36,18 +36,22 @@ namespace RepetitionDetection.TextGeneration
                 statistics.TextLength = text.Length;
                 if (detector.TryDetect(out var repetition))
                 {
-                    statistics.AdvanceCalculator.Retract(text.Length - 1);
                     AddRepetitionToStats(statistics, repetition, text.Length);
                     var charsToDelete = removeStrategy.GetCharsToDelete(text.Length, repetition);
+                    statistics.AdvanceCalculator.Advance(text.Length - 1, -charsToDelete + 1, afterAdvance);
                     logger?.LogRepetition(text, repetition);
                     for (var i = 0; i < charsToDelete; ++i)
                     {
                         detector.Backtrack();
                         text.Length -= 1;
                     }
+                    afterAdvance = false;
                 }
                 else
-                    statistics.AdvanceCalculator.Advance(text.Length - 1);
+                {
+                    statistics.AdvanceCalculator.Advance(text.Length - 1, 1, afterAdvance);
+                    afterAdvance = true;
+                }
             }
             sw.Stop();
             statistics.Milliseconds = sw.ElapsedMilliseconds;

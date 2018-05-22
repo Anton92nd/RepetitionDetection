@@ -58,8 +58,9 @@ namespace GraphicalInterface
                     $"Length: {length}",
                     $"Runs count: {runsCount}",
                     $"Char generator: {charGenerator.GetType().Name}",
-                    $"Removing strategy: {removeStrategy}"));
-
+                    $"Removing strategy: {removeStrategy}",
+                    "-----------------------"));
+            logger.Log(LogLevel.Stats, "Run #    Conversion    Time (ms)");
             tokenSource = new CancellationTokenSource();
             token = tokenSource.Token;
             Task.Factory.StartNew(() =>
@@ -70,7 +71,6 @@ namespace GraphicalInterface
                 while (runsPerformed < runsCount && !token.IsCancellationRequested)
                 {
                     detector.Reset();
-                    logger.Log(LogLevel.Stats, $"Run #{runsPerformed + 1}:");
                     logger.Log(LogLevel.Full, $"Run #{runsPerformed + 1}:");
 
                     var text = RandomWordGenerator.Generate(detector, length, removeStrategy, charGenerator, statistics, logger, token);
@@ -114,54 +114,65 @@ namespace GraphicalInterface
             }, token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
         }
 
-        private void LogTotal()
-        {
-            logger.Log(LogLevel.Stats, "-----");
-            logger.Log(LogLevel.Stats, $"Runs performed: {runsPerformed}");
-            logger.Log(LogLevel.Stats, string.Format("Average coef: {0:0.000000}", totalCharsGenerated * 1.0 / length / runsPerformed));
-            logger.Log(LogLevel.Stats, string.Format("Average time: {0:0.000} ms", ms * 1.0 / runsPerformed));
-
-            logger.Log(LogLevel.Stats, string.Format("Repetitions (period, border):\n" +
-                                                     string.Join("\n", statistics.TotalCountOfRuns
-                                                         .OrderBy(p => p.Key)
-                                                         .Select(p => $"{p.Key}: {p.Value}")))
-            );
-            logger.Log(LogLevel.Stats, string.Format("Advancement coefficients (length: coef, count):\n" +
-                                                     string.Join("\n", statistics.TotalAdvances
-                                                         .Select((x, i) => $"{i}: {x.Advance * 100.0 / x.Count:0.000}% {x.Count}")))
-            );
-        }
-
         private void LogRun(StringBuilder text, bool isCancellationRequested)
         {
             if (isCancellationRequested)
             {
-                logger.Log(LogLevel.Stats, $"Result #{runsPerformed + 1}[Canceled]");
-                logger.Log(LogLevel.Stats, $"Time: {statistics.Milliseconds:0.000} ms");
+                logger.Log(LogLevel.Stats, $"{runsPerformed + 1,5}    {"????",10}    {statistics.Milliseconds:0.0} [Canceled]");
             }
             else
             {
                 logger.Log(LogLevel.Full, $"Result #{runsPerformed}: {text}\n");
                 logger.Flush(LogLevel.Full);
 
-                logger.Log(LogLevel.Stats, string.Format("Coef: {0:0.000000}, Time: {1:0.000} ms",
+                logger.Log(LogLevel.Stats, string.Format("{0,5}    {1,10:0.000}    {2,8:0.0}",
+                    runsPerformed,
                     statistics.CharsGenerated * 1.0 / length,
                     statistics.Milliseconds));
             }
 
-            logger.Log(LogLevel.Stats, string.Format("Repetitions (period, border):\n" +
-                                                     string.Join("\n", statistics.CountOfRuns
-                                                         .OrderBy(p => p.Key)
-                                                         .Select(p => $"{p.Key}: {p.Value}")))
-            );
-            logger.Log(LogLevel.Stats, string.Format("Advancement coefficients (length: coef, count):\n" +
-                                                     string.Join("\n", statistics
-                                                         .AdvanceCalculator
-                                                         .Counters
-                                                         .Select((x, i) => $"{i}: {x.Advance * 100.0 / x.Count:0.000}% {x.Count}")))
-            );
-            logger.Log(LogLevel.Stats, "-----");
             logger.Flush(LogLevel.Stats);
+        }
+
+        private void LogTotal()
+        {
+            CalculateStats();
+            logger.Log(LogLevel.Stats, "\n-------[Total]---------");
+            logger.Log(LogLevel.Stats, string.Format("{0,5}    {1,10:0.000}    {2,8:0.0}", 
+                runsPerformed, 
+                totalCharsGenerated * 1.0 / length / runsPerformed,
+                ms * 1.0 / runsPerformed));
+            logger.Log(LogLevel.Stats, "-------[Total]---------\n");
+
+            var totalRepetitions = statistics.TotalCountOfRuns.Sum(p => p.Value);
+            logger.Log(LogLevel.Stats, string.Format("Repetition statistics:\nperiod    border         count    percent\n" +
+                                                     string.Join("\n", statistics.TotalCountOfRuns
+                                                         .OrderBy(p => p.Key)
+                                                         .Select(p => $"{p.Key.Period,6}    {p.Key.Border,6}    {p.Value,10}    {p.Value * 100.0 / totalRepetitions,7:0.000}")))
+            );
+            logger.Log(LogLevel.Stats, string.Format("Other statistics:\nlength    visit count    advance coef.    movingAverage(advance coef., 100)    advance fraction    advance after advance fraction\n" +
+                                                     string.Join("\n", statistics.TotalAdvances
+                                                         .Select((x, i) => string.Format("{0,6}    {1,11}    {2,13:0.0000}    {3,33:0.0000}    {4,16:0.0000}    {5:0.0000}",
+                                                             i,
+                                                             x.VisitCount,
+                                                             x.LengthDeltaSum * 1.0 / x.VisitCount,
+                                                             x.MovingAverageAdvance,
+                                                             x.AdvanceCount * 1.0 / x.VisitCount,
+                                                             x.AdvanceAfterAdvanceCount * 1.0 / x.AfterAdvanceCount))))
+            );
+        }
+
+        private void CalculateStats()
+        {
+            const int windowSize = 100;
+            var array = statistics.TotalAdvances.Select(x => x.LengthDeltaSum * 1.0 / x.VisitCount).ToArray();
+            for (var i = 0; i < array.Length; ++i)
+            {
+                double sum = 0;
+                for (var j = Math.Max(0, i - windowSize + 1); j <= i; ++j)
+                    sum += array[j];
+                statistics.TotalAdvances[i].MovingAverageAdvance = sum / Math.Min(i + 1, windowSize);
+            }
         }
 
         private GenerationLogger GetLogger()

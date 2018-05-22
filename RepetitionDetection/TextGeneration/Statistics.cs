@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using RepetitionDetection.Commons;
 using RepetitionDetection.Statistics;
@@ -10,7 +11,7 @@ namespace RepetitionDetection.TextGeneration
         public Statistics()
         {
             AdvanceCalculator = new AdvanceCalculator();
-            TotalAdvances = new List<(int Count, int Advance)>();
+            TotalAdvances = new List<PositionStatistics>();
 
             CharsGenerated = 0;
             TotalCharsGenerated = 0;
@@ -46,13 +47,14 @@ namespace RepetitionDetection.TextGeneration
 
             var counters = AdvanceCalculator.Counters.ToArray();
             if (TotalAdvances.Count < counters.Length)
-                TotalAdvances.AddRange(Enumerable.Repeat((0, 0), counters.Length - TotalAdvances.Count));
+                TotalAdvances.AddRange(Enumerable.Range(0, counters.Length - TotalAdvances.Count).Select(x => new PositionStatistics()));
             for (var i = 0; i < counters.Length; ++i)
             {
-                TotalAdvances[i] = (
-                    TotalAdvances[i].Count + counters[i].Count,
-                    TotalAdvances[i].Advance + counters[i].Advance
-                );
+                TotalAdvances[i].VisitCount += counters[i].VisitCount;
+                TotalAdvances[i].LengthDeltaSum += counters[i].LengthDeltaSum;
+                TotalAdvances[i].AdvanceCount += counters[i].AdvanceCount;
+                TotalAdvances[i].AfterAdvanceCount += counters[i].AfterAdvanceCount;
+                TotalAdvances[i].AdvanceAfterAdvanceCount += counters[i].AdvanceAfterAdvanceCount;
             }
         }
 
@@ -72,6 +74,6 @@ namespace RepetitionDetection.TextGeneration
 
         public Dictionary<Run, int> TotalCountOfRuns { get; }
 
-        public List<(int Count, int Advance)> TotalAdvances { get; }
+        public List<PositionStatistics> TotalAdvances { get; }
     }
 }
