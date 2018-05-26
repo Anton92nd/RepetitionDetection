@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using RepetitionDetection.Commons;
 using RepetitionDetection.Statistics;
@@ -68,7 +67,7 @@ namespace RepetitionDetection.TextGeneration
 
         public volatile int TextLength;
 
-        public int TotalCharsGenerated { get; set; }
+        public long TotalCharsGenerated { get; set; }
 
         public long TotalMilliseconds { get; set; }
 
