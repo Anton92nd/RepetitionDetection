@@ -69,7 +69,6 @@
     <Compile Include="CharGenerators\CleverCharGenerator.cs" />
     <Compile Include="CharGenerators\ICharGenerator.cs" />
     <Compile Include="CharGenerators\RandomCharGenerator.cs" />
-    <Compile Include="CharGenerators\RandomNotLastCharGenerator.cs" />
     <Compile Include="CharGenerators\RandomNumberGenerator.cs" />
     <Compile Include="Commons\CharGreaterComparer.cs" />
     <Compile Include="Commons\CharLessComparer.cs" />
