@@ -11,17 +11,12 @@ namespace RepetitionDetection.TextGeneration.RemoveStrategies
             MaxCharactersToRemove = maxCharactersToRemove;
         }
 
-        public int GetCharsToDelete(int textLength, Repetition repetition)
-        {
-            return Math.Min(MaxCharactersToRemove, BaseStrategy.GetCharsToDelete(textLength, repetition));
-        }
+        public int GetCharsToDelete(int textLength, Repetition repetition) => 
+            Math.Min(MaxCharactersToRemove, BaseStrategy.GetCharsToDelete(textLength, repetition));
 
-        public override string ToString()
-        {
-            return $"NoMoreThanStrategy({MaxCharactersToRemove}, {BaseStrategy})";
-        }
+        public override string ToString() => $"NoMoreThanStrategy({MaxCharactersToRemove}, {BaseStrategy})";
 
-        public IRemoveStrategy BaseStrategy { get; set; }
-        public int MaxCharactersToRemove { get; set; }
+        public IRemoveStrategy BaseStrategy { get; }
+        public int MaxCharactersToRemove { get; }
     }
 }

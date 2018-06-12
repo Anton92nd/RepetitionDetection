@@ -26,14 +26,13 @@ namespace RepetitionDetection.CriticalFactorization
         [NotNull]
         public override string ToString()
         {
-            return $"Pattern: {Pattern}\nPrefix length: {PrefixLength}, Prefix critical position: {PrefixCriticalPosition}\n" 
-                + $"Pattern critical position: {PatternCriticalPosition}";
+            return string.Join("\n", 
+                $"Pattern: {Pattern}", 
+                $"Prefix length: {PrefixLength}, Prefix critical position: {PrefixCriticalPosition}",
+                $"Pattern critical position: {PatternCriticalPosition}");
         }
 
-        public bool PatternFactorizationIsGood()
-        {
-            return PatternCriticalPosition <= Pattern.Length / 2;
-        }
+        public bool PatternFactorizationIsGood() => PatternCriticalPosition <= Pattern.Length / 2;
 
         public int PrefixLength { get; }
 

@@ -4,8 +4,7 @@ namespace GraphicalInterface
 {
     public class InputDataException : Exception
     {
-        public InputDataException(string message)
-            : base(message)
+        public InputDataException(string message) : base(message)
         {
         }
     }

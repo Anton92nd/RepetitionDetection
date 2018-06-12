@@ -9,16 +9,10 @@ namespace RepetitionDetection.TextGeneration.RemoveStrategies
             PeriodsCount = periodsCount;
         }
 
-        public int GetCharsToDelete(int textLength, Repetition repetition)
-        {
-            return repetition.Period * PeriodsCount;
-        }
+        public int GetCharsToDelete(int textLength, Repetition repetition) => repetition.Period * PeriodsCount;
 
-        public override string ToString()
-        {
-            return $"RemovePeriodsStrategy({PeriodsCount})";
-        }
+        public override string ToString() => $"RemovePeriodsStrategy({PeriodsCount})";
 
-        public int PeriodsCount { get; set; }
+        public int PeriodsCount { get; }
     }
 }

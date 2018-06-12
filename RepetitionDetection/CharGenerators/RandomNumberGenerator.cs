@@ -5,15 +5,9 @@ namespace RepetitionDetection.CharGenerators
 {
     public static class RandomNumberGenerator
     {
-        public static int Generate(int minValue, int maxValue)
-        {
-            return minValue + Generate(maxValue - minValue);
-        }
+        public static int Generate(int minValue, int maxValue) => minValue + Generate(maxValue - minValue);
 
-        public static int Generate(int maxValue)
-        {
-            return GenerateInt() % maxValue;
-        }
+        public static int Generate(int maxValue) => GenerateInt() % maxValue;
 
         private static int GenerateInt()
         {

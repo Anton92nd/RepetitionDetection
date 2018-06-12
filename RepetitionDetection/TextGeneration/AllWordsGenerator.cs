@@ -13,7 +13,6 @@ namespace RepetitionDetection.TextGeneration
             text.Append('a');
             while (text.Length > 0)
             {
-                //Console.Write("\rText length: {0}", text.Length);
                 if (text[text.Length - 1] - 'a' + 1 > alphabetSize)
                 {
                     if (text.Length == 1)

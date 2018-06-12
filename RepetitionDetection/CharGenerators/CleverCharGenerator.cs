@@ -58,10 +58,7 @@ namespace RepetitionDetection.CharGenerators
             return detectEqual ? cur >= E : cur > E;
         }
 
-        public override string ToString()
-        {
-            return "CleverCharGenerator";
-        }
+        public override string ToString() => "CleverCharGenerator";
 
         public int LastSymbols { get; }
     }

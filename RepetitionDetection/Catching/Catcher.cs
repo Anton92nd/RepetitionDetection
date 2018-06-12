@@ -83,20 +83,12 @@ namespace RepetitionDetection.Catching
             stringMatchingAlgorithm.State = stateStack.Peek().StringMatchingState;
         }
 
-        public bool IsActive()
-        {
-            return RemoveTime < 0 || text.Length < RemoveTime;
-        }
+        public bool IsActive() => RemoveTime < 0 || text.Length < RemoveTime;
 
-        public bool IsObsolete()
-        {
-            return text.Length <= J + 1 || RemoveTime >= 0 && Math.Abs(RemoveTime - text.Length) > timeToLive;
-        }
+        public bool IsObsolete() => text.Length <= J + 1 || 
+                                    RemoveTime >= 0 && Math.Abs(RemoveTime - text.Length) > timeToLive;
 
-        public override string ToString()
-        {
-            return $"Catcher {{I={I},J={J}}}";
-        }
+        public override string ToString() => $"Catcher {{I={I},J={J}}}";
 
         private readonly bool detectEqual;
 

@@ -34,7 +34,7 @@ namespace GraphicalInterface
                 {
                     SaveData = new SaveData
                     {
-                        SavePath = @"C:\runs\",
+                        SavePath = "C:\\runs\\",
                         SaveFullLog = false,
                         SaveStats = true
                     },

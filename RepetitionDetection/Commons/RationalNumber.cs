@@ -19,15 +19,9 @@ namespace RepetitionDetection.Commons
             Denom = denominator / gcd;
         }
 
-        public static RationalNumber operator *(RationalNumber a, RationalNumber b)
-        {
-            return new RationalNumber(a.Num * b.Num, a.Denom * b.Denom);
-        }
+        public static RationalNumber operator *(RationalNumber a, RationalNumber b) => new RationalNumber(a.Num * b.Num, a.Denom * b.Denom);
 
-        public static RationalNumber operator *(RationalNumber a, int b)
-        {
-            return new RationalNumber(a.Num * b, a.Denom);
-        }
+        public static RationalNumber operator *(RationalNumber a, int b) => new RationalNumber(a.Num * b, a.Denom);
 
         public static RationalNumber operator /(RationalNumber a, RationalNumber b)
         {
@@ -51,10 +45,7 @@ namespace RepetitionDetection.Commons
             return new RationalNumber(a.Num * k1 + b.Num * k2, denom);
         }
 
-        public static RationalNumber operator +(RationalNumber a, int b)
-        {
-            return a + new RationalNumber(b);
-        }
+        public static RationalNumber operator +(RationalNumber a, int b) => a + new RationalNumber(b);
 
         public static RationalNumber operator -(RationalNumber a, RationalNumber b)
         {
@@ -64,10 +55,7 @@ namespace RepetitionDetection.Commons
             return new RationalNumber(a.Num * k1 - b.Num * k2, denom);
         }
 
-        public static RationalNumber operator -(RationalNumber a, int b)
-        {
-            return a - new RationalNumber(b);
-        }
+        public static RationalNumber operator -(RationalNumber a, int b) => a - new RationalNumber(b);
 
         public static bool operator <(RationalNumber a, RationalNumber b)
         {
@@ -85,27 +73,15 @@ namespace RepetitionDetection.Commons
             return a.Num * k1 <= b.Num * k2;
         }
 
-        public static bool operator >(RationalNumber a, RationalNumber b)
-        {
-            return b < a;
-        }
+        public static bool operator >(RationalNumber a, RationalNumber b) => b < a;
 
-        public static bool operator >=(RationalNumber a, RationalNumber b)
-        {
-            return b <= a;
-        }
+        public static bool operator >=(RationalNumber a, RationalNumber b) => b <= a;
 
         [Pure]
-        public int Ceil()
-        {
-            return (Num + Denom - 1) / Denom;
-        }
+        public int Ceil() => (Num + Denom - 1) / Denom;
 
         [Pure]
-        public int Floor()
-        {
-            return Num / Denom;
-        }
+        public int Floor() => Num / Denom;
 
         private static int Gcd(int a, int b)
         {
@@ -118,15 +94,9 @@ namespace RepetitionDetection.Commons
             return b;
         }
 
-        private static int Lcm(int a, int b)
-        {
-            return a / Gcd(a, b) * b;
-        }
+        private static int Lcm(int a, int b) => a / Gcd(a, b) * b;
 
-        public override string ToString()
-        {
-            return $"{Num}/{Denom}";
-        }
+        public override string ToString() => $"{Num}/{Denom}";
 
         public readonly int Num;
         public readonly int Denom;

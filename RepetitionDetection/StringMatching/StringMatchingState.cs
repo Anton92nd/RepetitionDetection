@@ -8,10 +8,7 @@
             CompleteAlgorithmState = completeAlgorithmState;
         }
 
-        public override string ToString()
-        {
-            return $"Complete: ({CompleteAlgorithmState}), Incomplete: ({IncompleteAlgorithmState})";
-        }
+        public override string ToString() => $"Complete: ({CompleteAlgorithmState}), Incomplete: ({IncompleteAlgorithmState})";
 
         public readonly AlgorithmState CompleteAlgorithmState;
 

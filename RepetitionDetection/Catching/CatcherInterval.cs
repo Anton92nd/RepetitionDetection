@@ -10,22 +10,13 @@ namespace RepetitionDetection.Catching
             R = r;
         }
 
-        public bool Equals(CatcherInterval other)
-        {
-            return L == other.L && R == other.R;
-        }
+        public bool Equals(CatcherInterval other) => L == other.L && R == other.R;
 
         public int Length => R - L;
 
-        public override int GetHashCode()
-        {
-            return L.GetHashCode() ^ R.GetHashCode();
-        }
+        public override int GetHashCode() => L.GetHashCode() ^ R.GetHashCode();
 
-        public override string ToString()
-        {
-            return $"Interval ({L}, {R}]";
-        }
+        public override string ToString() => $"Interval ({L}, {R}]";
 
         public readonly int L, R;
     }

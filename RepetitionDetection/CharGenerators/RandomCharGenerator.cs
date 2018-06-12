@@ -9,14 +9,8 @@
 
         public int AlphabetSize { get; }
 
-        public char Generate()
-        {
-            return (char) RandomNumberGenerator.Generate('a', 'a' + AlphabetSize);
-        }
+        public char Generate() => (char) RandomNumberGenerator.Generate('a', 'a' + AlphabetSize);
 
-        public override string ToString()
-        {
-            return "RandomCharGenerator";
-        }
+        public override string ToString() => "RandomCharGenerator";
     }
 }

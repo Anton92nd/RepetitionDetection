@@ -5,10 +5,7 @@ namespace RepetitionDetection.Commons
 {
     public class CharLessComparer : IComparer<char>
     {
-        public int Compare(char x, char y)
-        {
-            return comparer.Compare(x, y);
-        }
+        public int Compare(char x, char y) => comparer.Compare(x, y);
 
         [NotNull] private readonly IComparer<char> comparer = Comparer<char>.Default;
     }

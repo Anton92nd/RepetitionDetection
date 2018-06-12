@@ -14,10 +14,7 @@ namespace RepetitionDetection.Commons
             Period = period;
         }
 
-        public bool Equals(Run other)
-        {
-            return Length == other.Length && Period == other.Period;
-        }
+        public bool Equals(Run other) => Length == other.Length && Period == other.Period;
 
         public override bool Equals(object obj)
         {
@@ -28,16 +25,10 @@ namespace RepetitionDetection.Commons
 
         public override int GetHashCode()
         {
-            unchecked
-            {
-                return (Length * 397) ^ Period;
-            }
+            unchecked { return (Length * 397) ^ Period; }
         }
 
-        public override string ToString()
-        {
-            return $"({Period}, {Border})";
-        }
+        public override string ToString() => $"({Period}, {Border})";
 
         public int CompareTo(Run other)
         {

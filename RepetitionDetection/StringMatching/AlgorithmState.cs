@@ -11,9 +11,6 @@
             MatchedSymbolsCount = matchedSymbolsCount;
         }
 
-        public override string ToString()
-        {
-            return $"Position: {PositionInText}, Matched: {MatchedSymbolsCount}";
-        }
+        public override string ToString() => $"Position: {PositionInText}, Matched: {MatchedSymbolsCount}";
     }
 }

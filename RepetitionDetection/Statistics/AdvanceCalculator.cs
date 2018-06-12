@@ -23,7 +23,6 @@ namespace RepetitionDetection.Statistics
                 if (afterAdvance)
                     counters[length].AdvanceAfterAdvanceCount++;
             }
-
         }
 
         private void EnsureLength(int length)
